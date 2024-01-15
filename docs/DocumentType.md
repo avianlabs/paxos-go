@@ -1,0 +1,37 @@
+# DocumentType
+
+## Enum
+
+
+* `OTHER_DOCUMENTS` (value: `"OTHER_DOCUMENTS"`)
+
+* `APPLICATION` (value: `"APPLICATION"`)
+
+* `ORGANIZATIONAL_DOCUMENTS` (value: `"ORGANIZATIONAL_DOCUMENTS"`)
+
+* `CERTIFICATE_OF_GOOD_STANDING` (value: `"CERTIFICATE_OF_GOOD_STANDING"`)
+
+* `TAX_IDENTIFICATION` (value: `"TAX_IDENTIFICATION"`)
+
+* `IDENTITY_VERIFICATION` (value: `"IDENTITY_VERIFICATION"`)
+
+* `PROOF_OF_RESIDENCY` (value: `"PROOF_OF_RESIDENCY"`)
+
+* `PROOF_OF_FUNDS` (value: `"PROOF_OF_FUNDS"`)
+
+* `SAMPLE_INVOICE` (value: `"SAMPLE_INVOICE"`)
+
+* `OPERATING_AGREEMENT` (value: `"OPERATING_AGREEMENT"`)
+
+* `TRUST_DOCUMENTS` (value: `"TRUST_DOCUMENTS"`)
+
+* `MONEY_SERVICE_DOCUMENTS` (value: `"MONEY_SERVICE_DOCUMENTS"`)
+
+* `INVESTMENT_DOCUMENTS` (value: `"INVESTMENT_DOCUMENTS"`)
+
+* `CURP` (value: `"CURP"`)
+
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+
