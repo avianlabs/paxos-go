@@ -20,9 +20,9 @@ type AccountMemberAccountRoleType string
 
 // List of AccountMemberAccountRoleType
 const (
-	BENEFICIAL_OWNER AccountMemberAccountRoleType = "BENEFICIAL_OWNER"
-	AUTHORIZED_USER AccountMemberAccountRoleType = "AUTHORIZED_USER"
-	FINANCIAL_ADVISOR AccountMemberAccountRoleType = "FINANCIAL_ADVISOR"
+	ACCOUNTMEMBERACCOUNTROLETYPE_BENEFICIAL_OWNER AccountMemberAccountRoleType = "BENEFICIAL_OWNER"
+	ACCOUNTMEMBERACCOUNTROLETYPE_AUTHORIZED_USER AccountMemberAccountRoleType = "AUTHORIZED_USER"
+	ACCOUNTMEMBERACCOUNTROLETYPE_FINANCIAL_ADVISOR AccountMemberAccountRoleType = "FINANCIAL_ADVISOR"
 )
 
 // All allowed values of AccountMemberAccountRoleType enum

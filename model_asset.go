@@ -20,22 +20,22 @@ type Asset string
 
 // List of Asset
 const (
-	USD Asset = "USD"
-	EUR Asset = "EUR"
-	SGD Asset = "SGD"
-	BTC Asset = "BTC"
-	ETH Asset = "ETH"
-	PAXG Asset = "PAXG"
-	BUSD Asset = "BUSD"
-	BCH Asset = "BCH"
-	LTC Asset = "LTC"
-	USDP Asset = "USDP"
-	AAVE Asset = "AAVE"
-	UNI Asset = "UNI"
-	MATIC Asset = "MATIC"
-	PYUSD Asset = "PYUSD"
-	LINK Asset = "LINK"
-	SOL Asset = "SOL"
+	ASSET_USD Asset = "USD"
+	ASSET_EUR Asset = "EUR"
+	ASSET_SGD Asset = "SGD"
+	ASSET_BTC Asset = "BTC"
+	ASSET_ETH Asset = "ETH"
+	ASSET_PAXG Asset = "PAXG"
+	ASSET_BUSD Asset = "BUSD"
+	ASSET_BCH Asset = "BCH"
+	ASSET_LTC Asset = "LTC"
+	ASSET_USDP Asset = "USDP"
+	ASSET_AAVE Asset = "AAVE"
+	ASSET_UNI Asset = "UNI"
+	ASSET_MATIC Asset = "MATIC"
+	ASSET_PYUSD Asset = "PYUSD"
+	ASSET_LINK Asset = "LINK"
+	ASSET_SOL Asset = "SOL"
 )
 
 // All allowed values of Asset enum

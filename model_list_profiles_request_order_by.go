@@ -20,7 +20,7 @@ type ListProfilesRequestOrderBy string
 
 // List of ListProfilesRequestOrderBy
 const (
-	CREATED_AT ListProfilesRequestOrderBy = "CREATED_AT"
+	LISTPROFILESREQUESTORDERBY_CREATED_AT ListProfilesRequestOrderBy = "CREATED_AT"
 )
 
 // All allowed values of ListProfilesRequestOrderBy enum

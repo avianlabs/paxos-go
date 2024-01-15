@@ -20,8 +20,8 @@ type OrderSide string
 
 // List of OrderSide
 const (
-	BUY OrderSide = "BUY"
-	SELL OrderSide = "SELL"
+	ORDERSIDE_BUY OrderSide = "BUY"
+	ORDERSIDE_SELL OrderSide = "SELL"
 )
 
 // All allowed values of OrderSide enum

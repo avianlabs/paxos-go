@@ -20,9 +20,9 @@ type FiatAccountStatus string
 
 // List of FiatAccountStatus
 const (
-	PENDING FiatAccountStatus = "PENDING"
-	APPROVED FiatAccountStatus = "APPROVED"
-	REJECTED FiatAccountStatus = "REJECTED"
+	FIATACCOUNTSTATUS_PENDING FiatAccountStatus = "PENDING"
+	FIATACCOUNTSTATUS_APPROVED FiatAccountStatus = "APPROVED"
+	FIATACCOUNTSTATUS_REJECTED FiatAccountStatus = "REJECTED"
 )
 
 // All allowed values of FiatAccountStatus enum
