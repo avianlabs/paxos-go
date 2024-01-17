@@ -1,7 +1,7 @@
 /*
 Paxos API
 
-<p>Welcome to Paxos APIs. At Paxos, our mission is to enable the movement of any asset, any time, in a trustworthy way. These APIs serve that mission by making it easier than ever for you to directly integrate our product capabilities into your application, leveraging the speed, stability, and security of the Paxos platform.</p> <p>The documentation that follows gives you access to our Crypto Brokerage, Trading, and Exchange products. It includes APIs for market data, orders, and the held rate quote flow.</p> <p>To test in our sandbox environment, <a href=\"https://account.sandbox.paxos.com\" target=\"_blank\">sign up</a> for an account. For more information about Paxos and our APIs, visit <a href=\"https://www.paxos.com/\" target=\"_blank\">Paxos.com</a>.</p> 
+<p>Welcome to Paxos APIs. At Paxos, our mission is to enable the movement of any asset, any time, in a trustworthy way. These APIs serve that mission by making it easier than ever for you to directly integrate our product capabilities into your application, leveraging the speed, stability, and security of the Paxos platform.</p> <p>The documentation that follows gives you access to our Crypto Brokerage, Trading, and Exchange products. It includes APIs for market data, orders, and the held rate quote flow.</p> <p>To test in our sandbox environment, <a href=\"https://account.sandbox.paxos.com\" target=\"_blank\">sign up</a> for an account. For more information about Paxos and our APIs, visit <a href=\"https://www.paxos.com/\" target=\"_blank\">Paxos.com</a>.</p>
 
 API version: 2.0
 */
@@ -11,8 +11,8 @@ API version: 2.0
 package paxos
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -21,6 +21,7 @@ var _ MappedNullable = &CreateCryptoWithdrawalRequest{}
 
 // CreateCryptoWithdrawalRequest struct for CreateCryptoWithdrawalRequest
 type CreateCryptoWithdrawalRequest struct {
+	Id string `json:"id"`
 	// Client-specified ID for replay protection and lookup.
 	RefId *string `json:"ref_id,omitempty"`
 	// The profile from which to withdraw.
@@ -38,12 +39,12 @@ type CreateCryptoWithdrawalRequest struct {
 	// The Account associated to the identity of the user making the withdrawal.
 	AccountId *string `json:"account_id,omitempty"`
 	// Optional id of the guaranteed fee.
-	FeeId *string `json:"fee_id,omitempty"`
+	FeeId         *string       `json:"fee_id,omitempty"`
 	CryptoNetwork CryptoNetwork `json:"crypto_network"`
 	// The amount to withdraw. Specify exactly one of `amount` or `total`, otherwise an error is returned.
 	Amount *string `json:"amount,omitempty"`
 	// Total amount to withdraw, including fees. Specify exactly one of `amount` or `total`, otherwise an error is returned.
-	Total *string `json:"total,omitempty"`
+	Total       *string      `json:"total,omitempty"`
 	Beneficiary *Beneficiary `json:"beneficiary,omitempty"`
 }
 
@@ -455,7 +456,7 @@ func (o *CreateCryptoWithdrawalRequest) SetBeneficiary(v Beneficiary) {
 }
 
 func (o CreateCryptoWithdrawalRequest) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -514,10 +515,10 @@ func (o *CreateCryptoWithdrawalRequest) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -573,5 +574,3 @@ func (v *NullableCreateCryptoWithdrawalRequest) UnmarshalJSON(src []byte) error 
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-
