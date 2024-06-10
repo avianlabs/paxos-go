@@ -33,10 +33,12 @@ type CreateFiatWithdrawalRequest struct {
 	ProfileId string `json:"profile_id"`
 	// The Identity (`identity_id`) of the user making the withdrawal.
 	IdentityId string `json:"identity_id"`
-	// The Account (`account_id`) associated with the Identity of the user making the withdrawal. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) making deposits on behalf of their end users.
+	// The Account (`account_id`) associated with the Identity of the user making the withdrawal. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users.
 	AccountId *string `json:"account_id,omitempty"`
 	// Optional client-specified metadata. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters.
 	Metadata *map[string]string `json:"metadata,omitempty"`
+	// Optional additional memo to be set on the outgoing wire. Only used for wire withdrawals.
+	Memo *string `json:"memo,omitempty"`
 }
 
 type _CreateFiatWithdrawalRequest CreateFiatWithdrawalRequest
@@ -279,6 +281,38 @@ func (o *CreateFiatWithdrawalRequest) SetMetadata(v map[string]string) {
 	o.Metadata = &v
 }
 
+// GetMemo returns the Memo field value if set, zero value otherwise.
+func (o *CreateFiatWithdrawalRequest) GetMemo() string {
+	if o == nil || IsNil(o.Memo) {
+		var ret string
+		return ret
+	}
+	return *o.Memo
+}
+
+// GetMemoOk returns a tuple with the Memo field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateFiatWithdrawalRequest) GetMemoOk() (*string, bool) {
+	if o == nil || IsNil(o.Memo) {
+		return nil, false
+	}
+	return o.Memo, true
+}
+
+// HasMemo returns a boolean if a field has been set.
+func (o *CreateFiatWithdrawalRequest) HasMemo() bool {
+	if o != nil && !IsNil(o.Memo) {
+		return true
+	}
+
+	return false
+}
+
+// SetMemo gets a reference to the given string and assigns it to the Memo field.
+func (o *CreateFiatWithdrawalRequest) SetMemo(v string) {
+	o.Memo = &v
+}
+
 func (o CreateFiatWithdrawalRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -302,6 +336,9 @@ func (o CreateFiatWithdrawalRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Metadata) {
 		toSerialize["metadata"] = o.Metadata
+	}
+	if !IsNil(o.Memo) {
+		toSerialize["memo"] = o.Memo
 	}
 	return toSerialize, nil
 }

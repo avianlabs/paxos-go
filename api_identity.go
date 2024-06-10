@@ -125,12 +125,15 @@ To use Passthrough, Paxos Compliance must first confirm your eligibility.
 
 Once confirmed, you can submit the fields listed below as part of the the `person_details` attribute in your request.
 
-Field | Notes
----|---
-person_details.verifier_type | Required. Must be `PASSTHROUGH`
-person_details.passthrough_verifier_type | Required. Specifies the ID Verification provider you originally used
-person_details.passthrough_verified_at | Required
-person_details.address | Required
+| Field                                          | Notes                                                                                                     |
+|------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| person_details.verifier_type                   | Required. Must be `PASSTHROUGH`                                                                           |
+| person_details.passthrough_verifier_type       | Required. Specifies the ID Verification provider you originally used                                      |
+| person_details.passthrough_verified_at         | Required                                                                                                  |
+| person_details.passthrough_verification_id     | Unique identifier for the underlying individual's ID verification record.                                 |
+| person_details.passthrough_verification_status | Status of the ID verification indicating whether the identity was approved or denied.                     |
+| person_details.passthrough_verification_fields | List of verification fields used by the external verifier to validate the individual's identity.          |
+| person_details.address                         | Required                                                                                                  |
 
 Note that the following field is forbidden in the request:
 `person_details.verifier_id`
@@ -144,6 +147,9 @@ Note that the following field is forbidden in the request:
 &nbsp;&nbsp;&nbsp;&nbsp;"verifier_type": "PASSTHROUGH",
 &nbsp;&nbsp;&nbsp;&nbsp;"passthrough_verifier_type": "JUMIO",
 &nbsp;&nbsp;&nbsp;&nbsp;"passthrough_verified_at": "2021-06-16T09:28:14Z",
+&nbsp;&nbsp;&nbsp;&nbsp;"passthrough_verification_id": "775300ef-4edb-47b9-8ec4-f45fe3cbf41f",
+&nbsp;&nbsp;&nbsp;&nbsp;"passthrough_verification_status": "APPROVED",
+&nbsp;&nbsp;&nbsp;&nbsp;"passthrough_verification_fields": ["FULL_LEGAL_NAME", "DATE_OF_BIRTH"]
 &nbsp;&nbsp;&nbsp;&nbsp;"first_name": "John",
 &nbsp;&nbsp;&nbsp;&nbsp;"last_name": "Doe",
 &nbsp;&nbsp;&nbsp;&nbsp;"date_of_birth": "1980-01-01",
@@ -165,6 +171,8 @@ Note that the following field is forbidden in the request:
 }
 </code>
 </pre>
+
+Note that this feature is not yet supported - `customer_due_diligence`.
 
 ### Create Institution Identity
 Institution identities are used to represent all non-person entities.

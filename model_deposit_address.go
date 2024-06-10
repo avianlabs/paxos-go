@@ -38,7 +38,9 @@ type DepositAddress struct {
 	Address string `json:"address"`
 	// The Account associated to the identity of the user that will be linked to the created address.
 	AccountId *string `json:"account_id,omitempty"`
-	ConversionTargetAsset *DepositAddressConversionTargetAsset `json:"conversion_target_asset,omitempty"`
+	ConversionTargetAsset DepositAddressConversionTargetAsset `json:"conversion_target_asset"`
+	// List of networks compatible with the created address. Any of these networks can be used to deposit to the address.
+	CompatibleCryptoNetworks []CryptoNetwork `json:"compatible_crypto_networks,omitempty"`
 }
 
 type _DepositAddress DepositAddress
@@ -47,13 +49,14 @@ type _DepositAddress DepositAddress
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDepositAddress(id string, profileId string, customerId string, cryptoNetwork CryptoNetwork, address string) *DepositAddress {
+func NewDepositAddress(id string, profileId string, customerId string, cryptoNetwork CryptoNetwork, address string, conversionTargetAsset DepositAddressConversionTargetAsset) *DepositAddress {
 	this := DepositAddress{}
 	this.Id = id
 	this.ProfileId = profileId
 	this.CustomerId = customerId
 	this.CryptoNetwork = cryptoNetwork
 	this.Address = address
+	this.ConversionTargetAsset = conversionTargetAsset
 	return &this
 }
 
@@ -313,36 +316,60 @@ func (o *DepositAddress) SetAccountId(v string) {
 	o.AccountId = &v
 }
 
-// GetConversionTargetAsset returns the ConversionTargetAsset field value if set, zero value otherwise.
+// GetConversionTargetAsset returns the ConversionTargetAsset field value
 func (o *DepositAddress) GetConversionTargetAsset() DepositAddressConversionTargetAsset {
-	if o == nil || IsNil(o.ConversionTargetAsset) {
+	if o == nil {
 		var ret DepositAddressConversionTargetAsset
 		return ret
 	}
-	return *o.ConversionTargetAsset
+
+	return o.ConversionTargetAsset
 }
 
-// GetConversionTargetAssetOk returns a tuple with the ConversionTargetAsset field value if set, nil otherwise
+// GetConversionTargetAssetOk returns a tuple with the ConversionTargetAsset field value
 // and a boolean to check if the value has been set.
 func (o *DepositAddress) GetConversionTargetAssetOk() (*DepositAddressConversionTargetAsset, bool) {
-	if o == nil || IsNil(o.ConversionTargetAsset) {
+	if o == nil {
 		return nil, false
 	}
-	return o.ConversionTargetAsset, true
+	return &o.ConversionTargetAsset, true
 }
 
-// HasConversionTargetAsset returns a boolean if a field has been set.
-func (o *DepositAddress) HasConversionTargetAsset() bool {
-	if o != nil && !IsNil(o.ConversionTargetAsset) {
+// SetConversionTargetAsset sets field value
+func (o *DepositAddress) SetConversionTargetAsset(v DepositAddressConversionTargetAsset) {
+	o.ConversionTargetAsset = v
+}
+
+// GetCompatibleCryptoNetworks returns the CompatibleCryptoNetworks field value if set, zero value otherwise.
+func (o *DepositAddress) GetCompatibleCryptoNetworks() []CryptoNetwork {
+	if o == nil || IsNil(o.CompatibleCryptoNetworks) {
+		var ret []CryptoNetwork
+		return ret
+	}
+	return o.CompatibleCryptoNetworks
+}
+
+// GetCompatibleCryptoNetworksOk returns a tuple with the CompatibleCryptoNetworks field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DepositAddress) GetCompatibleCryptoNetworksOk() ([]CryptoNetwork, bool) {
+	if o == nil || IsNil(o.CompatibleCryptoNetworks) {
+		return nil, false
+	}
+	return o.CompatibleCryptoNetworks, true
+}
+
+// HasCompatibleCryptoNetworks returns a boolean if a field has been set.
+func (o *DepositAddress) HasCompatibleCryptoNetworks() bool {
+	if o != nil && !IsNil(o.CompatibleCryptoNetworks) {
 		return true
 	}
 
 	return false
 }
 
-// SetConversionTargetAsset gets a reference to the given DepositAddressConversionTargetAsset and assigns it to the ConversionTargetAsset field.
-func (o *DepositAddress) SetConversionTargetAsset(v DepositAddressConversionTargetAsset) {
-	o.ConversionTargetAsset = &v
+// SetCompatibleCryptoNetworks gets a reference to the given []CryptoNetwork and assigns it to the CompatibleCryptoNetworks field.
+func (o *DepositAddress) SetCompatibleCryptoNetworks(v []CryptoNetwork) {
+	o.CompatibleCryptoNetworks = v
 }
 
 func (o DepositAddress) MarshalJSON() ([]byte, error) {
@@ -372,8 +399,9 @@ func (o DepositAddress) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AccountId) {
 		toSerialize["account_id"] = o.AccountId
 	}
-	if !IsNil(o.ConversionTargetAsset) {
-		toSerialize["conversion_target_asset"] = o.ConversionTargetAsset
+	toSerialize["conversion_target_asset"] = o.ConversionTargetAsset
+	if !IsNil(o.CompatibleCryptoNetworks) {
+		toSerialize["compatible_crypto_networks"] = o.CompatibleCryptoNetworks
 	}
 	return toSerialize, nil
 }
@@ -388,6 +416,7 @@ func (o *DepositAddress) UnmarshalJSON(data []byte) (err error) {
 		"customer_id",
 		"crypto_network",
 		"address",
+		"conversion_target_asset",
 	}
 
 	allProperties := make(map[string]interface{})

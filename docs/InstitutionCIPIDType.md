@@ -1,4 +1,4 @@
-# InstitutionDetailsCIPIDType
+# InstitutionCIPIDType
 
 ## Enum
 

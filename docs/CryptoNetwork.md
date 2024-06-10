@@ -13,6 +13,8 @@
 
 * `SOLANA` (value: `"SOLANA"`)
 
+* `POLYGON_POS` (value: `"POLYGON_POS"`)
+
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

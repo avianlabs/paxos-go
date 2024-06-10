@@ -20,8 +20,8 @@ type FiatWireAccountType string
 
 // List of FiatWireAccountType
 const (
-	FIATWIREACCOUNTTYPE_ABA FiatWireAccountType = "ABA"
-	FIATWIREACCOUNTTYPE_SWIFT FiatWireAccountType = "SWIFT"
+	ABA FiatWireAccountType = "ABA"
+	SWIFT FiatWireAccountType = "SWIFT"
 )
 
 // All allowed values of FiatWireAccountType enum

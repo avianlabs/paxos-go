@@ -20,7 +20,7 @@ type ListDepositAddressesRequestOrderBy string
 
 // List of ListDepositAddressesRequestOrderBy
 const (
-	LISTDEPOSITADDRESSESREQUESTORDERBY_CREATED_AT ListDepositAddressesRequestOrderBy = "CREATED_AT"
+	CREATED_AT ListDepositAddressesRequestOrderBy = "CREATED_AT"
 )
 
 // All allowed values of ListDepositAddressesRequestOrderBy enum

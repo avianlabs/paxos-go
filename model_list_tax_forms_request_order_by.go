@@ -20,7 +20,7 @@ type ListTaxFormsRequestOrderBy string
 
 // List of ListTaxFormsRequestOrderBy
 const (
-	LISTTAXFORMSREQUESTORDERBY_ID ListTaxFormsRequestOrderBy = "ID"
+	ID ListTaxFormsRequestOrderBy = "ID"
 )
 
 // All allowed values of ListTaxFormsRequestOrderBy enum

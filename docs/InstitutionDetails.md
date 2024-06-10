@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **InstitutionType** | Pointer to [**InstitutionType**](InstitutionType.md) |  | [optional] 
 **InstitutionSubType** | Pointer to [**InstitutionSubType**](InstitutionSubType.md) |  | [optional] 
 **CipId** | Pointer to **string** |  | [optional] 
-**CipIdType** | Pointer to [**InstitutionDetailsCIPIDType**](InstitutionDetailsCIPIDType.md) |  | [optional] 
+**CipIdType** | Pointer to [**InstitutionCIPIDType**](InstitutionCIPIDType.md) |  | [optional] 
 **CipIdCountry** | Pointer to **string** | Allowed in create and update. Must be an ISO 3166-1 alpha 3 code. | [optional] 
 **GovtRegistrationDate** | Pointer to **time.Time** |  | [optional] 
 **IncorporationAddress** | Pointer to [**IdentityMailingAddress**](IdentityMailingAddress.md) |  | [optional] 
@@ -249,20 +249,20 @@ HasCipId returns a boolean if a field has been set.
 
 ### GetCipIdType
 
-`func (o *InstitutionDetails) GetCipIdType() InstitutionDetailsCIPIDType`
+`func (o *InstitutionDetails) GetCipIdType() InstitutionCIPIDType`
 
 GetCipIdType returns the CipIdType field if non-nil, zero value otherwise.
 
 ### GetCipIdTypeOk
 
-`func (o *InstitutionDetails) GetCipIdTypeOk() (*InstitutionDetailsCIPIDType, bool)`
+`func (o *InstitutionDetails) GetCipIdTypeOk() (*InstitutionCIPIDType, bool)`
 
 GetCipIdTypeOk returns a tuple with the CipIdType field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetCipIdType
 
-`func (o *InstitutionDetails) SetCipIdType(v InstitutionDetailsCIPIDType)`
+`func (o *InstitutionDetails) SetCipIdType(v InstitutionCIPIDType)`
 
 SetCipIdType sets CipIdType field to given value.
 

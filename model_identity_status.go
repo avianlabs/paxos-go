@@ -20,11 +20,11 @@ type IdentityStatus string
 
 // List of IdentityStatus
 const (
-	IDENTITYSTATUS_PENDING IdentityStatus = "PENDING"
-	IDENTITYSTATUS_ERROR IdentityStatus = "ERROR"
-	IDENTITYSTATUS_APPROVED IdentityStatus = "APPROVED"
-	IDENTITYSTATUS_DENIED IdentityStatus = "DENIED"
-	IDENTITYSTATUS_DISABLED IdentityStatus = "DISABLED"
+	PENDING IdentityStatus = "PENDING"
+	ERROR IdentityStatus = "ERROR"
+	APPROVED IdentityStatus = "APPROVED"
+	DENIED IdentityStatus = "DENIED"
+	DISABLED IdentityStatus = "DISABLED"
 )
 
 // All allowed values of IdentityStatus enum
