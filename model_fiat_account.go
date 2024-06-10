@@ -26,7 +26,7 @@ type FiatAccount struct {
 	RefId *string `json:"ref_id,omitempty"`
 	// The Paxos Identity (`identity_id`) of the user's FiatAccount.
 	IdentityId *string `json:"identity_id,omitempty"`
-	// The Paxos Account (`account_id`) of the user's FiatAccount. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) making deposits on behalf of their end users.
+	// The Paxos Account (`account_id`) of the user's FiatAccount. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users.
 	AccountId *string `json:"account_id,omitempty"`
 	FiatAccountOwner *FiatAccountOwner `json:"fiat_account_owner,omitempty"`
 	FiatNetworkInstructions *FiatNetworkInstructions `json:"fiat_network_instructions,omitempty"`

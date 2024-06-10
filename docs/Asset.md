@@ -21,6 +21,8 @@
 
 * `LTC` (value: `"LTC"`)
 
+* `USDC` (value: `"USDC"`)
+
 * `USDP` (value: `"USDP"`)
 
 * `AAVE` (value: `"AAVE"`)

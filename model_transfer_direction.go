@@ -20,8 +20,8 @@ type TransferDirection string
 
 // List of TransferDirection
 const (
-	TRANSFERDIRECTION_CREDIT TransferDirection = "CREDIT"
-	TRANSFERDIRECTION_DEBIT TransferDirection = "DEBIT"
+	CREDIT_TransferDirection TransferDirection = "CREDIT"
+	DEBIT_TransferDirection TransferDirection = "DEBIT"
 )
 
 // All allowed values of TransferDirection enum

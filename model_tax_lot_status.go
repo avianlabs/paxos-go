@@ -20,8 +20,8 @@ type TaxLotStatus string
 
 // List of TaxLotStatus
 const (
-	TAXLOTSTATUS_OPEN TaxLotStatus = "OPEN"
-	TAXLOTSTATUS_CLOSED TaxLotStatus = "CLOSED"
+	OPEN_TaxLotStatus TaxLotStatus = "OPEN"
+	CLOSED_TaxLotStatus TaxLotStatus = "CLOSED"
 )
 
 // All allowed values of TaxLotStatus enum

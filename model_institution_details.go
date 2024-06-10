@@ -28,7 +28,7 @@ type InstitutionDetails struct {
 	InstitutionType *InstitutionType `json:"institution_type,omitempty"`
 	InstitutionSubType *InstitutionSubType `json:"institution_sub_type,omitempty"`
 	CipId *string `json:"cip_id,omitempty"`
-	CipIdType *InstitutionDetailsCIPIDType `json:"cip_id_type,omitempty"`
+	CipIdType *InstitutionCIPIDType `json:"cip_id_type,omitempty"`
 	// Allowed in create and update. Must be an ISO 3166-1 alpha 3 code.
 	CipIdCountry *string `json:"cip_id_country,omitempty"`
 	GovtRegistrationDate *time.Time `json:"govt_registration_date,omitempty"`
@@ -321,9 +321,9 @@ func (o *InstitutionDetails) SetCipId(v string) {
 }
 
 // GetCipIdType returns the CipIdType field value if set, zero value otherwise.
-func (o *InstitutionDetails) GetCipIdType() InstitutionDetailsCIPIDType {
+func (o *InstitutionDetails) GetCipIdType() InstitutionCIPIDType {
 	if o == nil || IsNil(o.CipIdType) {
-		var ret InstitutionDetailsCIPIDType
+		var ret InstitutionCIPIDType
 		return ret
 	}
 	return *o.CipIdType
@@ -331,7 +331,7 @@ func (o *InstitutionDetails) GetCipIdType() InstitutionDetailsCIPIDType {
 
 // GetCipIdTypeOk returns a tuple with the CipIdType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *InstitutionDetails) GetCipIdTypeOk() (*InstitutionDetailsCIPIDType, bool) {
+func (o *InstitutionDetails) GetCipIdTypeOk() (*InstitutionCIPIDType, bool) {
 	if o == nil || IsNil(o.CipIdType) {
 		return nil, false
 	}
@@ -347,8 +347,8 @@ func (o *InstitutionDetails) HasCipIdType() bool {
 	return false
 }
 
-// SetCipIdType gets a reference to the given InstitutionDetailsCIPIDType and assigns it to the CipIdType field.
-func (o *InstitutionDetails) SetCipIdType(v InstitutionDetailsCIPIDType) {
+// SetCipIdType gets a reference to the given InstitutionCIPIDType and assigns it to the CipIdType field.
+func (o *InstitutionDetails) SetCipIdType(v InstitutionCIPIDType) {
 	o.CipIdType = &v
 }
 

@@ -10,8 +10,9 @@ Name | Type | Description | Notes
 **FiatAccountId** | **string** | The fiat account (&#x60;fiat_account_id&#x60;) destination. | 
 **ProfileId** | **string** | The Profile (&#x60;profile_id&#x60;) to withdraw from. | 
 **IdentityId** | **string** | The Identity (&#x60;identity_id&#x60;) of the user making the withdrawal. | 
-**AccountId** | Pointer to **string** | The Account (&#x60;account_id&#x60;) associated with the Identity of the user making the withdrawal. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) making deposits on behalf of their end users. | [optional] 
+**AccountId** | Pointer to **string** | The Account (&#x60;account_id&#x60;) associated with the Identity of the user making the withdrawal. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users. | [optional] 
 **Metadata** | Pointer to **map[string]string** | Optional client-specified metadata. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters. | [optional] 
+**Memo** | Pointer to **string** | Optional additional memo to be set on the outgoing wire. Only used for wire withdrawals. | [optional] 
 
 ## Methods
 
@@ -206,6 +207,31 @@ SetMetadata sets Metadata field to given value.
 `func (o *CreateFiatWithdrawalRequest) HasMetadata() bool`
 
 HasMetadata returns a boolean if a field has been set.
+
+### GetMemo
+
+`func (o *CreateFiatWithdrawalRequest) GetMemo() string`
+
+GetMemo returns the Memo field if non-nil, zero value otherwise.
+
+### GetMemoOk
+
+`func (o *CreateFiatWithdrawalRequest) GetMemoOk() (*string, bool)`
+
+GetMemoOk returns a tuple with the Memo field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMemo
+
+`func (o *CreateFiatWithdrawalRequest) SetMemo(v string)`
+
+SetMemo sets Memo field to given value.
+
+### HasMemo
+
+`func (o *CreateFiatWithdrawalRequest) HasMemo() bool`
+
+HasMemo returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

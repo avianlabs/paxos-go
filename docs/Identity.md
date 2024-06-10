@@ -19,6 +19,8 @@ Name | Type | Description | Notes
 **TaxDetails** | Pointer to [**[]TaxDetail**](TaxDetail.md) |  | [optional] 
 **TaxDetailsNotRequired** | Pointer to **bool** |  | [optional] 
 **SummaryTinVerificationStatus** | Pointer to [**TINVerificationStatus**](TINVerificationStatus.md) |  | [optional] 
+**CustomerDueDiligence** | Pointer to [**CustomerDueDiligence**](CustomerDueDiligence.md) |  | [optional] 
+**IsMerchant** | Pointer to **bool** | True if the identity is a merchant. | [optional] 
 
 ## Methods
 
@@ -408,6 +410,56 @@ SetSummaryTinVerificationStatus sets SummaryTinVerificationStatus field to given
 `func (o *Identity) HasSummaryTinVerificationStatus() bool`
 
 HasSummaryTinVerificationStatus returns a boolean if a field has been set.
+
+### GetCustomerDueDiligence
+
+`func (o *Identity) GetCustomerDueDiligence() CustomerDueDiligence`
+
+GetCustomerDueDiligence returns the CustomerDueDiligence field if non-nil, zero value otherwise.
+
+### GetCustomerDueDiligenceOk
+
+`func (o *Identity) GetCustomerDueDiligenceOk() (*CustomerDueDiligence, bool)`
+
+GetCustomerDueDiligenceOk returns a tuple with the CustomerDueDiligence field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCustomerDueDiligence
+
+`func (o *Identity) SetCustomerDueDiligence(v CustomerDueDiligence)`
+
+SetCustomerDueDiligence sets CustomerDueDiligence field to given value.
+
+### HasCustomerDueDiligence
+
+`func (o *Identity) HasCustomerDueDiligence() bool`
+
+HasCustomerDueDiligence returns a boolean if a field has been set.
+
+### GetIsMerchant
+
+`func (o *Identity) GetIsMerchant() bool`
+
+GetIsMerchant returns the IsMerchant field if non-nil, zero value otherwise.
+
+### GetIsMerchantOk
+
+`func (o *Identity) GetIsMerchantOk() (*bool, bool)`
+
+GetIsMerchantOk returns a tuple with the IsMerchant field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetIsMerchant
+
+`func (o *Identity) SetIsMerchant(v bool)`
+
+SetIsMerchant sets IsMerchant field to given value.
+
+### HasIsMerchant
+
+`func (o *Identity) HasIsMerchant() bool`
+
+HasIsMerchant returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

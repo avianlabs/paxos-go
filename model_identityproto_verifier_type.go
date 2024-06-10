@@ -20,10 +20,10 @@ type IdentityprotoVerifierType string
 
 // List of identityprotoVerifierType
 const (
-	IDENTITYPROTOVERIFIERTYPE_JUMIO IdentityprotoVerifierType = "JUMIO"
-	IDENTITYPROTOVERIFIERTYPE_PAXOS IdentityprotoVerifierType = "PAXOS"
-	IDENTITYPROTOVERIFIERTYPE_PASSTHROUGH IdentityprotoVerifierType = "PASSTHROUGH"
-	IDENTITYPROTOVERIFIERTYPE_MANUAL IdentityprotoVerifierType = "MANUAL"
+	JUMIO_IdentityprotoVerifierType IdentityprotoVerifierType = "JUMIO"
+	PAXOS_IdentityprotoVerifierType IdentityprotoVerifierType = "PAXOS"
+	PASSTHROUGH_IdentityprotoVerifierType IdentityprotoVerifierType = "PASSTHROUGH"
+	MANUAL_IdentityprotoVerifierType IdentityprotoVerifierType = "MANUAL"
 )
 
 // All allowed values of IdentityprotoVerifierType enum

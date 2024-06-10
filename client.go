@@ -62,6 +62,8 @@ type APIClient struct {
 
 	FeesAPI *FeesAPIService
 
+	FiatTransfersAPI *FiatTransfersAPIService
+
 	IdentityAPI *IdentityAPIService
 
 	IdentityCredentialsAPI *IdentityCredentialsAPIService
@@ -123,6 +125,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.DepositAddressesAPI = (*DepositAddressesAPIService)(&c.common)
 	c.ExchangePublicAPI = (*ExchangePublicAPIService)(&c.common)
 	c.FeesAPI = (*FeesAPIService)(&c.common)
+	c.FiatTransfersAPI = (*FiatTransfersAPIService)(&c.common)
 	c.IdentityAPI = (*IdentityAPIService)(&c.common)
 	c.IdentityCredentialsAPI = (*IdentityCredentialsAPIService)(&c.common)
 	c.IdentityDocumentsAPI = (*IdentityDocumentsAPIService)(&c.common)
@@ -235,7 +238,7 @@ func parameterAddToHeaderOrQuery(headerOrQueryParams interface{}, keyPrefix stri
 					return
 				}
 				if t, ok := obj.(time.Time); ok {
-					parameterAddToHeaderOrQuery(headerOrQueryParams, keyPrefix, t.Format(time.RFC3339), collectionType)
+					parameterAddToHeaderOrQuery(headerOrQueryParams, keyPrefix, t.Format(time.RFC3339Nano), collectionType)
 					return
 				}
 				value = v.Type().String() + " value"
