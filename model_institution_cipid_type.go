@@ -20,10 +20,10 @@ type InstitutionCIPIDType string
 
 // List of InstitutionCIPIDType
 const (
-	EIN InstitutionCIPIDType = "EIN"
-	SSN InstitutionCIPIDType = "SSN"
-	ITIN InstitutionCIPIDType = "ITIN"
-	REGISTRATION_NUMBER InstitutionCIPIDType = "REGISTRATION_NUMBER"
+	EIN_InstitutionCIPIDType InstitutionCIPIDType = "EIN"
+	SSN_InstitutionCIPIDType InstitutionCIPIDType = "SSN"
+	ITIN_InstitutionCIPIDType InstitutionCIPIDType = "ITIN"
+	REGISTRATION_NUMBER_InstitutionCIPIDType InstitutionCIPIDType = "REGISTRATION_NUMBER"
 )
 
 // All allowed values of InstitutionCIPIDType enum

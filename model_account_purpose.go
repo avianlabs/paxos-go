@@ -20,9 +20,9 @@ type AccountPurpose string
 
 // List of AccountPurpose
 const (
-	INVESTMENT_TRADING AccountPurpose = "INVESTMENT_TRADING"
-	SAVINGS AccountPurpose = "SAVINGS"
-	STABLECOIN_PURCHASE_REDEMPTION AccountPurpose = "STABLECOIN_PURCHASE_REDEMPTION"
+	INVESTMENT_TRADING_AccountPurpose AccountPurpose = "INVESTMENT_TRADING"
+	SAVINGS_AccountPurpose AccountPurpose = "SAVINGS"
+	STABLECOIN_PURCHASE_REDEMPTION_AccountPurpose AccountPurpose = "STABLECOIN_PURCHASE_REDEMPTION"
 )
 
 // All allowed values of AccountPurpose enum

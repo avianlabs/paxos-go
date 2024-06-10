@@ -20,12 +20,12 @@ type OrderStatus string
 
 // List of OrderStatus
 const (
-	PENDING_SUBMISSION OrderStatus = "PENDING_SUBMISSION"
-	SUBMITTED OrderStatus = "SUBMITTED"
-	OPEN OrderStatus = "OPEN"
-	FILLED OrderStatus = "FILLED"
-	CANCELLED OrderStatus = "CANCELLED"
-	REJECTED OrderStatus = "REJECTED"
+	PENDING_SUBMISSION_OrderStatus OrderStatus = "PENDING_SUBMISSION"
+	SUBMITTED_OrderStatus OrderStatus = "SUBMITTED"
+	OPEN_OrderStatus OrderStatus = "OPEN"
+	FILLED_OrderStatus OrderStatus = "FILLED"
+	CANCELLED_OrderStatus OrderStatus = "CANCELLED"
+	REJECTED_OrderStatus OrderStatus = "REJECTED"
 )
 
 // All allowed values of OrderStatus enum

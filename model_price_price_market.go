@@ -20,16 +20,16 @@ type PricePriceMarket string
 
 // List of PricePriceMarket
 const (
-	ETHUSD PricePriceMarket = "ETHUSD"
-	BTCUSD PricePriceMarket = "BTCUSD"
-	PAXGUSD PricePriceMarket = "PAXGUSD"
-	BCHUSD PricePriceMarket = "BCHUSD"
-	LTCUSD PricePriceMarket = "LTCUSD"
-	USDPUSD PricePriceMarket = "USDPUSD"
-	LINKUSD PricePriceMarket = "LINKUSD"
-	MATICUSD PricePriceMarket = "MATICUSD"
-	AAVEUSD PricePriceMarket = "AAVEUSD"
-	UNIUSD PricePriceMarket = "UNIUSD"
+	ETHUSD_PricePriceMarket PricePriceMarket = "ETHUSD"
+	BTCUSD_PricePriceMarket PricePriceMarket = "BTCUSD"
+	PAXGUSD_PricePriceMarket PricePriceMarket = "PAXGUSD"
+	BCHUSD_PricePriceMarket PricePriceMarket = "BCHUSD"
+	LTCUSD_PricePriceMarket PricePriceMarket = "LTCUSD"
+	USDPUSD_PricePriceMarket PricePriceMarket = "USDPUSD"
+	LINKUSD_PricePriceMarket PricePriceMarket = "LINKUSD"
+	MATICUSD_PricePriceMarket PricePriceMarket = "MATICUSD"
+	AAVEUSD_PricePriceMarket PricePriceMarket = "AAVEUSD"
+	UNIUSD_PricePriceMarket PricePriceMarket = "UNIUSD"
 )
 
 // All allowed values of PricePriceMarket enum

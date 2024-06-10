@@ -20,9 +20,9 @@ type TINVerificationStatus string
 
 // List of TINVerificationStatus
 const (
-	PENDING TINVerificationStatus = "TIN_VERIFICATION_PENDING"
-	ERROR TINVerificationStatus = "TIN_VERIFICATION_ERROR"
-	VALID TINVerificationStatus = "TIN_VERIFICATION_VALID"
+	PENDING_TINVerificationStatus TINVerificationStatus = "TIN_VERIFICATION_PENDING"
+	ERROR_TINVerificationStatus TINVerificationStatus = "TIN_VERIFICATION_ERROR"
+	VALID_TINVerificationStatus TINVerificationStatus = "TIN_VERIFICATION_VALID"
 )
 
 // All allowed values of TINVerificationStatus enum

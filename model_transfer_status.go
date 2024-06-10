@@ -20,9 +20,9 @@ type TransferStatus string
 
 // List of TransferStatus
 const (
-	PENDING TransferStatus = "PENDING"
-	COMPLETED TransferStatus = "COMPLETED"
-	FAILED TransferStatus = "FAILED"
+	PENDING_TransferStatus TransferStatus = "PENDING"
+	COMPLETED_TransferStatus TransferStatus = "COMPLETED"
+	FAILED_TransferStatus TransferStatus = "FAILED"
 )
 
 // All allowed values of TransferStatus enum

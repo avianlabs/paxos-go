@@ -20,8 +20,8 @@ type FiatNetwork string
 
 // List of FiatNetwork
 const (
-	WIRE FiatNetwork = "WIRE"
-	CBIT FiatNetwork = "CBIT"
+	WIRE_FiatNetwork FiatNetwork = "WIRE"
+	CBIT_FiatNetwork FiatNetwork = "CBIT"
 )
 
 // All allowed values of FiatNetwork enum
