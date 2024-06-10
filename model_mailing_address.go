@@ -22,10 +22,10 @@ var _ MappedNullable = &MailingAddress{}
 // MailingAddress A mailing address.
 type MailingAddress struct {
 	Country string `json:"country"`
-	Address1 string `json:"address1"`
+	Address1 *string `json:"address1,omitempty"`
 	Address2 *string `json:"address2,omitempty"`
-	City string `json:"city"`
-	Province string `json:"province"`
+	City *string `json:"city,omitempty"`
+	Province *string `json:"province,omitempty"`
 	ZipCode *string `json:"zip_code,omitempty"`
 }
 
@@ -35,12 +35,9 @@ type _MailingAddress MailingAddress
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMailingAddress(country string, address1 string, city string, province string) *MailingAddress {
+func NewMailingAddress(country string) *MailingAddress {
 	this := MailingAddress{}
 	this.Country = country
-	this.Address1 = address1
-	this.City = city
-	this.Province = province
 	return &this
 }
 
@@ -76,28 +73,36 @@ func (o *MailingAddress) SetCountry(v string) {
 	o.Country = v
 }
 
-// GetAddress1 returns the Address1 field value
+// GetAddress1 returns the Address1 field value if set, zero value otherwise.
 func (o *MailingAddress) GetAddress1() string {
-	if o == nil {
+	if o == nil || IsNil(o.Address1) {
 		var ret string
 		return ret
 	}
-
-	return o.Address1
+	return *o.Address1
 }
 
-// GetAddress1Ok returns a tuple with the Address1 field value
+// GetAddress1Ok returns a tuple with the Address1 field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MailingAddress) GetAddress1Ok() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Address1) {
 		return nil, false
 	}
-	return &o.Address1, true
+	return o.Address1, true
 }
 
-// SetAddress1 sets field value
+// HasAddress1 returns a boolean if a field has been set.
+func (o *MailingAddress) HasAddress1() bool {
+	if o != nil && !IsNil(o.Address1) {
+		return true
+	}
+
+	return false
+}
+
+// SetAddress1 gets a reference to the given string and assigns it to the Address1 field.
 func (o *MailingAddress) SetAddress1(v string) {
-	o.Address1 = v
+	o.Address1 = &v
 }
 
 // GetAddress2 returns the Address2 field value if set, zero value otherwise.
@@ -132,52 +137,68 @@ func (o *MailingAddress) SetAddress2(v string) {
 	o.Address2 = &v
 }
 
-// GetCity returns the City field value
+// GetCity returns the City field value if set, zero value otherwise.
 func (o *MailingAddress) GetCity() string {
-	if o == nil {
+	if o == nil || IsNil(o.City) {
 		var ret string
 		return ret
 	}
-
-	return o.City
+	return *o.City
 }
 
-// GetCityOk returns a tuple with the City field value
+// GetCityOk returns a tuple with the City field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MailingAddress) GetCityOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.City) {
 		return nil, false
 	}
-	return &o.City, true
+	return o.City, true
 }
 
-// SetCity sets field value
+// HasCity returns a boolean if a field has been set.
+func (o *MailingAddress) HasCity() bool {
+	if o != nil && !IsNil(o.City) {
+		return true
+	}
+
+	return false
+}
+
+// SetCity gets a reference to the given string and assigns it to the City field.
 func (o *MailingAddress) SetCity(v string) {
-	o.City = v
+	o.City = &v
 }
 
-// GetProvince returns the Province field value
+// GetProvince returns the Province field value if set, zero value otherwise.
 func (o *MailingAddress) GetProvince() string {
-	if o == nil {
+	if o == nil || IsNil(o.Province) {
 		var ret string
 		return ret
 	}
-
-	return o.Province
+	return *o.Province
 }
 
-// GetProvinceOk returns a tuple with the Province field value
+// GetProvinceOk returns a tuple with the Province field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MailingAddress) GetProvinceOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Province) {
 		return nil, false
 	}
-	return &o.Province, true
+	return o.Province, true
 }
 
-// SetProvince sets field value
+// HasProvince returns a boolean if a field has been set.
+func (o *MailingAddress) HasProvince() bool {
+	if o != nil && !IsNil(o.Province) {
+		return true
+	}
+
+	return false
+}
+
+// SetProvince gets a reference to the given string and assigns it to the Province field.
 func (o *MailingAddress) SetProvince(v string) {
-	o.Province = v
+	o.Province = &v
 }
 
 // GetZipCode returns the ZipCode field value if set, zero value otherwise.
@@ -223,12 +244,18 @@ func (o MailingAddress) MarshalJSON() ([]byte, error) {
 func (o MailingAddress) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["country"] = o.Country
-	toSerialize["address1"] = o.Address1
+	if !IsNil(o.Address1) {
+		toSerialize["address1"] = o.Address1
+	}
 	if !IsNil(o.Address2) {
 		toSerialize["address2"] = o.Address2
 	}
-	toSerialize["city"] = o.City
-	toSerialize["province"] = o.Province
+	if !IsNil(o.City) {
+		toSerialize["city"] = o.City
+	}
+	if !IsNil(o.Province) {
+		toSerialize["province"] = o.Province
+	}
 	if !IsNil(o.ZipCode) {
 		toSerialize["zip_code"] = o.ZipCode
 	}
@@ -241,9 +268,6 @@ func (o *MailingAddress) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"country",
-		"address1",
-		"city",
-		"province",
 	}
 
 	allProperties := make(map[string]interface{})

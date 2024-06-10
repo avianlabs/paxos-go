@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Id** | Pointer to **string** | The Paxos FiatAccount ID (UUID). | [optional] 
 **RefId** | Pointer to **string** | The optional client-specified ID (for idempotence). | [optional] 
 **IdentityId** | Pointer to **string** | The Paxos Identity (&#x60;identity_id&#x60;) of the user&#39;s FiatAccount. | [optional] 
-**AccountId** | Pointer to **string** | The Paxos Account (&#x60;account_id&#x60;) of the user&#39;s FiatAccount. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) making deposits on behalf of their end users. | [optional] 
+**AccountId** | Pointer to **string** | The Paxos Account (&#x60;account_id&#x60;) of the user&#39;s FiatAccount. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users. | [optional] 
 **FiatAccountOwner** | Pointer to [**FiatAccountOwner**](FiatAccountOwner.md) |  | [optional] 
 **FiatNetworkInstructions** | Pointer to [**FiatNetworkInstructions**](FiatNetworkInstructions.md) |  | [optional] 
 **Status** | Pointer to [**FiatAccountStatus**](FiatAccountStatus.md) |  | [optional] 

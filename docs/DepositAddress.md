@@ -13,13 +13,14 @@ Name | Type | Description | Notes
 **Metadata** | Pointer to **map[string]string** | Optional client-specified metadata, which is set on deposit address creation. Up to 6 key/value pairs may be returned. Each key and value must be less than or equal to 100 characters. | [optional] 
 **Address** | **string** | The crypto address to send to for deposits. | 
 **AccountId** | Pointer to **string** | The Account associated to the identity of the user that will be linked to the created address. | [optional] 
-**ConversionTargetAsset** | Pointer to [**DepositAddressConversionTargetAsset**](DepositAddressConversionTargetAsset.md) |  | [optional] 
+**ConversionTargetAsset** | [**DepositAddressConversionTargetAsset**](DepositAddressConversionTargetAsset.md) |  | 
+**CompatibleCryptoNetworks** | Pointer to [**[]CryptoNetwork**](CryptoNetwork.md) | List of networks compatible with the created address. Any of these networks can be used to deposit to the address. | [optional] 
 
 ## Methods
 
 ### NewDepositAddress
 
-`func NewDepositAddress(id string, profileId string, customerId string, cryptoNetwork CryptoNetwork, address string, ) *DepositAddress`
+`func NewDepositAddress(id string, profileId string, customerId string, cryptoNetwork CryptoNetwork, address string, conversionTargetAsset DepositAddressConversionTargetAsset, ) *DepositAddress`
 
 NewDepositAddress instantiates a new DepositAddress object
 This constructor will assign default values to properties that have it defined,
@@ -253,11 +254,31 @@ and a boolean to check if the value has been set.
 
 SetConversionTargetAsset sets ConversionTargetAsset field to given value.
 
-### HasConversionTargetAsset
 
-`func (o *DepositAddress) HasConversionTargetAsset() bool`
+### GetCompatibleCryptoNetworks
 
-HasConversionTargetAsset returns a boolean if a field has been set.
+`func (o *DepositAddress) GetCompatibleCryptoNetworks() []CryptoNetwork`
+
+GetCompatibleCryptoNetworks returns the CompatibleCryptoNetworks field if non-nil, zero value otherwise.
+
+### GetCompatibleCryptoNetworksOk
+
+`func (o *DepositAddress) GetCompatibleCryptoNetworksOk() (*[]CryptoNetwork, bool)`
+
+GetCompatibleCryptoNetworksOk returns a tuple with the CompatibleCryptoNetworks field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCompatibleCryptoNetworks
+
+`func (o *DepositAddress) SetCompatibleCryptoNetworks(v []CryptoNetwork)`
+
+SetCompatibleCryptoNetworks sets CompatibleCryptoNetworks field to given value.
+
+### HasCompatibleCryptoNetworks
+
+`func (o *DepositAddress) HasCompatibleCryptoNetworks() bool`
+
+HasCompatibleCryptoNetworks returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

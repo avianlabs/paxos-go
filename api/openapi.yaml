@@ -112,24 +112,21 @@ tags:
     Uploaded document metadata will be availiable via <code>GET</code> request to <code>/identity/identities/{id}/documents</code>
   name: Identity Documents
 - description: |
-    The Fiat Transfers API allows clients to create and use a `FiatAccount` to transfer fiat.
+    The Fiat Transfers API allows clients to deposit and withdraw fiat via the following Fiat Networks: Wire (Fedwire and SWIFT) and CBIT. The supported asset is USD.
 
-    A `FiatAccount` can support one of the following types of Fiat Networks:
-    - `WIRE`: Bank Account (*supports both `ABA` and `SWIFT` accounts*)
-    - `Customers (CBIT)`: Wallet Address
-
-    **Note**: This set of endpoints is not released to production. It is currently available in Sandbox through a Public Beta
-    and its structure is subject to change.
-    - [Create Fiat Account](#operation/CreateFiatAccount)
-    - [Update Fiat Account](#operation/UpdateFiatAccount)
-    - [Get Fiat Account](#operation/GetFiatAccount)
-    - [List Fiat Accounts](#operation/ListFiatAccounts)
-    - [Create Fiat Withdrawal](#operation/CreateFiatWithdrawal)
-    - [Create Fiat Deposit Instructions](#operation/CreateFiatDepositInstructions)
-    - [Get Fiat Deposit Instructions](#operation/GetFiatDepositInstructions)
-    - [List Fiat Deposit Instructions](#operation/ListFiatDepositInstructions)
-    - [Initiate Sandbox Fiat Deposit](#operation/InitiateSandboxFiatDeposit)
-  name: Sandbox Fiat Transfers
+    The full set of Fiat Transfers API endpoints is:
+    - For Deposits:
+      - [Create Fiat Deposit Instructions](#operation/CreateFiatDepositInstructions)
+      - [List Fiat Deposit Instructions](#operation/ListFiatDepositInstructions)
+      - [Get Fiat Deposit Instructions](#operation/GetFiatDepositInstructions)
+    - For Withdrawals:
+      - [Create Fiat Account](#operation/CreateFiatAccount)
+      - [List Fiat Accounts](#operation/ListFiatAccounts)
+      - [Get Fiat Account](#operation/GetFiatAccount)
+      - [Delete Fiat Account](#operation/DeleteFiatAccount)
+      - [Update Fiat Account](#operation/UpdateFiatAccount)
+      - [Create Fiat Withdrawal](#operation/CreateFiatWithdrawal)
+  name: Fiat Transfers
 - description: |
     <p>Swap between fiat and stablecoin using <a href="#operation/CreateStablecoinConversion">Create Stablecoin Conversion</a> and check the status of a <a href="#operation/GetStablecoinConversion">single conversion</a> or retrieve a <a href="#operation/ListStablecoinConversions">list of conversions</a>.</p>
   name: Stablecoin Conversion
@@ -354,6 +351,7 @@ paths:
             - BUSD
             - BCH
             - LTC
+            - USDC
             - USDP
             - AAVE
             - UNI
@@ -442,6 +440,7 @@ paths:
           - BUSD
           - BCH
           - LTC
+          - USDC
           - USDP
           - AAVE
           - UNI
@@ -775,12 +774,15 @@ paths:
 
         Once confirmed, you can submit the fields listed below as part of the the `person_details` attribute in your request.
 
-        Field | Notes
-        ---|---
-        person_details.verifier_type | Required. Must be `PASSTHROUGH`
-        person_details.passthrough_verifier_type | Required. Specifies the ID Verification provider you originally used
-        person_details.passthrough_verified_at | Required
-        person_details.address | Required
+        | Field                                          | Notes                                                                                                     |
+        |------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+        | person_details.verifier_type                   | Required. Must be `PASSTHROUGH`                                                                           |
+        | person_details.passthrough_verifier_type       | Required. Specifies the ID Verification provider you originally used                                      |
+        | person_details.passthrough_verified_at         | Required                                                                                                  |
+        | person_details.passthrough_verification_id     | Unique identifier for the underlying individual's ID verification record.                                 |
+        | person_details.passthrough_verification_status | Status of the ID verification indicating whether the identity was approved or denied.                     |
+        | person_details.passthrough_verification_fields | List of verification fields used by the external verifier to validate the individual's identity.          |
+        | person_details.address                         | Required                                                                                                  |
 
         Note that the following field is forbidden in the request:
         `person_details.verifier_id`
@@ -794,6 +796,9 @@ paths:
         &nbsp;&nbsp;&nbsp;&nbsp;"verifier_type": "PASSTHROUGH",
         &nbsp;&nbsp;&nbsp;&nbsp;"passthrough_verifier_type": "JUMIO",
         &nbsp;&nbsp;&nbsp;&nbsp;"passthrough_verified_at": "2021-06-16T09:28:14Z",
+        &nbsp;&nbsp;&nbsp;&nbsp;"passthrough_verification_id": "775300ef-4edb-47b9-8ec4-f45fe3cbf41f",
+        &nbsp;&nbsp;&nbsp;&nbsp;"passthrough_verification_status": "APPROVED",
+        &nbsp;&nbsp;&nbsp;&nbsp;"passthrough_verification_fields": ["FULL_LEGAL_NAME", "DATE_OF_BIRTH"]
         &nbsp;&nbsp;&nbsp;&nbsp;"first_name": "John",
         &nbsp;&nbsp;&nbsp;&nbsp;"last_name": "Doe",
         &nbsp;&nbsp;&nbsp;&nbsp;"date_of_birth": "1980-01-01",
@@ -815,6 +820,8 @@ paths:
         }
         </code>
         </pre>
+
+        Note that this feature is not yet supported - `customer_due_diligence`.
 
         ### Create Institution Identity
         Institution identities are used to represent all non-person entities.
@@ -2458,6 +2465,7 @@ paths:
           - SOLEUR
           - USDPEUR
           - UNIEUR
+          - PYUSDEUR
           type: string
         style: simple
       - description: |-
@@ -2603,6 +2611,7 @@ paths:
           - SOLEUR
           - USDPEUR
           - UNIEUR
+          - PYUSDEUR
           type: string
         style: simple
       responses:
@@ -2677,6 +2686,7 @@ paths:
           - SOLEUR
           - USDPEUR
           - UNIEUR
+          - PYUSDEUR
           type: string
         style: simple
       responses:
@@ -2749,6 +2759,7 @@ paths:
           - SOLEUR
           - USDPEUR
           - UNIEUR
+          - PYUSDEUR
           type: string
         style: simple
       responses:
@@ -4326,9 +4337,14 @@ paths:
         - transfer:read_fiat_account
       summary: List Fiat Accounts
       tags:
-      - Sandbox Fiat Transfers
+      - Fiat Transfers
     post:
-      description: Create an account for holding fiat balance.
+      description: |-
+        Create an account to initiate a fiat withdrawal.
+
+        For U.S. wires, set `fiat_network_instructions` > `wire` > `routing_details` > `routing_number_type` to `ABA`. For international (SWIFT) wires, set `fiat_network_instructions` > `wire` > `routing_details` > `routing_number_type` to `SWIFT`.
+
+        For CBIT, set `fiat_network_instructions` > `cbit` > `wallet_address`, and do not specify `routing_number_type`. For CBIT, the `wallet_address` on `fiat_network_instructions` is not a crypto wallet, it is a Customers Bank account wallet address.
       operationId: CreateFiatAccount
       requestBody:
         content:
@@ -4416,10 +4432,12 @@ paths:
         - transfer:write_fiat_account
       summary: Create Fiat Account
       tags:
-      - Sandbox Fiat Transfers
+      - Fiat Transfers
   /transfer/fiat-accounts/{id}:
     delete:
-      description: Delete a Fiat Account.
+      description: |-
+        Delete a Fiat Account.
+        Once a Fiat Account is deleted, transfers cannot be initiated to it.
       operationId: DeleteFiatAccount
       parameters:
       - description: The Paxos fiat account ID (UUID).
@@ -4467,7 +4485,7 @@ paths:
         - transfer:write_fiat_account
       summary: Delete Fiat Account
       tags:
-      - Sandbox Fiat Transfers
+      - Fiat Transfers
     get:
       description: |-
         Get a single Fiat Account by ID.
@@ -4499,7 +4517,7 @@ paths:
         - transfer:read_fiat_account
       summary: Get Fiat Account
       tags:
-      - Sandbox Fiat Transfers
+      - Fiat Transfers
     put:
       description: |-
         Change an existing value or add a new value on one or more fields for the given Fiat Account and return the modified Fiat Account in `PENDING` status.
@@ -4666,7 +4684,7 @@ paths:
         - transfer:write_fiat_account
       summary: Update Fiat Account
       tags:
-      - Sandbox Fiat Transfers
+      - Fiat Transfers
   /transfer/fiat-deposit-instructions:
     get:
       description: |-
@@ -4847,7 +4865,7 @@ paths:
         - transfer:read_fiat_deposit_instructions
       summary: List Fiat Deposit Instructions
       tags:
-      - Sandbox Fiat Transfers
+      - Fiat Transfers
     post:
       description: Create instructions for depositing fiat.
       operationId: CreateFiatDepositInstructions
@@ -4936,7 +4954,7 @@ paths:
         - transfer:write_fiat_deposit_instructions
       summary: Create Fiat Deposit Instructions
       tags:
-      - Sandbox Fiat Transfers
+      - Fiat Transfers
   /transfer/fiat-deposit-instructions/{id}:
     get:
       description: |-
@@ -5021,7 +5039,7 @@ paths:
         - transfer:read_fiat_deposit_instructions
       summary: Get Fiat Deposit Instructions
       tags:
-      - Sandbox Fiat Transfers
+      - Fiat Transfers
   /transfer/fiat-withdrawals:
     post:
       description: Withdraw fiat to the given destination.
@@ -5040,7 +5058,7 @@ paths:
                 id: f190b163-208f-4d73-8deb-4fb8b24add00
                 customer_id: 9b8c9cba-801e-4418-adc0-ede709df6339
                 profile_id: 5fc6d191-193c-4e28-94fa-656bbdbdfaad
-                ref_id: idempotence_id
+                identity_id: 54385e67-d7ef-40d1-b488-ceda6dd9b264
                 amount: "10.00"
                 total: "10.00"
                 fee: "0.0000000"
@@ -5051,10 +5069,7 @@ paths:
                 status: PENDING
                 created_at: 2023-07-13T18:36:08.737Z
                 updated_at: 2023-07-13T18:36:08.737Z
-                metadata:
-                  my_id: 4024ee50-eefb-4f2e-85c7-e7899c0b7da5
-                fiat_network: CBIT
-                fiat_account_id: ""
+                fiat_account_id: caa82b32-8abd-4899-afdc-f9d4bf9b4e98
               schema:
                 $ref: '#/components/schemas/Transfer'
           description: A successful response.
@@ -5080,12 +5095,34 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
           description: Could not find Profile
+        "403":
+          content:
+            application/problem+json:
+              examples:
+                Insufficient Funds:
+                  description: The needed funds include wire withdrawal fees. Please
+                    check developer documentation for fee details.
+                  summary: Example of insufficient funds
+                  value:
+                    type: https://developer.paxos.com/docs/v2/problems/insufficient-funds
+                    title: Insufficient Funds
+                    status: 403
+                    detail: "insufficient USD funds in profile 5fc6d191-193c-4e28-94fa-656bbdbdfaad:\
+                      \ 100 needed, 50 available"
+                    meta:
+                      profile_id: 5fc6d191-193c-4e28-94fa-656bbdbdfaad
+                      asset: USD
+                      available: "50"
+                      needed: "100"
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Insufficient funds
       security:
       - OAuth2:
         - transfer:write_fiat_withdrawal
       summary: Create Fiat Withdrawal
       tags:
-      - Sandbox Fiat Transfers
+      - Fiat Transfers
   /transfer/internal:
     post:
       description: Transfer assets between two profiles belonging to the same customer.
@@ -6635,6 +6672,7 @@ components:
       - BUSD
       - BCH
       - LTC
+      - USDC
       - USDP
       - AAVE
       - UNI
@@ -6795,10 +6833,64 @@ components:
       - BITCOIN_CASH
       - LITECOIN
       - SOLANA
+      - POLYGON_POS
+      type: string
+    CustomerDueDiligenceNetWorthRange:
+      enum:
+      - NET_WORTH_0_TO_100K
+      - NET_WORTH_100K_TO_500K
+      - NET_WORTH_500K_TO_1M
+      - NET_WORTH_1M_TO_2_5M
+      - NET_WORTH_2_5M_TO_5M
+      - NET_WORTH_5M_TO_7_5M
+      - NET_WORTH_7_5M_TO_10M
+      - NET_WORTH_10M_TO_25M
+      - NET_WORTH_25M_TO_50M
+      - NET_WORTH_OVER_50M
+      type: string
+    CustomerDueDiligenceTransferValueRange:
+      enum:
+      - TRANSFER_VALUE_0_TO_25K
+      - TRANSFER_VALUE_25K_TO_50K
+      - TRANSFER_VALUE_50K_TO_100K
+      - TRANSFER_VALUE_100K_TO_250K
+      - TRANSFER_VALUE_250K_TO_500K
+      - TRANSFER_VALUE_500K_TO_750K
+      - TRANSFER_VALUE_750K_TO_1M
+      - TRANSFER_VALUE_1M_TO_2_5M
+      - TRANSFER_VALUE_2_5M_TO_5M
+      - TRANSFER_VALUE_ABOVE_5M
+      type: string
+    CustomerDueDiligenceYearlyIncomeRange:
+      enum:
+      - INCOME_0_TO_50K
+      - INCOME_50K_TO_100K
+      - INCOME_100K_TO_250K
+      - INCOME_250K_TO_500K
+      - INCOME_500K_TO_750K
+      - INCOME_750K_TO_1M
+      - INCOME_ABOVE_1M
       type: string
     ListIdentitiesRequestOrderBy:
       enum:
       - CREATED_AT
+      type: string
+    PassthroughVerificationField:
+      enum:
+      - FULL_LEGAL_NAME
+      - ADDRESS
+      - DATE_OF_BIRTH
+      - CIP_ID
+      type: string
+    PersonDetailsCIPIDType:
+      enum:
+      - SSN
+      - ID_CARD
+      - ITIN
+      - PASSPORT
+      - DRIVING_LICENSE
+      - VISA
+      title: ""
       type: string
     identityprotoVerifierType:
       enum:
@@ -6807,6 +6899,12 @@ components:
       - PASSTHROUGH
       - MANUAL
       type: string
+    AccountPurpose:
+      enum:
+      - INVESTMENT_TRADING
+      - SAVINGS
+      - STABLECOIN_PURCHASE_REDEMPTION
+      type: string
     CreateIdentityRequest:
       example:
         ref_id: ref_id
@@ -6814,8 +6912,8 @@ components:
         - ownership: ownership
           identity_id: identity_id
           roles:
-          - null
-          - null
+          - BENEFICIAL_OWNER
+          - BENEFICIAL_OWNER
           name: name
           position: position
           summary_status: null
@@ -6823,16 +6921,44 @@ components:
         - ownership: ownership
           identity_id: identity_id
           roles:
-          - null
-          - null
+          - BENEFICIAL_OWNER
+          - BENEFICIAL_OWNER
           name: name
           position: position
           summary_status: null
           id: id
         tax_details_not_required: true
+        customer_due_diligence:
+          expected_transfer_value: TRANSFER_VALUE_0_TO_25K
+          aliases:
+          - aliases
+          - aliases
+          purpose_of_account: INVESTMENT_TRADING
+          industry_sector: null
+          employment_industry_sector: null
+          created_at: 2000-01-23T04:56:07.000+00:00
+          has_underlying_trust_structure: true
+          estimated_yearly_income: INCOME_0_TO_50K
+          estimated_net_worth: NET_WORTH_0_TO_100K
+          has_nominee_shareholders: true
+          employment_status: CONTRACTUAL
+          source_of_funds: SALARY_DISBURSEMENT
+          source_of_wealth: INHERITANCE
         person_details:
-          profession: profession
           verifier_id: verifier_id
+          sanctions_verification_status: null
+          date_of_birth: date_of_birth
+          additional_screening_status: null
+          id_verification_url: id_verification_url
+          govt_id: govt_id
+          govt_id_type: SSN
+          country_of_birth: country_of_birth
+          cip_id: cip_id
+          cip_id_country: cip_id_country
+          first_name: first_name
+          email: email
+          profession: profession
+          passthrough_verification_status: null
           address:
             country: country
             province: province
@@ -6840,30 +6966,23 @@ components:
             city: city
             address1: address1
             zip_code: zip_code
-          verifier_type: null
-          sanctions_verification_status: null
-          date_of_birth: date_of_birth
+          verifier_type: JUMIO
+          passthrough_verification_id: passthrough_verification_id
           last_name: last_name
-          additional_screening_status: null
           middle_name: middle_name
-          id_verification_status: null
+          id_verification_status: PENDING
           passthrough_verified_at: 2000-01-23T04:56:07.000+00:00
-          id_verification_url: id_verification_url
-          govt_id: govt_id
+          passthrough_verification_fields:
+          - FULL_LEGAL_NAME
+          - FULL_LEGAL_NAME
           nationality: nationality
-          govt_id_type: null
-          country_of_birth: country_of_birth
           phone_number: phone_number
-          cip_id: cip_id
-          cip_id_country: cip_id_country
-          first_name: first_name
           cip_id_type: null
-          email: email
-          passthrough_verifier_type: null
+          passthrough_verifier_type: JUMIO
         metadata:
           key: metadata
         institution_details:
-          institution_type: null
+          institution_type: TRUST
           ticker_symbol: ticker_symbol
           regulator_register_number: regulator_register_number
           business_address:
@@ -6891,20 +7010,21 @@ components:
             zip_code: zip_code
           doing_business_as: doing_business_as
           phone_number: phone_number
-          institution_sub_type: null
+          institution_sub_type: INVESTMENT
           cip_id: cip_id
-          trading_type: null
+          trading_type: PRIVATE
           cip_id_country: cip_id_country
-          cip_id_type: null
+          cip_id_type: EIN
           email: email
-          regulation_status: null
+          regulation_status: US_REGULATED
         tax_details:
         - tax_payer_country: tax_payer_country
-          tin_verification_status: null
+          tin_verification_status: TIN_VERIFICATION_PENDING
           tax_payer_id: tax_payer_id
         - tax_payer_country: tax_payer_country
-          tin_verification_status: null
+          tin_verification_status: TIN_VERIFICATION_PENDING
           tax_payer_id: tax_payer_id
+        is_merchant: true
       properties:
         person_details:
           $ref: '#/components/schemas/PersonDetails'
@@ -6933,6 +7053,65 @@ components:
         tax_details_not_required:
           description: Set to true if tax details are not legally required.
           type: boolean
+        customer_due_diligence:
+          $ref: '#/components/schemas/CustomerDueDiligence'
+        is_merchant:
+          description: Set to true if the identity is a merchant.
+          type: boolean
+      type: object
+    CustomerDueDiligence:
+      example:
+        expected_transfer_value: TRANSFER_VALUE_0_TO_25K
+        aliases:
+        - aliases
+        - aliases
+        purpose_of_account: INVESTMENT_TRADING
+        industry_sector: null
+        employment_industry_sector: null
+        created_at: 2000-01-23T04:56:07.000+00:00
+        has_underlying_trust_structure: true
+        estimated_yearly_income: INCOME_0_TO_50K
+        estimated_net_worth: NET_WORTH_0_TO_100K
+        has_nominee_shareholders: true
+        employment_status: CONTRACTUAL
+        source_of_funds: SALARY_DISBURSEMENT
+        source_of_wealth: INHERITANCE
+      properties:
+        aliases:
+          description: A list of alternate names or aliases associated with the Identity.
+          items:
+            type: string
+          type: array
+        estimated_net_worth:
+          $ref: '#/components/schemas/CustomerDueDiligenceNetWorthRange'
+        estimated_yearly_income:
+          $ref: '#/components/schemas/CustomerDueDiligenceYearlyIncomeRange'
+        expected_transfer_value:
+          $ref: '#/components/schemas/CustomerDueDiligenceTransferValueRange'
+        source_of_wealth:
+          $ref: '#/components/schemas/WealthSource'
+        source_of_funds:
+          $ref: '#/components/schemas/FundsSource'
+        purpose_of_account:
+          $ref: '#/components/schemas/AccountPurpose'
+        employment_status:
+          $ref: '#/components/schemas/EmploymentStatus'
+        employment_industry_sector:
+          $ref: '#/components/schemas/InstitutionSubType'
+        industry_sector:
+          $ref: '#/components/schemas/InstitutionSubType'
+        has_underlying_trust_structure:
+          description: Whether or not the institution tied to the Identity has an
+            underlying trust structure.
+          type: boolean
+        has_nominee_shareholders:
+          description: Whether or not the institution tied to the Identity has nominee
+            shareholders.
+          type: boolean
+        created_at:
+          format: date-time
+          title: When the customer due diligence was created
+          type: string
       type: object
     DocumentDescription:
       example:
@@ -6940,8 +7119,8 @@ components:
         file_id: file_id
         name: name
         document_types:
-        - null
-        - null
+        - OTHER_DOCUMENTS
+        - OTHER_DOCUMENTS
         created_at: 2000-01-23T04:56:07.000+00:00
       properties:
         file_id:
@@ -6997,6 +7176,26 @@ components:
           description: The URI where we expect the file to be uploaded into.
           type: string
       type: object
+    EmploymentStatus:
+      enum:
+      - CONTRACTUAL
+      - FULL_TIME
+      - PART_TIME
+      - RETIRED
+      - SELF_EMPLOYED
+      - STUDENT
+      - UNEMPLOYED
+      type: string
+    FundsSource:
+      enum:
+      - SALARY_DISBURSEMENT
+      - INHERITANCE_DISTRIBUTION
+      - INVESTMENT_RETURNS
+      - BUSINESS_DIVIDENDS_PROFITS
+      - PROPERTY_SALE
+      - LOAN_DISBURSEMENT
+      - SAVINGS_ACCOUNT_WITHDRAWAL
+      type: string
     Identity:
       example:
         id: f190b163-208f-4d73-8deb-4fb8b24add00
@@ -7051,6 +7250,11 @@ components:
           type: boolean
         summary_tin_verification_status:
           $ref: '#/components/schemas/TINVerificationStatus'
+        customer_due_diligence:
+          $ref: '#/components/schemas/CustomerDueDiligence'
+        is_merchant:
+          description: True if the identity is a merchant.
+          type: boolean
       required:
       - id
       type: object
@@ -7110,9 +7314,17 @@ components:
       - PERSON
       - INSTITUTION
       type: string
+    InstitutionCIPIDType:
+      enum:
+      - EIN
+      - SSN
+      - ITIN
+      - REGISTRATION_NUMBER
+      title: ""
+      type: string
     InstitutionDetails:
       example:
-        institution_type: null
+        institution_type: TRUST
         ticker_symbol: ticker_symbol
         regulator_register_number: regulator_register_number
         business_address:
@@ -7140,13 +7352,13 @@ components:
           zip_code: zip_code
         doing_business_as: doing_business_as
         phone_number: phone_number
-        institution_sub_type: null
+        institution_sub_type: INVESTMENT
         cip_id: cip_id
-        trading_type: null
+        trading_type: PRIVATE
         cip_id_country: cip_id_country
-        cip_id_type: null
+        cip_id_type: EIN
         email: email
-        regulation_status: null
+        regulation_status: US_REGULATED
       properties:
         sanctions_verification_status:
           $ref: '#/components/schemas/IdentityStatus'
@@ -7173,7 +7385,7 @@ components:
           title: Allowed in create and update
           type: string
         cip_id_type:
-          $ref: '#/components/schemas/InstitutionDetailsCIPIDType'
+          $ref: '#/components/schemas/InstitutionCIPIDType'
         cip_id_country:
           description: Allowed in create and update. Must be an ISO 3166-1 alpha 3
             code.
@@ -7216,21 +7428,13 @@ components:
           title: Allowed in create and update
           type: string
       type: object
-    InstitutionDetailsCIPIDType:
-      enum:
-      - EIN
-      - SSN
-      - ITIN
-      - REGISTRATION_NUMBER
-      title: ""
-      type: string
     InstitutionMember:
       example:
         ownership: ownership
         identity_id: identity_id
         roles:
-        - null
-        - null
+        - BENEFICIAL_OWNER
+        - BENEFICIAL_OWNER
         name: name
         position: position
         summary_status: null
@@ -7270,6 +7474,7 @@ components:
       - GRANTOR
       - MANAGEMENT_CONTROL_PERSON
       - BENEFICIARY
+      title: ""
       type: string
     InstitutionSubType:
       enum:
@@ -7352,15 +7557,15 @@ components:
           file_id: file_id
           name: name
           document_types:
-          - null
-          - null
+          - OTHER_DOCUMENTS
+          - OTHER_DOCUMENTS
           created_at: 2000-01-23T04:56:07.000+00:00
         - archived_at: 2000-01-23T04:56:07.000+00:00
           file_id: file_id
           name: name
           document_types:
-          - null
-          - null
+          - OTHER_DOCUMENTS
+          - OTHER_DOCUMENTS
           created_at: 2000-01-23T04:56:07.000+00:00
         pending_documents:
         - null
@@ -7394,8 +7599,20 @@ components:
       type: string
     PersonDetails:
       example:
-        profession: profession
         verifier_id: verifier_id
+        sanctions_verification_status: null
+        date_of_birth: date_of_birth
+        additional_screening_status: null
+        id_verification_url: id_verification_url
+        govt_id: govt_id
+        govt_id_type: SSN
+        country_of_birth: country_of_birth
+        cip_id: cip_id
+        cip_id_country: cip_id_country
+        first_name: first_name
+        email: email
+        profession: profession
+        passthrough_verification_status: null
         address:
           country: country
           province: province
@@ -7403,26 +7620,19 @@ components:
           city: city
           address1: address1
           zip_code: zip_code
-        verifier_type: null
-        sanctions_verification_status: null
-        date_of_birth: date_of_birth
+        verifier_type: JUMIO
+        passthrough_verification_id: passthrough_verification_id
         last_name: last_name
-        additional_screening_status: null
         middle_name: middle_name
-        id_verification_status: null
+        id_verification_status: PENDING
         passthrough_verified_at: 2000-01-23T04:56:07.000+00:00
-        id_verification_url: id_verification_url
-        govt_id: govt_id
+        passthrough_verification_fields:
+        - FULL_LEGAL_NAME
+        - FULL_LEGAL_NAME
         nationality: nationality
-        govt_id_type: null
-        country_of_birth: country_of_birth
         phone_number: phone_number
-        cip_id: cip_id
-        cip_id_country: cip_id_country
-        first_name: first_name
         cip_id_type: null
-        email: email
-        passthrough_verifier_type: null
+        passthrough_verifier_type: JUMIO
       properties:
         id_verification_status:
           $ref: '#/components/schemas/IdentityStatus'
@@ -7502,17 +7712,19 @@ components:
         country_of_birth:
           description: Allowed in create and update.
           type: string
+        passthrough_verification_id:
+          description: Unique identifier for the underlying individual's ID verification
+            record.
+          type: string
+        passthrough_verification_status:
+          $ref: '#/components/schemas/IdentityStatus'
+        passthrough_verification_fields:
+          description: List of verification fields used by the external verifier to
+            validate the individual's identity.
+          items:
+            $ref: '#/components/schemas/PassthroughVerificationField'
+          type: array
       type: object
-    PersonDetailsCIPIDType:
-      enum:
-      - SSN
-      - ID_CARD
-      - ITIN
-      - PASSPORT
-      - DRIVING_LICENSE
-      - VISA
-      title: ""
-      type: string
     RegulationStatus:
       enum:
       - US_REGULATED
@@ -7554,7 +7766,7 @@ components:
     TaxDetail:
       example:
         tax_payer_country: tax_payer_country
-        tin_verification_status: null
+        tin_verification_status: TIN_VERIFICATION_PENDING
         tax_payer_id: tax_payer_id
       properties:
         tax_payer_id:
@@ -7575,14 +7787,21 @@ components:
       - PUBLIC
       - PUBLICLY_TRADED_SUBSIDIARY
       type: string
+    WealthSource:
+      enum:
+      - INHERITANCE
+      - INVESTMENT_GAINS
+      - BUSINESS_OWNERSHIP_DIVIDENDS
+      - EMPLOYMENT_INCOME
+      type: string
     AddInstitutionMembersRequest:
       example:
         members:
         - ownership: ownership
           identity_id: identity_id
           roles:
-          - null
-          - null
+          - BENEFICIAL_OWNER
+          - BENEFICIAL_OWNER
           name: name
           position: position
           summary_status: null
@@ -7590,8 +7809,8 @@ components:
         - ownership: ownership
           identity_id: identity_id
           roles:
-          - null
-          - null
+          - BENEFICIAL_OWNER
+          - BENEFICIAL_OWNER
           name: name
           position: position
           summary_status: null
@@ -7616,8 +7835,8 @@ components:
         - ownership: ownership
           identity_id: identity_id
           roles:
-          - null
-          - null
+          - BENEFICIAL_OWNER
+          - BENEFICIAL_OWNER
           name: name
           position: position
           summary_status: null
@@ -7625,8 +7844,8 @@ components:
         - ownership: ownership
           identity_id: identity_id
           roles:
-          - null
-          - null
+          - BENEFICIAL_OWNER
+          - BENEFICIAL_OWNER
           name: name
           position: position
           summary_status: null
@@ -7666,8 +7885,8 @@ components:
         identity_id: identity_id
         description: description
         created_at: 2000-01-23T04:56:07.000+00:00
-        summary_status: null
-        type: null
+        summary_status: PENDING
+        type: BROKERAGE
         admin_disabled: true
         updated_at: 2000-01-23T04:56:07.000+00:00
         profile_id: profile_id
@@ -7677,13 +7896,13 @@ components:
           - null
           - null
           id: id
-          type: null
+          type: BENEFICIAL_OWNER
         - identity_id: identity_id
           roles:
           - null
           - null
           id: id
-          type: null
+          type: BENEFICIAL_OWNER
         user_disabled: true
         id: id
       properties:
@@ -7743,7 +7962,7 @@ components:
         - null
         - null
         id: id
-        type: null
+        type: BENEFICIAL_OWNER
       properties:
         identity_id:
           type: string
@@ -7792,8 +8011,8 @@ components:
           identity_id: identity_id
           description: description
           created_at: 2000-01-23T04:56:07.000+00:00
-          summary_status: null
-          type: null
+          summary_status: PENDING
+          type: BROKERAGE
           admin_disabled: true
           updated_at: 2000-01-23T04:56:07.000+00:00
           profile_id: profile_id
@@ -7803,13 +8022,13 @@ components:
             - null
             - null
             id: id
-            type: null
+            type: BENEFICIAL_OWNER
           - identity_id: identity_id
             roles:
             - null
             - null
             id: id
-            type: null
+            type: BENEFICIAL_OWNER
           user_disabled: true
           id: id
         - ref_id: ref_id
@@ -7818,8 +8037,8 @@ components:
           identity_id: identity_id
           description: description
           created_at: 2000-01-23T04:56:07.000+00:00
-          summary_status: null
-          type: null
+          summary_status: PENDING
+          type: BROKERAGE
           admin_disabled: true
           updated_at: 2000-01-23T04:56:07.000+00:00
           profile_id: profile_id
@@ -7829,13 +8048,13 @@ components:
             - null
             - null
             id: id
-            type: null
+            type: BENEFICIAL_OWNER
           - identity_id: identity_id
             roles:
             - null
             - null
             id: id
-            type: null
+            type: BENEFICIAL_OWNER
           user_disabled: true
           id: id
       properties:
@@ -7858,8 +8077,8 @@ components:
           identity_id: identity_id
           description: description
           created_at: 2000-01-23T04:56:07.000+00:00
-          summary_status: null
-          type: null
+          summary_status: PENDING
+          type: BROKERAGE
           admin_disabled: true
           updated_at: 2000-01-23T04:56:07.000+00:00
           profile_id: profile_id
@@ -7869,13 +8088,13 @@ components:
             - null
             - null
             id: id
-            type: null
+            type: BENEFICIAL_OWNER
           - identity_id: identity_id
             roles:
             - null
             - null
             id: id
-            type: null
+            type: BENEFICIAL_OWNER
           user_disabled: true
           id: id
       properties:
@@ -7896,13 +8115,13 @@ components:
           - null
           - null
           id: id
-          type: null
+          type: BENEFICIAL_OWNER
         - identity_id: identity_id
           roles:
           - null
           - null
           id: id
-          type: null
+          type: BENEFICIAL_OWNER
       properties:
         account_id:
           description: ID of account to which members will be added.
@@ -7925,13 +8144,13 @@ components:
           - null
           - null
           id: id
-          type: null
+          type: BENEFICIAL_OWNER
         - identity_id: identity_id
           roles:
           - null
           - null
           id: id
-          type: null
+          type: BENEFICIAL_OWNER
       properties:
         account_id:
           description: ID of account to which members were added.
@@ -8074,16 +8293,16 @@ components:
     Execution:
       example:
         gross_trade_amount: gross_trade_amount
-        side: null
+        side: BUY
         amount: amount
         executed_at: 2000-01-23T04:56:07.000+00:00
         rebate: rebate
-        market: null
+        market: ETHEUR
         execution_id: execution_id
         account_id: account_id
         price: price
         commission: commission
-        commission_asset: null
+        commission_asset: USD
         rebate_asset: null
         order_id: order_id
       properties:
@@ -8159,29 +8378,29 @@ components:
       example:
         items:
         - gross_trade_amount: gross_trade_amount
-          side: null
+          side: BUY
           amount: amount
           executed_at: 2000-01-23T04:56:07.000+00:00
           rebate: rebate
-          market: null
+          market: ETHEUR
           execution_id: execution_id
           account_id: account_id
           price: price
           commission: commission
-          commission_asset: null
+          commission_asset: USD
           rebate_asset: null
           order_id: order_id
         - gross_trade_amount: gross_trade_amount
-          side: null
+          side: BUY
           amount: amount
           executed_at: 2000-01-23T04:56:07.000+00:00
           rebate: rebate
-          market: null
+          market: ETHEUR
           execution_id: execution_id
           account_id: account_id
           price: price
           commission: commission
-          commission_asset: null
+          commission_asset: USD
           rebate_asset: null
           order_id: order_id
         next_page_cursor: next_page_cursor
@@ -8215,12 +8434,12 @@ components:
     ListMarketsResponse:
       example:
         markets:
-        - market: null
-          base_asset: null
+        - market: ETHEUR
+          base_asset: USD
           quote_asset: null
           tick_rate: tick_rate
-        - market: null
-          base_asset: null
+        - market: ETHEUR
+          base_asset: USD
           quote_asset: null
           tick_rate: tick_rate
       properties:
@@ -8233,19 +8452,19 @@ components:
       example:
         items:
         - ref_id: ref_id
-          side: null
+          side: BUY
           metadata:
             key: metadata
           amount_filled: amount_filled
           identity_id: identity_id
           identity_account_id: identity_account_id
           created_at: 2000-01-23T04:56:07.000+00:00
-          type: null
+          type: LIMIT
           expiration_date: 2000-01-23T04:56:07.000+00:00
           is_triggered: true
-          market: null
+          market: ETHEUR
           quote_amount: quote_amount
-          time_in_force: null
+          time_in_force: GTC
           stop_price: stop_price
           profile_id: profile_id
           price: price
@@ -8254,21 +8473,21 @@ components:
           volume_weighted_average_price: volume_weighted_average_price
           id: id
           modified_at: 2000-01-23T04:56:07.000+00:00
-          status: null
+          status: PENDING_SUBMISSION
         - ref_id: ref_id
-          side: null
+          side: BUY
           metadata:
             key: metadata
           amount_filled: amount_filled
           identity_id: identity_id
           identity_account_id: identity_account_id
           created_at: 2000-01-23T04:56:07.000+00:00
-          type: null
+          type: LIMIT
           expiration_date: 2000-01-23T04:56:07.000+00:00
           is_triggered: true
-          market: null
+          market: ETHEUR
           quote_amount: quote_amount
-          time_in_force: null
+          time_in_force: GTC
           stop_price: stop_price
           profile_id: profile_id
           price: price
@@ -8277,7 +8496,7 @@ components:
           volume_weighted_average_price: volume_weighted_average_price
           id: id
           modified_at: 2000-01-23T04:56:07.000+00:00
-          status: null
+          status: PENDING_SUBMISSION
         next_page_cursor: next_page_cursor
       properties:
         items:
@@ -8291,11 +8510,11 @@ components:
     ListPricesResponse:
       example:
         items:
-        - market: null
+        - market: ETHUSD
           yesterday_price: yesterday_price
           current_price: current_price
           snapshot_at: 2000-01-23T04:56:07.000+00:00
-        - market: null
+        - market: ETHUSD
           yesterday_price: yesterday_price
           current_price: current_price
           snapshot_at: 2000-01-23T04:56:07.000+00:00
@@ -8398,7 +8617,7 @@ components:
     ListTickersResponse:
       example:
         tickers:
-        - market: null
+        - market: ETHUSD
           last_execution:
             amount: amount
             price: price
@@ -8427,7 +8646,7 @@ components:
               begin: 2000-01-23T04:56:07.000+00:00
             open: open
           snapshot_at: 2000-01-23T04:56:07.000+00:00
-        - market: null
+        - market: ETHUSD
           last_execution:
             amount: amount
             price: price
@@ -8482,8 +8701,8 @@ components:
       type: string
     MarketDetails:
       example:
-        market: null
-        base_asset: null
+        market: ETHEUR
+        base_asset: USD
         quote_asset: null
         tick_rate: tick_rate
       properties:
@@ -8500,19 +8719,19 @@ components:
     Order:
       example:
         ref_id: ref_id
-        side: null
+        side: BUY
         metadata:
           key: metadata
         amount_filled: amount_filled
         identity_id: identity_id
         identity_account_id: identity_account_id
         created_at: 2000-01-23T04:56:07.000+00:00
-        type: null
+        type: LIMIT
         expiration_date: 2000-01-23T04:56:07.000+00:00
         is_triggered: true
-        market: null
+        market: ETHEUR
         quote_amount: quote_amount
-        time_in_force: null
+        time_in_force: GTC
         stop_price: stop_price
         profile_id: profile_id
         price: price
@@ -8521,7 +8740,7 @@ components:
         volume_weighted_average_price: volume_weighted_average_price
         id: id
         modified_at: 2000-01-23T04:56:07.000+00:00
-        status: null
+        status: PENDING_SUBMISSION
       properties:
         id:
           description: The UUID of the order.
@@ -8641,7 +8860,7 @@ components:
       type: object
     Pricing:
       example:
-        market: null
+        market: ETHUSD
         yesterday_price: yesterday_price
         current_price: current_price
         snapshot_at: 2000-01-23T04:56:07.000+00:00
@@ -8825,7 +9044,7 @@ components:
       type: object
     TickerRecord:
       example:
-        market: null
+        market: ETHUSD
         last_execution:
           amount: amount
           price: price
@@ -9070,7 +9289,7 @@ components:
       example:
         account_number: account_number
         intermediary_routing_details:
-          routing_number_type: null
+          routing_number_type: ABA
           bank_name: bank_name
           bank_address:
             country: country
@@ -9081,7 +9300,7 @@ components:
             zip_code: zip_code
           routing_number: routing_number
         routing_details:
-          routing_number_type: null
+          routing_number_type: ABA
           bank_name: bank_name
           bank_address:
             country: country
@@ -9208,7 +9427,7 @@ components:
       type: object
     WireRoutingDetails:
       example:
-        routing_number_type: null
+        routing_number_type: ABA
         bank_name: bank_name
         bank_address:
           country: country
@@ -9415,10 +9634,15 @@ components:
         fiat_network_instructions:
           wire:
             account_number: "12345678"
-            bank_name: Customers Bank
-            bank_address: "123 Bank Street, NY, NY, 10101"
-            fiat_account_owner_address: "456 Main Street, NY, NY, 10101"
-            routing_number: "123456789"
+            routing_details:
+              routing_number: "031302971"
+              bank_name: Customers Bank
+              bank_address:
+                country: USA
+            fiat_account_owner_address:
+              address1: 456 Main Street
+              city: NY
+              country: USA
         fiat_account_owner:
           person_details:
             first_name: Jane
@@ -9433,7 +9657,7 @@ components:
         account_id:
           description: |-
             The Paxos Account (`account_id`) of the user's FiatAccount.
-            Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) making deposits on behalf of their end users.
+            Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users.
           type: string
         fiat_account_owner:
           $ref: '#/components/schemas/FiatAccountOwner'
@@ -9455,13 +9679,13 @@ components:
     CreateFiatDepositInstructionsRequest:
       example:
         ref_id: ref_id
-        routing_number_type: null
+        routing_number_type: ABA
         metadata:
           key: metadata
         account_id: account_id
         identity_id: identity_id
         profile_id: profile_id
-        fiat_network: null
+        fiat_network: WIRE
       properties:
         ref_id:
           description: The optional client-specified ID (for idempotence).
@@ -9524,7 +9748,7 @@ components:
         account_id:
           description: |-
             The Account (`account_id`) associated with the Identity of the user making the withdrawal.
-            Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) making deposits on behalf of their end users.
+            Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users.
           type: string
         metadata:
           additionalProperties:
@@ -9534,6 +9758,12 @@ components:
             Up to 6 key/value pairs may be provided.
             Each key and value must be less than or equal to 100 characters.
           type: object
+        memo:
+          description: Optional additional memo to be set on the outgoing wire. Only
+            used for wire withdrawals.
+          maxLength: 100
+          pattern: "^[0-9A-Za-z /?:().,&'+-]*$"
+          type: string
       required:
       - amount
       - asset
@@ -9641,6 +9871,9 @@ components:
         ref_id: deposit_address_0
         crypto_network: ETHEREUM
         address: 0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7
+        conversion_target_asset: USD
+        compatible_crypto_networks:
+        - ETHEREUM
         metadata:
           my_id: 4024ee50-eefb-4f2e-85c7-e7899c0b7da5
       properties:
@@ -9680,8 +9913,15 @@ components:
           type: string
         conversion_target_asset:
           $ref: '#/components/schemas/DepositAddressConversionTargetAsset'
+        compatible_crypto_networks:
+          description: List of networks compatible with the created address. Any of
+            these networks can be used to deposit to the address.
+          items:
+            $ref: '#/components/schemas/CryptoNetwork'
+          type: array
       required:
       - address
+      - conversion_target_asset
       - crypto_network
       - customer_id
       - id
@@ -9699,7 +9939,7 @@ components:
           wire:
             account_number: account_number
             intermediary_routing_details:
-              routing_number_type: null
+              routing_number_type: ABA
               bank_name: bank_name
               bank_address:
                 country: country
@@ -9710,7 +9950,7 @@ components:
                 zip_code: zip_code
               routing_number: routing_number
             routing_details:
-              routing_number_type: null
+              routing_number_type: ABA
               bank_name: bank_name
               bank_address:
                 country: country
@@ -9737,7 +9977,7 @@ components:
             first_name: first_name
           institution_details:
             name: name
-        status: null
+        status: PENDING
       properties:
         id:
           description: The Paxos FiatAccount ID (UUID).
@@ -9751,7 +9991,7 @@ components:
         account_id:
           description: |-
             The Paxos Account (`account_id`) of the user's FiatAccount.
-            Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) making deposits on behalf of their end users.
+            Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users.
           type: string
         fiat_account_owner:
           $ref: '#/components/schemas/FiatAccountOwner'
@@ -9809,7 +10049,7 @@ components:
           wire:
             account_number: account_number
             intermediary_routing_details:
-              routing_number_type: null
+              routing_number_type: ABA
               bank_name: bank_name
               bank_address:
                 country: country
@@ -9820,7 +10060,7 @@ components:
                 zip_code: zip_code
               routing_number: routing_number
             routing_details:
-              routing_number_type: null
+              routing_number_type: ABA
               bank_name: bank_name
               bank_address:
                 country: country
@@ -9841,7 +10081,7 @@ components:
             wallet_address: wallet_address
         created_at: 2000-01-23T04:56:07.000+00:00
         id: id
-        status: null
+        status: VALID
         fiat_account_owner:
           person_details:
             last_name: last_name
@@ -9914,7 +10154,7 @@ components:
         wire:
           account_number: account_number
           intermediary_routing_details:
-            routing_number_type: null
+            routing_number_type: ABA
             bank_name: bank_name
             bank_address:
               country: country
@@ -9925,7 +10165,7 @@ components:
               zip_code: zip_code
             routing_number: routing_number
           routing_details:
-            routing_number_type: null
+            routing_number_type: ABA
             bank_name: bank_name
             bank_address:
               country: country
@@ -9963,7 +10203,7 @@ components:
           wire:
             account_number: account_number
             intermediary_routing_details:
-              routing_number_type: null
+              routing_number_type: ABA
               bank_name: bank_name
               bank_address:
                 country: country
@@ -9974,7 +10214,7 @@ components:
                 zip_code: zip_code
               routing_number: routing_number
             routing_details:
-              routing_number_type: null
+              routing_number_type: ABA
               bank_name: bank_name
               bank_address:
                 country: country
@@ -10039,6 +10279,9 @@ components:
           ref_id: deposit_address_0
           crypto_network: ETHEREUM
           address: 0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7
+          conversion_target_asset: USD
+          compatible_crypto_networks:
+          - ETHEREUM
           metadata:
             my_id: 4024ee50-eefb-4f2e-85c7-e7899c0b7da5
         - id: 34bd61ed-cf0a-4012-8be4-d347667b6154
@@ -10048,6 +10291,9 @@ components:
           ref_id: deposit_address_0
           crypto_network: ETHEREUM
           address: 0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7
+          conversion_target_asset: USD
+          compatible_crypto_networks:
+          - ETHEREUM
           metadata:
             my_id: 4024ee50-eefb-4f2e-85c7-e7899c0b7da5
         next_page_cursor: next_page_cursor
@@ -10077,7 +10323,7 @@ components:
             wire:
               account_number: account_number
               intermediary_routing_details:
-                routing_number_type: null
+                routing_number_type: ABA
                 bank_name: bank_name
                 bank_address:
                   country: country
@@ -10088,7 +10334,7 @@ components:
                   zip_code: zip_code
                 routing_number: routing_number
               routing_details:
-                routing_number_type: null
+                routing_number_type: ABA
                 bank_name: bank_name
                 bank_address:
                   country: country
@@ -10115,7 +10361,7 @@ components:
               first_name: first_name
             institution_details:
               name: name
-          status: null
+          status: PENDING
         - ref_id: ref_id
           metadata:
             key: metadata
@@ -10126,7 +10372,7 @@ components:
             wire:
               account_number: account_number
               intermediary_routing_details:
-                routing_number_type: null
+                routing_number_type: ABA
                 bank_name: bank_name
                 bank_address:
                   country: country
@@ -10137,7 +10383,7 @@ components:
                   zip_code: zip_code
                 routing_number: routing_number
               routing_details:
-                routing_number_type: null
+                routing_number_type: ABA
                 bank_name: bank_name
                 bank_address:
                   country: country
@@ -10164,7 +10410,7 @@ components:
               first_name: first_name
             institution_details:
               name: name
-          status: null
+          status: PENDING
         next_page_cursor: next_page_cursor
       properties:
         items:
@@ -10188,7 +10434,7 @@ components:
             wire:
               account_number: account_number
               intermediary_routing_details:
-                routing_number_type: null
+                routing_number_type: ABA
                 bank_name: bank_name
                 bank_address:
                   country: country
@@ -10199,7 +10445,7 @@ components:
                   zip_code: zip_code
                 routing_number: routing_number
               routing_details:
-                routing_number_type: null
+                routing_number_type: ABA
                 bank_name: bank_name
                 bank_address:
                   country: country
@@ -10220,7 +10466,7 @@ components:
               wallet_address: wallet_address
           created_at: 2000-01-23T04:56:07.000+00:00
           id: id
-          status: null
+          status: VALID
           fiat_account_owner:
             person_details:
               last_name: last_name
@@ -10238,7 +10484,7 @@ components:
             wire:
               account_number: account_number
               intermediary_routing_details:
-                routing_number_type: null
+                routing_number_type: ABA
                 bank_name: bank_name
                 bank_address:
                   country: country
@@ -10249,7 +10495,7 @@ components:
                   zip_code: zip_code
                 routing_number: routing_number
               routing_details:
-                routing_number_type: null
+                routing_number_type: ABA
                 bank_name: bank_name
                 bank_address:
                   country: country
@@ -10270,7 +10516,7 @@ components:
               wallet_address: wallet_address
           created_at: 2000-01-23T04:56:07.000+00:00
           id: id
-          status: null
+          status: VALID
           fiat_account_owner:
             person_details:
               last_name: last_name
@@ -10292,8 +10538,8 @@ components:
         - rule_id: rule_id
           period_seconds: period_seconds
           transfer_types:
-          - null
-          - null
+          - INTERNAL_TRANSFER_DEBIT
+          - INTERNAL_TRANSFER_DEBIT
           limit: limit
           limit_asset: limit_asset
           id: id
@@ -10301,8 +10547,8 @@ components:
         - rule_id: rule_id
           period_seconds: period_seconds
           transfer_types:
-          - null
-          - null
+          - INTERNAL_TRANSFER_DEBIT
+          - INTERNAL_TRANSFER_DEBIT
           limit: limit
           limit_asset: limit_asset
           id: id
@@ -10409,10 +10655,7 @@ components:
           pattern: "^[0-9A-Za-z /?:().,&'+-]+$"
           type: string
       required:
-      - address1
-      - city
       - country
-      - province
       type: object
     Transfer:
       example:
@@ -10543,8 +10786,8 @@ components:
         rule_id: rule_id
         period_seconds: period_seconds
         transfer_types:
-        - null
-        - null
+        - INTERNAL_TRANSFER_DEBIT
+        - INTERNAL_TRANSFER_DEBIT
         limit: limit
         limit_asset: limit_asset
         id: id
@@ -10615,12 +10858,12 @@ components:
       example:
         tax_form_urls:
         - account_id: account_id
-          type: null
+          type: FORM_1099_B
           tax_year: tax_year
           url: url
           revision: revision
         - account_id: account_id
-          type: null
+          type: FORM_1099_B
           tax_year: tax_year
           url: url
           revision: revision
@@ -10639,12 +10882,12 @@ components:
       example:
         tax_form_urls:
         - account_id: account_id
-          type: null
+          type: FORM_1099_B
           tax_year: tax_year
           url: url
           revision: revision
         - account_id: account_id
-          type: null
+          type: FORM_1099_B
           tax_year: tax_year
           url: url
           revision: revision
@@ -10667,12 +10910,12 @@ components:
         - transaction_id: transaction_id
           quantity: quantity
           closed_at: 2000-01-23T04:56:07.000+00:00
-          capital_gain_type: null
+          capital_gain_type: LONG_TERM
           percentage_capital_gain: percentage_capital_gain
           created_at: 2000-01-23T04:56:07.000+00:00
           fiat_currency: fiat_currency
           cost_basis_per_coin: cost_basis_per_coin
-          transaction_type: null
+          transaction_type: BUY
           Acquired_at: 2000-01-23T04:56:07.000+00:00
           cryptocurrency: cryptocurrency
           cost_basis: cost_basis
@@ -10682,16 +10925,16 @@ components:
           id: id
           current_market_value: current_market_value
           capital_gain: capital_gain
-          status: null
+          status: OPEN
         - transaction_id: transaction_id
           quantity: quantity
           closed_at: 2000-01-23T04:56:07.000+00:00
-          capital_gain_type: null
+          capital_gain_type: LONG_TERM
           percentage_capital_gain: percentage_capital_gain
           created_at: 2000-01-23T04:56:07.000+00:00
           fiat_currency: fiat_currency
           cost_basis_per_coin: cost_basis_per_coin
-          transaction_type: null
+          transaction_type: BUY
           Acquired_at: 2000-01-23T04:56:07.000+00:00
           cryptocurrency: cryptocurrency
           cost_basis: cost_basis
@@ -10701,7 +10944,7 @@ components:
           id: id
           current_market_value: current_market_value
           capital_gain: capital_gain
-          status: null
+          status: OPEN
       properties:
         next_page_cursor:
           description: Cursor token required for fetching the next page.
@@ -10720,7 +10963,7 @@ components:
     TaxFormURL:
       example:
         account_id: account_id
-        type: null
+        type: FORM_1099_B
         tax_year: tax_year
         url: url
         revision: revision
@@ -10741,12 +10984,12 @@ components:
         transaction_id: transaction_id
         quantity: quantity
         closed_at: 2000-01-23T04:56:07.000+00:00
-        capital_gain_type: null
+        capital_gain_type: LONG_TERM
         percentage_capital_gain: percentage_capital_gain
         created_at: 2000-01-23T04:56:07.000+00:00
         fiat_currency: fiat_currency
         cost_basis_per_coin: cost_basis_per_coin
-        transaction_type: null
+        transaction_type: BUY
         Acquired_at: 2000-01-23T04:56:07.000+00:00
         cryptocurrency: cryptocurrency
         cost_basis: cost_basis
@@ -10756,7 +10999,7 @@ components:
         id: id
         current_market_value: current_market_value
         capital_gain: capital_gain
-        status: null
+        status: OPEN
       properties:
         id:
           description: The tax lot ID.
@@ -11023,7 +11266,7 @@ components:
       type: object
     GetOrderBookResponse:
       example:
-        market: null
+        market: ETHEUR
         asks:
         - amount: amount
           price: price
@@ -11049,6 +11292,12 @@ components:
           $ref: '#/components/schemas/Market'
       type: object
     Problem:
+      example:
+        meta: "{}"
+        detail: Not enough funds in account.
+        type: https://api.paxos.com/v2/problems/insufficient_funds
+        title: Insufficient Funds
+        status: 403
       properties:
         type:
           default: about:blank
@@ -11090,8 +11339,8 @@ components:
     CreateSandboxDepositRequest:
       example:
         amount: amount
-        crypto_network: null
-        asset: null
+        crypto_network: BITCOIN
+        asset: USD
       properties:
         asset:
           $ref: '#/components/schemas/Asset'
@@ -11110,8 +11359,8 @@ components:
       example:
         name: name
         document_types:
-        - null
-        - null
+        - OTHER_DOCUMENTS
+        - OTHER_DOCUMENTS
       properties:
         name:
           description: The file name.
@@ -11368,12 +11617,12 @@ components:
           transaction_id: transaction_id
           quantity: quantity
           closed_at: 2000-01-23T04:56:07.000+00:00
-          capital_gain_type: null
+          capital_gain_type: LONG_TERM
           percentage_capital_gain: percentage_capital_gain
           created_at: 2000-01-23T04:56:07.000+00:00
           fiat_currency: fiat_currency
           cost_basis_per_coin: cost_basis_per_coin
-          transaction_type: null
+          transaction_type: BUY
           Acquired_at: 2000-01-23T04:56:07.000+00:00
           cryptocurrency: cryptocurrency
           cost_basis: cost_basis
@@ -11383,7 +11632,7 @@ components:
           id: id
           current_market_value: current_market_value
           capital_gain: capital_gain
-          status: null
+          status: OPEN
       properties:
         tax_lot:
           $ref: '#/components/schemas/TaxLot'
@@ -11453,6 +11702,7 @@ x-tagGroups:
 - name: Deposits and Withdrawals
   tags:
   - Transfers
+  - Fiat Transfers
   - Deposit Addresses
   - Crypto Withdrawals
   - Fees

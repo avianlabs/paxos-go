@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **RefId** | Pointer to **string** | The optional client-specified ID (for idempotence). | [optional] 
 **IdentityId** | **string** | The Paxos Identity (&#x60;identity_id&#x60;) of the user&#39;s FiatAccount. | 
-**AccountId** | Pointer to **string** | The Paxos Account (&#x60;account_id&#x60;) of the user&#39;s FiatAccount. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) making deposits on behalf of their end users. | [optional] 
+**AccountId** | Pointer to **string** | The Paxos Account (&#x60;account_id&#x60;) of the user&#39;s FiatAccount. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users. | [optional] 
 **FiatAccountOwner** | [**FiatAccountOwner**](FiatAccountOwner.md) |  | 
 **FiatNetworkInstructions** | [**FiatNetworkInstructions**](FiatNetworkInstructions.md) |  | 
 **Metadata** | Pointer to **map[string]string** | Optional client-specified metadata. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters. | [optional] 

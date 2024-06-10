@@ -27,6 +27,9 @@ Name | Type | Description | Notes
 **Profession** | Pointer to **string** | Allowed in create and update. | [optional] 
 **MiddleName** | Pointer to **string** |  | [optional] 
 **CountryOfBirth** | Pointer to **string** | Allowed in create and update. | [optional] 
+**PassthroughVerificationId** | Pointer to **string** | Unique identifier for the underlying individual&#39;s ID verification record. | [optional] 
+**PassthroughVerificationStatus** | Pointer to [**IdentityStatus**](IdentityStatus.md) |  | [optional] 
+**PassthroughVerificationFields** | Pointer to [**[]PassthroughVerificationField**](PassthroughVerificationField.md) | List of verification fields used by the external verifier to validate the individual&#39;s identity. | [optional] 
 
 ## Methods
 
@@ -621,6 +624,81 @@ SetCountryOfBirth sets CountryOfBirth field to given value.
 `func (o *PersonDetails) HasCountryOfBirth() bool`
 
 HasCountryOfBirth returns a boolean if a field has been set.
+
+### GetPassthroughVerificationId
+
+`func (o *PersonDetails) GetPassthroughVerificationId() string`
+
+GetPassthroughVerificationId returns the PassthroughVerificationId field if non-nil, zero value otherwise.
+
+### GetPassthroughVerificationIdOk
+
+`func (o *PersonDetails) GetPassthroughVerificationIdOk() (*string, bool)`
+
+GetPassthroughVerificationIdOk returns a tuple with the PassthroughVerificationId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPassthroughVerificationId
+
+`func (o *PersonDetails) SetPassthroughVerificationId(v string)`
+
+SetPassthroughVerificationId sets PassthroughVerificationId field to given value.
+
+### HasPassthroughVerificationId
+
+`func (o *PersonDetails) HasPassthroughVerificationId() bool`
+
+HasPassthroughVerificationId returns a boolean if a field has been set.
+
+### GetPassthroughVerificationStatus
+
+`func (o *PersonDetails) GetPassthroughVerificationStatus() IdentityStatus`
+
+GetPassthroughVerificationStatus returns the PassthroughVerificationStatus field if non-nil, zero value otherwise.
+
+### GetPassthroughVerificationStatusOk
+
+`func (o *PersonDetails) GetPassthroughVerificationStatusOk() (*IdentityStatus, bool)`
+
+GetPassthroughVerificationStatusOk returns a tuple with the PassthroughVerificationStatus field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPassthroughVerificationStatus
+
+`func (o *PersonDetails) SetPassthroughVerificationStatus(v IdentityStatus)`
+
+SetPassthroughVerificationStatus sets PassthroughVerificationStatus field to given value.
+
+### HasPassthroughVerificationStatus
+
+`func (o *PersonDetails) HasPassthroughVerificationStatus() bool`
+
+HasPassthroughVerificationStatus returns a boolean if a field has been set.
+
+### GetPassthroughVerificationFields
+
+`func (o *PersonDetails) GetPassthroughVerificationFields() []PassthroughVerificationField`
+
+GetPassthroughVerificationFields returns the PassthroughVerificationFields field if non-nil, zero value otherwise.
+
+### GetPassthroughVerificationFieldsOk
+
+`func (o *PersonDetails) GetPassthroughVerificationFieldsOk() (*[]PassthroughVerificationField, bool)`
+
+GetPassthroughVerificationFieldsOk returns a tuple with the PassthroughVerificationFields field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPassthroughVerificationFields
+
+`func (o *PersonDetails) SetPassthroughVerificationFields(v []PassthroughVerificationField)`
+
+SetPassthroughVerificationFields sets PassthroughVerificationFields field to given value.
+
+### HasPassthroughVerificationFields
+
+`func (o *PersonDetails) HasPassthroughVerificationFields() bool`
+
+HasPassthroughVerificationFields returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

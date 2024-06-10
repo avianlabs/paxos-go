@@ -5,17 +5,17 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Country** | **string** |  | 
-**Address1** | **string** |  | 
+**Address1** | Pointer to **string** |  | [optional] 
 **Address2** | Pointer to **string** |  | [optional] 
-**City** | **string** |  | 
-**Province** | **string** |  | 
+**City** | Pointer to **string** |  | [optional] 
+**Province** | Pointer to **string** |  | [optional] 
 **ZipCode** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
 ### NewMailingAddress
 
-`func NewMailingAddress(country string, address1 string, city string, province string, ) *MailingAddress`
+`func NewMailingAddress(country string, ) *MailingAddress`
 
 NewMailingAddress instantiates a new MailingAddress object
 This constructor will assign default values to properties that have it defined,
@@ -69,6 +69,11 @@ and a boolean to check if the value has been set.
 
 SetAddress1 sets Address1 field to given value.
 
+### HasAddress1
+
+`func (o *MailingAddress) HasAddress1() bool`
+
+HasAddress1 returns a boolean if a field has been set.
 
 ### GetAddress2
 
@@ -114,6 +119,11 @@ and a boolean to check if the value has been set.
 
 SetCity sets City field to given value.
 
+### HasCity
+
+`func (o *MailingAddress) HasCity() bool`
+
+HasCity returns a boolean if a field has been set.
 
 ### GetProvince
 
@@ -134,6 +144,11 @@ and a boolean to check if the value has been set.
 
 SetProvince sets Province field to given value.
 
+### HasProvince
+
+`func (o *MailingAddress) HasProvince() bool`
+
+HasProvince returns a boolean if a field has been set.
 
 ### GetZipCode
 

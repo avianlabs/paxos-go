@@ -20,9 +20,9 @@ type CapitalGainType string
 
 // List of CapitalGainType
 const (
-	CAPITALGAINTYPE_LONG_TERM CapitalGainType = "LONG_TERM"
-	CAPITALGAINTYPE_SHORT_TERM CapitalGainType = "SHORT_TERM"
-	CAPITALGAINTYPE_EXEMPT CapitalGainType = "EXEMPT"
+	LONG_TERM CapitalGainType = "LONG_TERM"
+	SHORT_TERM CapitalGainType = "SHORT_TERM"
+	EXEMPT CapitalGainType = "EXEMPT"
 )
 
 // All allowed values of CapitalGainType enum

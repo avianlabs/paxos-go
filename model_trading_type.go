@@ -20,9 +20,9 @@ type TradingType string
 
 // List of TradingType
 const (
-	TRADINGTYPE_PRIVATE TradingType = "PRIVATE"
-	TRADINGTYPE_PUBLIC TradingType = "PUBLIC"
-	TRADINGTYPE_PUBLICLY_TRADED_SUBSIDIARY TradingType = "PUBLICLY_TRADED_SUBSIDIARY"
+	PRIVATE TradingType = "PRIVATE"
+	PUBLIC TradingType = "PUBLIC"
+	PUBLICLY_TRADED_SUBSIDIARY TradingType = "PUBLICLY_TRADED_SUBSIDIARY"
 )
 
 // All allowed values of TradingType enum

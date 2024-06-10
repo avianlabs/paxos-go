@@ -47,6 +47,11 @@ type PersonDetails struct {
 	MiddleName *string `json:"middle_name,omitempty"`
 	// Allowed in create and update.
 	CountryOfBirth *string `json:"country_of_birth,omitempty"`
+	// Unique identifier for the underlying individual's ID verification record.
+	PassthroughVerificationId *string `json:"passthrough_verification_id,omitempty"`
+	PassthroughVerificationStatus *IdentityStatus `json:"passthrough_verification_status,omitempty"`
+	// List of verification fields used by the external verifier to validate the individual's identity.
+	PassthroughVerificationFields []PassthroughVerificationField `json:"passthrough_verification_fields,omitempty"`
 }
 
 // NewPersonDetails instantiates a new PersonDetails object
@@ -802,6 +807,102 @@ func (o *PersonDetails) SetCountryOfBirth(v string) {
 	o.CountryOfBirth = &v
 }
 
+// GetPassthroughVerificationId returns the PassthroughVerificationId field value if set, zero value otherwise.
+func (o *PersonDetails) GetPassthroughVerificationId() string {
+	if o == nil || IsNil(o.PassthroughVerificationId) {
+		var ret string
+		return ret
+	}
+	return *o.PassthroughVerificationId
+}
+
+// GetPassthroughVerificationIdOk returns a tuple with the PassthroughVerificationId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PersonDetails) GetPassthroughVerificationIdOk() (*string, bool) {
+	if o == nil || IsNil(o.PassthroughVerificationId) {
+		return nil, false
+	}
+	return o.PassthroughVerificationId, true
+}
+
+// HasPassthroughVerificationId returns a boolean if a field has been set.
+func (o *PersonDetails) HasPassthroughVerificationId() bool {
+	if o != nil && !IsNil(o.PassthroughVerificationId) {
+		return true
+	}
+
+	return false
+}
+
+// SetPassthroughVerificationId gets a reference to the given string and assigns it to the PassthroughVerificationId field.
+func (o *PersonDetails) SetPassthroughVerificationId(v string) {
+	o.PassthroughVerificationId = &v
+}
+
+// GetPassthroughVerificationStatus returns the PassthroughVerificationStatus field value if set, zero value otherwise.
+func (o *PersonDetails) GetPassthroughVerificationStatus() IdentityStatus {
+	if o == nil || IsNil(o.PassthroughVerificationStatus) {
+		var ret IdentityStatus
+		return ret
+	}
+	return *o.PassthroughVerificationStatus
+}
+
+// GetPassthroughVerificationStatusOk returns a tuple with the PassthroughVerificationStatus field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PersonDetails) GetPassthroughVerificationStatusOk() (*IdentityStatus, bool) {
+	if o == nil || IsNil(o.PassthroughVerificationStatus) {
+		return nil, false
+	}
+	return o.PassthroughVerificationStatus, true
+}
+
+// HasPassthroughVerificationStatus returns a boolean if a field has been set.
+func (o *PersonDetails) HasPassthroughVerificationStatus() bool {
+	if o != nil && !IsNil(o.PassthroughVerificationStatus) {
+		return true
+	}
+
+	return false
+}
+
+// SetPassthroughVerificationStatus gets a reference to the given IdentityStatus and assigns it to the PassthroughVerificationStatus field.
+func (o *PersonDetails) SetPassthroughVerificationStatus(v IdentityStatus) {
+	o.PassthroughVerificationStatus = &v
+}
+
+// GetPassthroughVerificationFields returns the PassthroughVerificationFields field value if set, zero value otherwise.
+func (o *PersonDetails) GetPassthroughVerificationFields() []PassthroughVerificationField {
+	if o == nil || IsNil(o.PassthroughVerificationFields) {
+		var ret []PassthroughVerificationField
+		return ret
+	}
+	return o.PassthroughVerificationFields
+}
+
+// GetPassthroughVerificationFieldsOk returns a tuple with the PassthroughVerificationFields field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PersonDetails) GetPassthroughVerificationFieldsOk() ([]PassthroughVerificationField, bool) {
+	if o == nil || IsNil(o.PassthroughVerificationFields) {
+		return nil, false
+	}
+	return o.PassthroughVerificationFields, true
+}
+
+// HasPassthroughVerificationFields returns a boolean if a field has been set.
+func (o *PersonDetails) HasPassthroughVerificationFields() bool {
+	if o != nil && !IsNil(o.PassthroughVerificationFields) {
+		return true
+	}
+
+	return false
+}
+
+// SetPassthroughVerificationFields gets a reference to the given []PassthroughVerificationField and assigns it to the PassthroughVerificationFields field.
+func (o *PersonDetails) SetPassthroughVerificationFields(v []PassthroughVerificationField) {
+	o.PassthroughVerificationFields = v
+}
+
 func (o PersonDetails) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -880,6 +981,15 @@ func (o PersonDetails) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.CountryOfBirth) {
 		toSerialize["country_of_birth"] = o.CountryOfBirth
+	}
+	if !IsNil(o.PassthroughVerificationId) {
+		toSerialize["passthrough_verification_id"] = o.PassthroughVerificationId
+	}
+	if !IsNil(o.PassthroughVerificationStatus) {
+		toSerialize["passthrough_verification_status"] = o.PassthroughVerificationStatus
+	}
+	if !IsNil(o.PassthroughVerificationFields) {
+		toSerialize["passthrough_verification_fields"] = o.PassthroughVerificationFields
 	}
 	return toSerialize, nil
 }
