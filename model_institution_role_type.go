@@ -20,13 +20,13 @@ type InstitutionRoleType string
 
 // List of InstitutionRoleType
 const (
-	BENEFICIAL_OWNER_InstitutionRoleType InstitutionRoleType = "BENEFICIAL_OWNER"
-	ACCOUNT_OPENER_InstitutionRoleType InstitutionRoleType = "ACCOUNT_OPENER"
-	TRUSTEE_InstitutionRoleType InstitutionRoleType = "TRUSTEE"
-	AUTHORIZED_USER_InstitutionRoleType InstitutionRoleType = "AUTHORIZED_USER"
-	GRANTOR_InstitutionRoleType InstitutionRoleType = "GRANTOR"
-	MANAGEMENT_CONTROL_PERSON_InstitutionRoleType InstitutionRoleType = "MANAGEMENT_CONTROL_PERSON"
-	BENEFICIARY_InstitutionRoleType InstitutionRoleType = "BENEFICIARY"
+	InstitutionRoleType_BENEFICIAL_OWNER InstitutionRoleType = "BENEFICIAL_OWNER"
+	InstitutionRoleType_ACCOUNT_OPENER InstitutionRoleType = "ACCOUNT_OPENER"
+	InstitutionRoleType_TRUSTEE InstitutionRoleType = "TRUSTEE"
+	InstitutionRoleType_AUTHORIZED_USER InstitutionRoleType = "AUTHORIZED_USER"
+	InstitutionRoleType_GRANTOR InstitutionRoleType = "GRANTOR"
+	InstitutionRoleType_MANAGEMENT_CONTROL_PERSON InstitutionRoleType = "MANAGEMENT_CONTROL_PERSON"
+	InstitutionRoleType_BENEFICIARY InstitutionRoleType = "BENEFICIARY"
 )
 
 // All allowed values of InstitutionRoleType enum

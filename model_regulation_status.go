@@ -20,9 +20,9 @@ type RegulationStatus string
 
 // List of RegulationStatus
 const (
-	US_REGULATED_RegulationStatus RegulationStatus = "US_REGULATED"
-	INTL_REGULATED_RegulationStatus RegulationStatus = "INTL_REGULATED"
-	NON_REGULATED_RegulationStatus RegulationStatus = "NON_REGULATED"
+	RegulationStatus_US_REGULATED RegulationStatus = "US_REGULATED"
+	RegulationStatus_INTL_REGULATED RegulationStatus = "INTL_REGULATED"
+	RegulationStatus_NON_REGULATED RegulationStatus = "NON_REGULATED"
 )
 
 // All allowed values of RegulationStatus enum

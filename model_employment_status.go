@@ -20,13 +20,13 @@ type EmploymentStatus string
 
 // List of EmploymentStatus
 const (
-	CONTRACTUAL_EmploymentStatus EmploymentStatus = "CONTRACTUAL"
-	FULL_TIME_EmploymentStatus EmploymentStatus = "FULL_TIME"
-	PART_TIME_EmploymentStatus EmploymentStatus = "PART_TIME"
-	RETIRED_EmploymentStatus EmploymentStatus = "RETIRED"
-	SELF_EMPLOYED_EmploymentStatus EmploymentStatus = "SELF_EMPLOYED"
-	STUDENT_EmploymentStatus EmploymentStatus = "STUDENT"
-	UNEMPLOYED_EmploymentStatus EmploymentStatus = "UNEMPLOYED"
+	EmploymentStatus_CONTRACTUAL EmploymentStatus = "CONTRACTUAL"
+	EmploymentStatus_FULL_TIME EmploymentStatus = "FULL_TIME"
+	EmploymentStatus_PART_TIME EmploymentStatus = "PART_TIME"
+	EmploymentStatus_RETIRED EmploymentStatus = "RETIRED"
+	EmploymentStatus_SELF_EMPLOYED EmploymentStatus = "SELF_EMPLOYED"
+	EmploymentStatus_STUDENT EmploymentStatus = "STUDENT"
+	EmploymentStatus_UNEMPLOYED EmploymentStatus = "UNEMPLOYED"
 )
 
 // All allowed values of EmploymentStatus enum

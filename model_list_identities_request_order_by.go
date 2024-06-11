@@ -20,7 +20,7 @@ type ListIdentitiesRequestOrderBy string
 
 // List of ListIdentitiesRequestOrderBy
 const (
-	CREATED_AT_ListIdentitiesRequestOrderBy ListIdentitiesRequestOrderBy = "CREATED_AT"
+	ListIdentitiesRequestOrderBy_CREATED_AT ListIdentitiesRequestOrderBy = "CREATED_AT"
 )
 
 // All allowed values of ListIdentitiesRequestOrderBy enum

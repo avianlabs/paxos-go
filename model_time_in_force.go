@@ -20,10 +20,10 @@ type TimeInForce string
 
 // List of TimeInForce
 const (
-	GTC_TimeInForce TimeInForce = "GTC"
-	FOK_TimeInForce TimeInForce = "FOK"
-	IOC_TimeInForce TimeInForce = "IOC"
-	GTT_TimeInForce TimeInForce = "GTT"
+	TimeInForce_GTC TimeInForce = "GTC"
+	TimeInForce_FOK TimeInForce = "FOK"
+	TimeInForce_IOC TimeInForce = "IOC"
+	TimeInForce_GTT TimeInForce = "GTT"
 )
 
 // All allowed values of TimeInForce enum

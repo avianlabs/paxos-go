@@ -20,8 +20,8 @@ type QuoteExecutionStatus string
 
 // List of QuoteExecutionStatus
 const (
-	CREATED_QuoteExecutionStatus QuoteExecutionStatus = "CREATED"
-	SETTLED_QuoteExecutionStatus QuoteExecutionStatus = "SETTLED"
+	QuoteExecutionStatus_CREATED QuoteExecutionStatus = "CREATED"
+	QuoteExecutionStatus_SETTLED QuoteExecutionStatus = "SETTLED"
 )
 
 // All allowed values of QuoteExecutionStatus enum

@@ -20,12 +20,12 @@ type CryptoNetwork string
 
 // List of CryptoNetwork
 const (
-	BITCOIN_CryptoNetwork CryptoNetwork = "BITCOIN"
-	ETHEREUM_CryptoNetwork CryptoNetwork = "ETHEREUM"
-	BITCOIN_CASH_CryptoNetwork CryptoNetwork = "BITCOIN_CASH"
-	LITECOIN_CryptoNetwork CryptoNetwork = "LITECOIN"
-	SOLANA_CryptoNetwork CryptoNetwork = "SOLANA"
-	POLYGON_POS_CryptoNetwork CryptoNetwork = "POLYGON_POS"
+	CryptoNetwork_BITCOIN CryptoNetwork = "BITCOIN"
+	CryptoNetwork_ETHEREUM CryptoNetwork = "ETHEREUM"
+	CryptoNetwork_BITCOIN_CASH CryptoNetwork = "BITCOIN_CASH"
+	CryptoNetwork_LITECOIN CryptoNetwork = "LITECOIN"
+	CryptoNetwork_SOLANA CryptoNetwork = "SOLANA"
+	CryptoNetwork_POLYGON_POS CryptoNetwork = "POLYGON_POS"
 )
 
 // All allowed values of CryptoNetwork enum

@@ -20,7 +20,7 @@ type ListFiatAccountsRequestOrderBy string
 
 // List of ListFiatAccountsRequestOrderBy
 const (
-	CREATED_AT_ListFiatAccountsRequestOrderBy ListFiatAccountsRequestOrderBy = "CREATED_AT"
+	ListFiatAccountsRequestOrderBy_CREATED_AT ListFiatAccountsRequestOrderBy = "CREATED_AT"
 )
 
 // All allowed values of ListFiatAccountsRequestOrderBy enum

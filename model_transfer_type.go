@@ -20,22 +20,22 @@ type TransferType string
 
 // List of TransferType
 const (
-	INTERNAL_TRANSFER_DEBIT_TransferType TransferType = "INTERNAL_TRANSFER_DEBIT"
-	INTERNAL_TRANSFER_CREDIT_TransferType TransferType = "INTERNAL_TRANSFER_CREDIT"
-	CRYPTO_DEPOSIT_TransferType TransferType = "CRYPTO_DEPOSIT"
-	CRYPTO_WITHDRAWAL_TransferType TransferType = "CRYPTO_WITHDRAWAL"
-	WIRE_DEPOSIT_TransferType TransferType = "WIRE_DEPOSIT"
-	WIRE_WITHDRAWAL_TransferType TransferType = "WIRE_WITHDRAWAL"
-	SEN_DEPOSIT_TransferType TransferType = "SEN_DEPOSIT"
-	SEN_WITHDRAWAL_TransferType TransferType = "SEN_WITHDRAWAL"
-	BANK_DEPOSIT_TransferType TransferType = "BANK_DEPOSIT"
-	BANK_WITHDRAWAL_TransferType TransferType = "BANK_WITHDRAWAL"
-	PAXOS_TRANSFER_DEBIT_TransferType TransferType = "PAXOS_TRANSFER_DEBIT"
-	PAXOS_TRANSFER_CREDIT_TransferType TransferType = "PAXOS_TRANSFER_CREDIT"
-	SIGNET_DEPOSIT_TransferType TransferType = "SIGNET_DEPOSIT"
-	SIGNET_WITHDRAWAL_TransferType TransferType = "SIGNET_WITHDRAWAL"
-	CBIT_WITHDRAWAL_TransferType TransferType = "CBIT_WITHDRAWAL"
-	CBIT_DEPOSIT_TransferType TransferType = "CBIT_DEPOSIT"
+	TransferType_INTERNAL_TRANSFER_DEBIT TransferType = "INTERNAL_TRANSFER_DEBIT"
+	TransferType_INTERNAL_TRANSFER_CREDIT TransferType = "INTERNAL_TRANSFER_CREDIT"
+	TransferType_CRYPTO_DEPOSIT TransferType = "CRYPTO_DEPOSIT"
+	TransferType_CRYPTO_WITHDRAWAL TransferType = "CRYPTO_WITHDRAWAL"
+	TransferType_WIRE_DEPOSIT TransferType = "WIRE_DEPOSIT"
+	TransferType_WIRE_WITHDRAWAL TransferType = "WIRE_WITHDRAWAL"
+	TransferType_SEN_DEPOSIT TransferType = "SEN_DEPOSIT"
+	TransferType_SEN_WITHDRAWAL TransferType = "SEN_WITHDRAWAL"
+	TransferType_BANK_DEPOSIT TransferType = "BANK_DEPOSIT"
+	TransferType_BANK_WITHDRAWAL TransferType = "BANK_WITHDRAWAL"
+	TransferType_PAXOS_TRANSFER_DEBIT TransferType = "PAXOS_TRANSFER_DEBIT"
+	TransferType_PAXOS_TRANSFER_CREDIT TransferType = "PAXOS_TRANSFER_CREDIT"
+	TransferType_SIGNET_DEPOSIT TransferType = "SIGNET_DEPOSIT"
+	TransferType_SIGNET_WITHDRAWAL TransferType = "SIGNET_WITHDRAWAL"
+	TransferType_CBIT_WITHDRAWAL TransferType = "CBIT_WITHDRAWAL"
+	TransferType_CBIT_DEPOSIT TransferType = "CBIT_DEPOSIT"
 )
 
 // All allowed values of TransferType enum
