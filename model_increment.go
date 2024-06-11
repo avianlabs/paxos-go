@@ -20,17 +20,17 @@ type Increment string
 
 // List of Increment
 const (
-	ONE_MINUTE_Increment Increment = "ONE_MINUTE"
-	FIVE_MINUTES_Increment Increment = "FIVE_MINUTES"
-	FIFTEEN_MINUTES_Increment Increment = "FIFTEEN_MINUTES"
-	THIRTY_MINUTES_Increment Increment = "THIRTY_MINUTES"
-	ONE_HOUR_Increment Increment = "ONE_HOUR"
-	TWO_HOURS_Increment Increment = "TWO_HOURS"
-	TWELVE_HOURS_Increment Increment = "TWELVE_HOURS"
-	ONE_DAY_Increment Increment = "ONE_DAY"
-	ONE_WEEK_Increment Increment = "ONE_WEEK"
-	TWO_WEEKS_Increment Increment = "TWO_WEEKS"
-	FOUR_WEEKS_Increment Increment = "FOUR_WEEKS"
+	Increment_ONE_MINUTE Increment = "ONE_MINUTE"
+	Increment_FIVE_MINUTES Increment = "FIVE_MINUTES"
+	Increment_FIFTEEN_MINUTES Increment = "FIFTEEN_MINUTES"
+	Increment_THIRTY_MINUTES Increment = "THIRTY_MINUTES"
+	Increment_ONE_HOUR Increment = "ONE_HOUR"
+	Increment_TWO_HOURS Increment = "TWO_HOURS"
+	Increment_TWELVE_HOURS Increment = "TWELVE_HOURS"
+	Increment_ONE_DAY Increment = "ONE_DAY"
+	Increment_ONE_WEEK Increment = "ONE_WEEK"
+	Increment_TWO_WEEKS Increment = "TWO_WEEKS"
+	Increment_FOUR_WEEKS Increment = "FOUR_WEEKS"
 )
 
 // All allowed values of Increment enum

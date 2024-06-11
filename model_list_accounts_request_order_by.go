@@ -20,7 +20,7 @@ type ListAccountsRequestOrderBy string
 
 // List of ListAccountsRequestOrderBy
 const (
-	CREATED_AT_ListAccountsRequestOrderBy ListAccountsRequestOrderBy = "CREATED_AT"
+	ListAccountsRequestOrderBy_CREATED_AT ListAccountsRequestOrderBy = "CREATED_AT"
 )
 
 // All allowed values of ListAccountsRequestOrderBy enum
