@@ -20,18 +20,18 @@ type PassthroughVerifierType string
 
 // List of PassthroughVerifierType
 const (
-	PassthroughVerifierType_JUMIO PassthroughVerifierType = "JUMIO"
-	PassthroughVerifierType_ALLOY PassthroughVerifierType = "ALLOY"
-	PassthroughVerifierType_LEXISNEXIS PassthroughVerifierType = "LEXISNEXIS"
-	PassthroughVerifierType_MITEK PassthroughVerifierType = "MITEK"
-	PassthroughVerifierType_SUMSUB PassthroughVerifierType = "SUMSUB"
-	PassthroughVerifierType_MICROBILT PassthroughVerifierType = "MICROBILT"
-	PassthroughVerifierType_ONFIDO PassthroughVerifierType = "ONFIDO"
-	PassthroughVerifierType_CUSTOMER PassthroughVerifierType = "CUSTOMER"
-	PassthroughVerifierType_EQUIFAX PassthroughVerifierType = "EQUIFAX"
-	PassthroughVerifierType_ID3_AUTHENTICATE PassthroughVerifierType = "ID3_AUTHENTICATE"
-	PassthroughVerifierType_FIS PassthroughVerifierType = "FIS"
-	PassthroughVerifierType_PROVE PassthroughVerifierType = "PROVE"
+	JUMIO PassthroughVerifierType = "JUMIO"
+	ALLOY PassthroughVerifierType = "ALLOY"
+	LEXISNEXIS PassthroughVerifierType = "LEXISNEXIS"
+	MITEK PassthroughVerifierType = "MITEK"
+	SUMSUB PassthroughVerifierType = "SUMSUB"
+	MICROBILT PassthroughVerifierType = "MICROBILT"
+	ONFIDO PassthroughVerifierType = "ONFIDO"
+	CUSTOMER PassthroughVerifierType = "CUSTOMER"
+	EQUIFAX PassthroughVerifierType = "EQUIFAX"
+	ID3_AUTHENTICATE PassthroughVerifierType = "ID3_AUTHENTICATE"
+	FIS PassthroughVerifierType = "FIS"
+	PROVE PassthroughVerifierType = "PROVE"
 )
 
 // All allowed values of PassthroughVerifierType enum

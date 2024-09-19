@@ -29,6 +29,9 @@ type UpdateIdentityRequest struct {
 	TaxDetails []TaxDetail `json:"tax_details,omitempty"`
 	// Set to true if tax details are not legally required.
 	SetTaxDetailsNotRequired *bool `json:"set_tax_details_not_required,omitempty"`
+	CustomerDueDiligence *CustomerDueDiligence `json:"customer_due_diligence,omitempty"`
+	// Set to true to indicate that this identity is a merchant.
+	IsMerchant *bool `json:"is_merchant,omitempty"`
 }
 
 // NewUpdateIdentityRequest instantiates a new UpdateIdentityRequest object
@@ -272,6 +275,70 @@ func (o *UpdateIdentityRequest) SetSetTaxDetailsNotRequired(v bool) {
 	o.SetTaxDetailsNotRequired = &v
 }
 
+// GetCustomerDueDiligence returns the CustomerDueDiligence field value if set, zero value otherwise.
+func (o *UpdateIdentityRequest) GetCustomerDueDiligence() CustomerDueDiligence {
+	if o == nil || IsNil(o.CustomerDueDiligence) {
+		var ret CustomerDueDiligence
+		return ret
+	}
+	return *o.CustomerDueDiligence
+}
+
+// GetCustomerDueDiligenceOk returns a tuple with the CustomerDueDiligence field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateIdentityRequest) GetCustomerDueDiligenceOk() (*CustomerDueDiligence, bool) {
+	if o == nil || IsNil(o.CustomerDueDiligence) {
+		return nil, false
+	}
+	return o.CustomerDueDiligence, true
+}
+
+// HasCustomerDueDiligence returns a boolean if a field has been set.
+func (o *UpdateIdentityRequest) HasCustomerDueDiligence() bool {
+	if o != nil && !IsNil(o.CustomerDueDiligence) {
+		return true
+	}
+
+	return false
+}
+
+// SetCustomerDueDiligence gets a reference to the given CustomerDueDiligence and assigns it to the CustomerDueDiligence field.
+func (o *UpdateIdentityRequest) SetCustomerDueDiligence(v CustomerDueDiligence) {
+	o.CustomerDueDiligence = &v
+}
+
+// GetIsMerchant returns the IsMerchant field value if set, zero value otherwise.
+func (o *UpdateIdentityRequest) GetIsMerchant() bool {
+	if o == nil || IsNil(o.IsMerchant) {
+		var ret bool
+		return ret
+	}
+	return *o.IsMerchant
+}
+
+// GetIsMerchantOk returns a tuple with the IsMerchant field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateIdentityRequest) GetIsMerchantOk() (*bool, bool) {
+	if o == nil || IsNil(o.IsMerchant) {
+		return nil, false
+	}
+	return o.IsMerchant, true
+}
+
+// HasIsMerchant returns a boolean if a field has been set.
+func (o *UpdateIdentityRequest) HasIsMerchant() bool {
+	if o != nil && !IsNil(o.IsMerchant) {
+		return true
+	}
+
+	return false
+}
+
+// SetIsMerchant gets a reference to the given bool and assigns it to the IsMerchant field.
+func (o *UpdateIdentityRequest) SetIsMerchant(v bool) {
+	o.IsMerchant = &v
+}
+
 func (o UpdateIdentityRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -302,6 +369,12 @@ func (o UpdateIdentityRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.SetTaxDetailsNotRequired) {
 		toSerialize["set_tax_details_not_required"] = o.SetTaxDetailsNotRequired
+	}
+	if !IsNil(o.CustomerDueDiligence) {
+		toSerialize["customer_due_diligence"] = o.CustomerDueDiligence
+	}
+	if !IsNil(o.IsMerchant) {
+		toSerialize["is_merchant"] = o.IsMerchant
 	}
 	return toSerialize, nil
 }

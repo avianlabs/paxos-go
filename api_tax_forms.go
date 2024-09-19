@@ -104,21 +104,21 @@ func (a *TaxFormsAPIService) ListTaxFormRevisionsExecute(r ApiListTaxFormRevisio
 		return localVarReturnValue, nil, reportError("taxYear is required and must be specified")
 	}
 
-	parameterAddToHeaderOrQuery(localVarQueryParams, "account_id", r.accountId, "")
-	parameterAddToHeaderOrQuery(localVarQueryParams, "tax_year", r.taxYear, "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "account_id", r.accountId, "form", "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "tax_year", r.taxYear, "form", "")
 	if r.formTypes != nil {
 		t := *r.formTypes
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "form_types", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "form_types", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "form_types", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "form_types", t, "form", "multi")
 		}
 	}
 	if r.revision != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "revision", r.revision, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "revision", r.revision, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -279,35 +279,35 @@ func (a *TaxFormsAPIService) ListTaxFormsExecute(r ApiListTaxFormsRequest) (*Lis
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "account_ids", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "account_ids", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "account_ids", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "account_ids", t, "form", "multi")
 		}
 	}
-	parameterAddToHeaderOrQuery(localVarQueryParams, "tax_year", r.taxYear, "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "tax_year", r.taxYear, "form", "")
 	if r.formTypes != nil {
 		t := *r.formTypes
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "form_types", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "form_types", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "form_types", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "form_types", t, "form", "multi")
 		}
 	}
 	if r.usersLimit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "users_limit", r.usersLimit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "users_limit", r.usersLimit, "form", "")
 	}
 	if r.orderBy != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "form", "")
 	}
 	if r.order != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "form", "")
 	}
 	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

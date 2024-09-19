@@ -19,7 +19,7 @@ var _ MappedNullable = &TaxDetail{}
 
 // TaxDetail struct for TaxDetail
 type TaxDetail struct {
-	TaxPayerId *string `json:"tax_payer_id,omitempty"`
+	TaxPayerId *string `json:"tax_payer_id,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
 	TaxPayerCountry *string `json:"tax_payer_country,omitempty"`
 	TinVerificationStatus *TINVerificationStatus `json:"tin_verification_status,omitempty"`
 }

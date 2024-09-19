@@ -290,10 +290,10 @@ func (a *TaxLotAPIService) ListTaxLotsExecute(r ApiListTaxLotsRequest) (*ListTax
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "tax_lot_ids", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "tax_lot_ids", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "tax_lot_ids", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "tax_lot_ids", t, "form", "multi")
 		}
 	}
 	if r.profileIds != nil {
@@ -301,10 +301,10 @@ func (a *TaxLotAPIService) ListTaxLotsExecute(r ApiListTaxLotsRequest) (*ListTax
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "profile_ids", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "profile_ids", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "profile_ids", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "profile_ids", t, "form", "multi")
 		}
 	}
 	if r.accountIds != nil {
@@ -312,10 +312,10 @@ func (a *TaxLotAPIService) ListTaxLotsExecute(r ApiListTaxLotsRequest) (*ListTax
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "account_ids", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "account_ids", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "account_ids", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "account_ids", t, "form", "multi")
 		}
 	}
 	if r.transactionTypes != nil {
@@ -323,47 +323,47 @@ func (a *TaxLotAPIService) ListTaxLotsExecute(r ApiListTaxLotsRequest) (*ListTax
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "transaction_types", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "transaction_types", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "transaction_types", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "transaction_types", t, "form", "multi")
 		}
 	}
 	if r.status != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "status", r.status, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "status", r.status, "form", "")
 	}
 	if r.cryptocurrency != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "cryptocurrency", r.cryptocurrency, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "cryptocurrency", r.cryptocurrency, "form", "")
 	}
 	if r.capitalGainType != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "capital_gain_type", r.capitalGainType, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "capital_gain_type", r.capitalGainType, "form", "")
 	}
 	if r.createdAtLt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lt", r.createdAtLt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lt", r.createdAtLt, "form", "")
 	}
 	if r.createdAtLte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lte", r.createdAtLte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lte", r.createdAtLte, "form", "")
 	}
 	if r.createdAtEq != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.eq", r.createdAtEq, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.eq", r.createdAtEq, "form", "")
 	}
 	if r.createdAtGte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gte", r.createdAtGte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gte", r.createdAtGte, "form", "")
 	}
 	if r.createdAtGt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gt", r.createdAtGt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gt", r.createdAtGt, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	if r.order != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "form", "")
 	}
 	if r.orderBy != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "form", "")
 	}
 	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

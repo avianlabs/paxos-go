@@ -24,7 +24,7 @@ type CreateFiatWithdrawalRequest struct {
 	// The optional client-specified ID (for idempotence).
 	RefId *string `json:"ref_id,omitempty"`
 	// The amount to withdraw.
-	Amount string `json:"amount"`
+	Amount string `json:"amount" validate:"regexp=^[0-9]*\\\\.?[0-9]{1,2}$"`
 	// The asset to withdraw. Current supported asset: \"USD\".
 	Asset string `json:"asset"`
 	// The fiat account (`fiat_account_id`) destination.
@@ -38,7 +38,7 @@ type CreateFiatWithdrawalRequest struct {
 	// Optional client-specified metadata. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters.
 	Metadata *map[string]string `json:"metadata,omitempty"`
 	// Optional additional memo to be set on the outgoing wire. Only used for wire withdrawals.
-	Memo *string `json:"memo,omitempty"`
+	Memo *string `json:"memo,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]*$"`
 }
 
 type _CreateFiatWithdrawalRequest CreateFiatWithdrawalRequest

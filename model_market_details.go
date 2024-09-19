@@ -20,8 +20,9 @@ var _ MappedNullable = &MarketDetails{}
 // MarketDetails struct for MarketDetails
 type MarketDetails struct {
 	Market *Market `json:"market,omitempty"`
-	BaseAsset *Asset `json:"base_asset,omitempty"`
-	QuoteAsset *Asset `json:"quote_asset,omitempty"`
+	BaseAsset *string `json:"base_asset,omitempty"`
+	// Quote asset. Fiat Only (USD, EUR, SGD).
+	QuoteAsset *string `json:"quote_asset,omitempty"`
 	TickRate *string `json:"tick_rate,omitempty"`
 }
 
@@ -75,9 +76,9 @@ func (o *MarketDetails) SetMarket(v Market) {
 }
 
 // GetBaseAsset returns the BaseAsset field value if set, zero value otherwise.
-func (o *MarketDetails) GetBaseAsset() Asset {
+func (o *MarketDetails) GetBaseAsset() string {
 	if o == nil || IsNil(o.BaseAsset) {
-		var ret Asset
+		var ret string
 		return ret
 	}
 	return *o.BaseAsset
@@ -85,7 +86,7 @@ func (o *MarketDetails) GetBaseAsset() Asset {
 
 // GetBaseAssetOk returns a tuple with the BaseAsset field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MarketDetails) GetBaseAssetOk() (*Asset, bool) {
+func (o *MarketDetails) GetBaseAssetOk() (*string, bool) {
 	if o == nil || IsNil(o.BaseAsset) {
 		return nil, false
 	}
@@ -101,15 +102,15 @@ func (o *MarketDetails) HasBaseAsset() bool {
 	return false
 }
 
-// SetBaseAsset gets a reference to the given Asset and assigns it to the BaseAsset field.
-func (o *MarketDetails) SetBaseAsset(v Asset) {
+// SetBaseAsset gets a reference to the given string and assigns it to the BaseAsset field.
+func (o *MarketDetails) SetBaseAsset(v string) {
 	o.BaseAsset = &v
 }
 
 // GetQuoteAsset returns the QuoteAsset field value if set, zero value otherwise.
-func (o *MarketDetails) GetQuoteAsset() Asset {
+func (o *MarketDetails) GetQuoteAsset() string {
 	if o == nil || IsNil(o.QuoteAsset) {
-		var ret Asset
+		var ret string
 		return ret
 	}
 	return *o.QuoteAsset
@@ -117,7 +118,7 @@ func (o *MarketDetails) GetQuoteAsset() Asset {
 
 // GetQuoteAssetOk returns a tuple with the QuoteAsset field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MarketDetails) GetQuoteAssetOk() (*Asset, bool) {
+func (o *MarketDetails) GetQuoteAssetOk() (*string, bool) {
 	if o == nil || IsNil(o.QuoteAsset) {
 		return nil, false
 	}
@@ -133,8 +134,8 @@ func (o *MarketDetails) HasQuoteAsset() bool {
 	return false
 }
 
-// SetQuoteAsset gets a reference to the given Asset and assigns it to the QuoteAsset field.
-func (o *MarketDetails) SetQuoteAsset(v Asset) {
+// SetQuoteAsset gets a reference to the given string and assigns it to the QuoteAsset field.
+func (o *MarketDetails) SetQuoteAsset(v string) {
 	o.QuoteAsset = &v
 }
 

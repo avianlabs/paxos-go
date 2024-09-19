@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **RefId** | Pointer to **string** | A user-facing ID to prevent duplicate identity creation. Unique for all identities created by the same API user. | [optional] 
 **TaxDetails** | Pointer to [**[]TaxDetail**](TaxDetail.md) |  | [optional] 
 **SetTaxDetailsNotRequired** | Pointer to **bool** | Set to true if tax details are not legally required. | [optional] 
+**CustomerDueDiligence** | Pointer to [**CustomerDueDiligence**](CustomerDueDiligence.md) |  | [optional] 
+**IsMerchant** | Pointer to **bool** | Set to true to indicate that this identity is a merchant. | [optional] 
 
 ## Methods
 
@@ -205,6 +207,56 @@ SetSetTaxDetailsNotRequired sets SetTaxDetailsNotRequired field to given value.
 `func (o *UpdateIdentityRequest) HasSetTaxDetailsNotRequired() bool`
 
 HasSetTaxDetailsNotRequired returns a boolean if a field has been set.
+
+### GetCustomerDueDiligence
+
+`func (o *UpdateIdentityRequest) GetCustomerDueDiligence() CustomerDueDiligence`
+
+GetCustomerDueDiligence returns the CustomerDueDiligence field if non-nil, zero value otherwise.
+
+### GetCustomerDueDiligenceOk
+
+`func (o *UpdateIdentityRequest) GetCustomerDueDiligenceOk() (*CustomerDueDiligence, bool)`
+
+GetCustomerDueDiligenceOk returns a tuple with the CustomerDueDiligence field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCustomerDueDiligence
+
+`func (o *UpdateIdentityRequest) SetCustomerDueDiligence(v CustomerDueDiligence)`
+
+SetCustomerDueDiligence sets CustomerDueDiligence field to given value.
+
+### HasCustomerDueDiligence
+
+`func (o *UpdateIdentityRequest) HasCustomerDueDiligence() bool`
+
+HasCustomerDueDiligence returns a boolean if a field has been set.
+
+### GetIsMerchant
+
+`func (o *UpdateIdentityRequest) GetIsMerchant() bool`
+
+GetIsMerchant returns the IsMerchant field if non-nil, zero value otherwise.
+
+### GetIsMerchantOk
+
+`func (o *UpdateIdentityRequest) GetIsMerchantOk() (*bool, bool)`
+
+GetIsMerchantOk returns a tuple with the IsMerchant field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetIsMerchant
+
+`func (o *UpdateIdentityRequest) SetIsMerchant(v bool)`
+
+SetIsMerchant sets IsMerchant field to given value.
+
+### HasIsMerchant
+
+`func (o *UpdateIdentityRequest) HasIsMerchant() bool`
+
+HasIsMerchant returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Asset** | [**Asset**](Asset.md) |  | 
+**Asset** | **string** | The kind of asset to deposit. | 
 **Amount** | **string** | The amount to deposit. | 
 **CryptoNetwork** | Pointer to [**CryptoNetwork**](CryptoNetwork.md) |  | [optional] 
 
@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 
 ### NewCreateSandboxDepositRequest
 
-`func NewCreateSandboxDepositRequest(asset Asset, amount string, ) *CreateSandboxDepositRequest`
+`func NewCreateSandboxDepositRequest(asset string, amount string, ) *CreateSandboxDepositRequest`
 
 NewCreateSandboxDepositRequest instantiates a new CreateSandboxDepositRequest object
 This constructor will assign default values to properties that have it defined,
@@ -29,20 +29,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetAsset
 
-`func (o *CreateSandboxDepositRequest) GetAsset() Asset`
+`func (o *CreateSandboxDepositRequest) GetAsset() string`
 
 GetAsset returns the Asset field if non-nil, zero value otherwise.
 
 ### GetAssetOk
 
-`func (o *CreateSandboxDepositRequest) GetAssetOk() (*Asset, bool)`
+`func (o *CreateSandboxDepositRequest) GetAssetOk() (*string, bool)`
 
 GetAssetOk returns a tuple with the Asset field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAsset
 
-`func (o *CreateSandboxDepositRequest) SetAsset(v Asset)`
+`func (o *CreateSandboxDepositRequest) SetAsset(v string)`
 
 SetAsset sets Asset field to given value.
 

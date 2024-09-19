@@ -20,10 +20,10 @@ type PassthroughVerificationField string
 
 // List of PassthroughVerificationField
 const (
-	PassthroughVerificationField_FULL_LEGAL_NAME PassthroughVerificationField = "FULL_LEGAL_NAME"
-	PassthroughVerificationField_ADDRESS PassthroughVerificationField = "ADDRESS"
-	PassthroughVerificationField_DATE_OF_BIRTH PassthroughVerificationField = "DATE_OF_BIRTH"
-	PassthroughVerificationField_CIP_ID PassthroughVerificationField = "CIP_ID"
+	FULL_LEGAL_NAME PassthroughVerificationField = "FULL_LEGAL_NAME"
+	ADDRESS PassthroughVerificationField = "ADDRESS"
+	DATE_OF_BIRTH PassthroughVerificationField = "DATE_OF_BIRTH"
+	CIP_ID PassthroughVerificationField = "CIP_ID"
 )
 
 // All allowed values of PassthroughVerificationField enum

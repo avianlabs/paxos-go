@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **TaxDetails** | Pointer to [**[]TaxDetail**](TaxDetail.md) | List of tax details associated with the identity. Must be set if tax_details_not_required is false or not set. | [optional] 
 **TaxDetailsNotRequired** | Pointer to **bool** | Set to true if tax details are not legally required. | [optional] 
 **CustomerDueDiligence** | Pointer to [**CustomerDueDiligence**](CustomerDueDiligence.md) |  | [optional] 
-**IsMerchant** | Pointer to **bool** | Set to true if the identity is a merchant. | [optional] 
+**IsMerchant** | Pointer to **bool** | Set to true to indicate that this identity is a merchant. | [optional] 
 
 ## Methods
 

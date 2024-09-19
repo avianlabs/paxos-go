@@ -25,7 +25,7 @@ type CryptoWithdrawalFee struct {
 	// The id of the guaranteed fee.
 	Id string `json:"id"`
 	// The guaranteed fee value, in the same currency.
-	Fee string `json:"fee"`
+	Fee string `json:"fee" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	// The currency to withdraw.
 	Asset string `json:"asset"`
 	// The expiration timestamp of the created fee.
@@ -34,9 +34,9 @@ type CryptoWithdrawalFee struct {
 	DestinationAddress string `json:"destination_address"`
 	CryptoNetwork CryptoNetwork `json:"crypto_network"`
 	// The quoted amount to withdraw for which the fee is valid. Specify exactly one of `amount` or `total`, otherwise an error is returned.
-	Amount *string `json:"amount,omitempty"`
+	Amount *string `json:"amount,omitempty" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	// Total amount to withdraw, including fees. Specify exactly one of `amount` or `total`, otherwise an error is returned.
-	Total *string `json:"total,omitempty"`
+	Total *string `json:"total,omitempty" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 }
 
 type _CryptoWithdrawalFee CryptoWithdrawalFee

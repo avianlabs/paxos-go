@@ -256,7 +256,7 @@ Get the balance of `asset` in a profile.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param profileId
- @param asset 
+ @param asset
  @return ApiGetProfileBalanceRequest
 */
 func (a *ProfilesAPIService) GetProfileBalance(ctx context.Context, profileId string, asset string) ApiGetProfileBalanceRequest {
@@ -352,7 +352,6 @@ type ApiListProfileBalancesRequest struct {
 	assets *[]string
 }
 
-// 
 func (r ApiListProfileBalancesRequest) Assets(assets []string) ApiListProfileBalancesRequest {
 	r.assets = &assets
 	return r
@@ -408,10 +407,10 @@ func (a *ProfilesAPIService) ListProfileBalancesExecute(r ApiListProfileBalances
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "assets", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "assets", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "assets", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "assets", t, "form", "multi")
 		}
 	}
 	// to determine the Content-Type header
@@ -580,31 +579,31 @@ func (a *ProfilesAPIService) ListProfilesExecute(r ApiListProfilesRequest) (*Lis
 	localVarFormParams := url.Values{}
 
 	if r.createdAtLt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lt", r.createdAtLt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lt", r.createdAtLt, "form", "")
 	}
 	if r.createdAtLte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lte", r.createdAtLte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lte", r.createdAtLte, "form", "")
 	}
 	if r.createdAtEq != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.eq", r.createdAtEq, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.eq", r.createdAtEq, "form", "")
 	}
 	if r.createdAtGte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gte", r.createdAtGte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gte", r.createdAtGte, "form", "")
 	}
 	if r.createdAtGt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gt", r.createdAtGt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gt", r.createdAtGt, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	if r.order != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "form", "")
 	}
 	if r.orderBy != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "form", "")
 	}
 	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

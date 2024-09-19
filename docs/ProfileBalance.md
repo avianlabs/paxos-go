@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Asset** | [**Asset**](Asset.md) |  | 
+**Asset** | **string** | The asset held by the profile. | 
 **Available** | **string** | The available asset balance for new debit requests. | 
 **Trading** | **string** | The asset amount committed to pending orders. | 
 
@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 
 ### NewProfileBalance
 
-`func NewProfileBalance(asset Asset, available string, trading string, ) *ProfileBalance`
+`func NewProfileBalance(asset string, available string, trading string, ) *ProfileBalance`
 
 NewProfileBalance instantiates a new ProfileBalance object
 This constructor will assign default values to properties that have it defined,
@@ -29,20 +29,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetAsset
 
-`func (o *ProfileBalance) GetAsset() Asset`
+`func (o *ProfileBalance) GetAsset() string`
 
 GetAsset returns the Asset field if non-nil, zero value otherwise.
 
 ### GetAssetOk
 
-`func (o *ProfileBalance) GetAssetOk() (*Asset, bool)`
+`func (o *ProfileBalance) GetAssetOk() (*string, bool)`
 
 GetAssetOk returns a tuple with the Asset field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAsset
 
-`func (o *ProfileBalance) SetAsset(v Asset)`
+`func (o *ProfileBalance) SetAsset(v string)`
 
 SetAsset sets Asset field to given value.
 

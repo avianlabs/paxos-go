@@ -20,10 +20,10 @@ type TransactionType string
 
 // List of TransactionType
 const (
-	TransactionType_BUY TransactionType = "BUY"
-	TransactionType_SELL TransactionType = "SELL"
-	TransactionType_DEPOSIT TransactionType = "DEPOSIT"
-	TransactionType_WITHDRAWAL TransactionType = "WITHDRAWAL"
+	BUY TransactionType = "BUY"
+	SELL TransactionType = "SELL"
+	DEPOSIT TransactionType = "DEPOSIT"
+	WITHDRAWAL TransactionType = "WITHDRAWAL"
 )
 
 // All allowed values of TransactionType enum

@@ -243,7 +243,7 @@ import (
 
 func main() {
 	profileId := "profileId_example" // string | 
-	assets := []string{"Assets_example"} // []string |  (optional)
+	assets := []string{"Inner_example"} // []string |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

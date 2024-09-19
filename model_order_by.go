@@ -20,7 +20,7 @@ type OrderBy string
 
 // List of OrderBy
 const (
-	OrderBy_CREATED_AT OrderBy = "CREATED_AT"
+	CREATED_AT OrderBy = "CREATED_AT"
 )
 
 // All allowed values of OrderBy enum
