@@ -37,10 +37,12 @@ type QuoteExecution struct {
 	Price string `json:"price"`
 	// The amount of assets (crypto) in the transaction.
 	BaseAmount string `json:"base_amount"`
-	BaseAsset Asset `json:"base_asset"`
+	// The \"base\" side of the trading pair (crypto - like BTC, ETH, PAXG).
+	BaseAsset string `json:"base_asset"`
 	// The amount of quote currency (cash) in the transaction.
 	QuoteAmount string `json:"quote_amount"`
-	QuoteAsset Asset `json:"quote_asset"`
+	// The \"quote\" side of the trading pair (fiat - like USD, EUR, SGD).
+	QuoteAsset string `json:"quote_asset"`
 	// The time at which the quote execution was created.
 	CreatedAt time.Time `json:"created_at"`
 	// The time at which the quote execution was settled, completing its lifecycle.
@@ -61,7 +63,7 @@ type _QuoteExecution QuoteExecution
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewQuoteExecution(id string, profileId string, quoteId string, status QuoteExecutionStatus, market Market, side OrderSide, price string, baseAmount string, baseAsset Asset, quoteAmount string, quoteAsset Asset, createdAt time.Time) *QuoteExecution {
+func NewQuoteExecution(id string, profileId string, quoteId string, status QuoteExecutionStatus, market Market, side OrderSide, price string, baseAmount string, baseAsset string, quoteAmount string, quoteAsset string, createdAt time.Time) *QuoteExecution {
 	this := QuoteExecution{}
 	this.Id = id
 	this.ProfileId = profileId
@@ -311,9 +313,9 @@ func (o *QuoteExecution) SetBaseAmount(v string) {
 }
 
 // GetBaseAsset returns the BaseAsset field value
-func (o *QuoteExecution) GetBaseAsset() Asset {
+func (o *QuoteExecution) GetBaseAsset() string {
 	if o == nil {
-		var ret Asset
+		var ret string
 		return ret
 	}
 
@@ -322,7 +324,7 @@ func (o *QuoteExecution) GetBaseAsset() Asset {
 
 // GetBaseAssetOk returns a tuple with the BaseAsset field value
 // and a boolean to check if the value has been set.
-func (o *QuoteExecution) GetBaseAssetOk() (*Asset, bool) {
+func (o *QuoteExecution) GetBaseAssetOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -330,7 +332,7 @@ func (o *QuoteExecution) GetBaseAssetOk() (*Asset, bool) {
 }
 
 // SetBaseAsset sets field value
-func (o *QuoteExecution) SetBaseAsset(v Asset) {
+func (o *QuoteExecution) SetBaseAsset(v string) {
 	o.BaseAsset = v
 }
 
@@ -359,9 +361,9 @@ func (o *QuoteExecution) SetQuoteAmount(v string) {
 }
 
 // GetQuoteAsset returns the QuoteAsset field value
-func (o *QuoteExecution) GetQuoteAsset() Asset {
+func (o *QuoteExecution) GetQuoteAsset() string {
 	if o == nil {
-		var ret Asset
+		var ret string
 		return ret
 	}
 
@@ -370,7 +372,7 @@ func (o *QuoteExecution) GetQuoteAsset() Asset {
 
 // GetQuoteAssetOk returns a tuple with the QuoteAsset field value
 // and a boolean to check if the value has been set.
-func (o *QuoteExecution) GetQuoteAssetOk() (*Asset, bool) {
+func (o *QuoteExecution) GetQuoteAssetOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -378,7 +380,7 @@ func (o *QuoteExecution) GetQuoteAssetOk() (*Asset, bool) {
 }
 
 // SetQuoteAsset sets field value
-func (o *QuoteExecution) SetQuoteAsset(v Asset) {
+func (o *QuoteExecution) SetQuoteAsset(v string) {
 	o.QuoteAsset = v
 }
 

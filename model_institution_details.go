@@ -21,13 +21,13 @@ var _ MappedNullable = &InstitutionDetails{}
 // InstitutionDetails struct for InstitutionDetails
 type InstitutionDetails struct {
 	SanctionsVerificationStatus *IdentityStatus `json:"sanctions_verification_status,omitempty"`
-	Name *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
 	BusinessAddress *IdentityMailingAddress `json:"business_address,omitempty"`
 	PhoneNumber *string `json:"phone_number,omitempty"`
 	Email *string `json:"email,omitempty"`
 	InstitutionType *InstitutionType `json:"institution_type,omitempty"`
 	InstitutionSubType *InstitutionSubType `json:"institution_sub_type,omitempty"`
-	CipId *string `json:"cip_id,omitempty"`
+	CipId *string `json:"cip_id,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
 	CipIdType *InstitutionCIPIDType `json:"cip_id_type,omitempty"`
 	// Allowed in create and update. Must be an ISO 3166-1 alpha 3 code.
 	CipIdCountry *string `json:"cip_id_country,omitempty"`

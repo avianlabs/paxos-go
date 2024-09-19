@@ -20,7 +20,7 @@ type TaxprotoOrderBy string
 
 // List of taxprotoOrderBy
 const (
-	TaxprotoOrderBy_CREATED_AT TaxprotoOrderBy = "CREATED_AT"
+	CREATED_AT TaxprotoOrderBy = "CREATED_AT"
 )
 
 // All allowed values of TaxprotoOrderBy enum

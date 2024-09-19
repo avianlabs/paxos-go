@@ -21,9 +21,10 @@ var _ MappedNullable = &CreateSandboxDepositRequest{}
 
 // CreateSandboxDepositRequest struct for CreateSandboxDepositRequest
 type CreateSandboxDepositRequest struct {
-	Asset Asset `json:"asset"`
+	// The kind of asset to deposit.
+	Asset string `json:"asset"`
 	// The amount to deposit.
-	Amount string `json:"amount"`
+	Amount string `json:"amount" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	CryptoNetwork *CryptoNetwork `json:"crypto_network,omitempty"`
 }
 
@@ -33,7 +34,7 @@ type _CreateSandboxDepositRequest CreateSandboxDepositRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateSandboxDepositRequest(asset Asset, amount string) *CreateSandboxDepositRequest {
+func NewCreateSandboxDepositRequest(asset string, amount string) *CreateSandboxDepositRequest {
 	this := CreateSandboxDepositRequest{}
 	this.Asset = asset
 	this.Amount = amount
@@ -49,9 +50,9 @@ func NewCreateSandboxDepositRequestWithDefaults() *CreateSandboxDepositRequest {
 }
 
 // GetAsset returns the Asset field value
-func (o *CreateSandboxDepositRequest) GetAsset() Asset {
+func (o *CreateSandboxDepositRequest) GetAsset() string {
 	if o == nil {
-		var ret Asset
+		var ret string
 		return ret
 	}
 
@@ -60,7 +61,7 @@ func (o *CreateSandboxDepositRequest) GetAsset() Asset {
 
 // GetAssetOk returns a tuple with the Asset field value
 // and a boolean to check if the value has been set.
-func (o *CreateSandboxDepositRequest) GetAssetOk() (*Asset, bool) {
+func (o *CreateSandboxDepositRequest) GetAssetOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -68,7 +69,7 @@ func (o *CreateSandboxDepositRequest) GetAssetOk() (*Asset, bool) {
 }
 
 // SetAsset sets field value
-func (o *CreateSandboxDepositRequest) SetAsset(v Asset) {
+func (o *CreateSandboxDepositRequest) SetAsset(v string) {
 	o.Asset = v
 }
 

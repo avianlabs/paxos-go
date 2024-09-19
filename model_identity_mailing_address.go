@@ -21,13 +21,13 @@ var _ MappedNullable = &IdentityMailingAddress{}
 
 // IdentityMailingAddress A mailing address.
 type IdentityMailingAddress struct {
-	Country string `json:"country"`
-	Address1 string `json:"address1"`
+	Country string `json:"country" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
+	Address1 string `json:"address1" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
 	// To clear address2 (i.e. when updating an identity), set address2 to an empty string (\"\").
-	Address2 *string `json:"address2,omitempty"`
-	City string `json:"city"`
-	Province string `json:"province"`
-	ZipCode *string `json:"zip_code,omitempty"`
+	Address2 *string `json:"address2,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
+	City string `json:"city" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
+	Province string `json:"province" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
+	ZipCode *string `json:"zip_code,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
 }
 
 type _IdentityMailingAddress IdentityMailingAddress

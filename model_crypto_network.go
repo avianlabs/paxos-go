@@ -20,12 +20,13 @@ type CryptoNetwork string
 
 // List of CryptoNetwork
 const (
-	CryptoNetwork_BITCOIN CryptoNetwork = "BITCOIN"
-	CryptoNetwork_ETHEREUM CryptoNetwork = "ETHEREUM"
-	CryptoNetwork_BITCOIN_CASH CryptoNetwork = "BITCOIN_CASH"
-	CryptoNetwork_LITECOIN CryptoNetwork = "LITECOIN"
-	CryptoNetwork_SOLANA CryptoNetwork = "SOLANA"
-	CryptoNetwork_POLYGON_POS CryptoNetwork = "POLYGON_POS"
+	BITCOIN CryptoNetwork = "BITCOIN"
+	ETHEREUM CryptoNetwork = "ETHEREUM"
+	BITCOIN_CASH CryptoNetwork = "BITCOIN_CASH"
+	LITECOIN CryptoNetwork = "LITECOIN"
+	SOLANA CryptoNetwork = "SOLANA"
+	POLYGON_POS CryptoNetwork = "POLYGON_POS"
+	ARBITRUM_ONE CryptoNetwork = "ARBITRUM_ONE"
 )
 
 // All allowed values of CryptoNetwork enum
@@ -36,6 +37,7 @@ var AllowedCryptoNetworkEnumValues = []CryptoNetwork{
 	"LITECOIN",
 	"SOLANA",
 	"POLYGON_POS",
+	"ARBITRUM_ONE",
 }
 
 func (v *CryptoNetwork) UnmarshalJSON(src []byte) error {

@@ -20,8 +20,8 @@ type ProfileType string
 
 // List of ProfileType
 const (
-	ProfileType_NORMAL ProfileType = "NORMAL"
-	ProfileType_DEFAULT ProfileType = "DEFAULT"
+	NORMAL ProfileType = "NORMAL"
+	DEFAULT ProfileType = "DEFAULT"
 )
 
 // All allowed values of ProfileType enum

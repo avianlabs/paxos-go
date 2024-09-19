@@ -70,6 +70,22 @@
     {
       "name": "Tax Forms",
       "description": "All tax forms are associated to a single account_id.\nAn account_id can have multiple tax forms associated with it.\nUS 1099-B and 1099-Misc tax forms for the previous fiscal year will be available in February of the current calendar year.\nPrevious years tax forms are also available by request.\n"
+    },
+    {
+      "name": "Crypto Deposits",
+      "description": "For [Paxos Global PTE Ltd](https://help.paxos.com/hc/en-us/articles/9647005243284) users, update or reject a crypto deposit that does not contain the required [travel rule](https://help.paxos.com/hc/en-us/articles/25928845778068) information.\nDeposits with the `NEEDS_INFO` status require additional sender information before they can be processed.\n- For individuals, both first and last name are required.\n- For institutions, the institution name is required.\n\nIf a deposit is rejected, the funds will no longer be available.\n",
+      "externalDocs": {
+        "description": "Learn more about travel rule udpates →",
+        "url": "https://help.paxos.com/hc/en-us/articles/25422999706900"
+      }
+    },
+    {
+      "name": "Settlement",
+      "description": "Use the Settlements API to facilitate simultaneous exchange of pre-funded assets. Automate a variety of use cases that require two-party approval, including net settlement of over-the-counter trades, withdrawal requests for tri-party collateral, payment requests, and bilateral settlement for marketplace end users.\n\nThe simple request-and-approval workflow supports both one-directional and bidirectional transactions to allow a user to receive an asset (for example, send USDP) or simultaneously send and receive assets (for example, send USD and receive BTC and ETH). Only when all parties are in agreement and assets are fully funded does the Settlements API allow for change of custody. Upon completion, all settled assets are immediately available for trading, transferring, withdrawal or other supported activities.\n\nThe Source Profile initiates the transaction for the Target Profile to approve. The `DIRECTION` of each asset is always relative to the Source Profile and only the owner of the Source Profile can cancel a transaction if it hasn’t been approved by the Target Profile.\n",
+      "externalDocs": {
+        "description": "Learn more about the Settlement APIs →",
+        "url": "https://docs.paxos.com/settlements"
+      }
     }
   ],
   "paths": {
@@ -394,33 +410,13 @@
           },
           {
             "name": "assets",
-            "description": "",
             "in": "query",
             "required": false,
             "explode": true,
             "schema": {
               "type": "array",
               "items": {
-                "type": "string",
-                "enum": [
-                  "USD",
-                  "EUR",
-                  "SGD",
-                  "BTC",
-                  "ETH",
-                  "PAXG",
-                  "BUSD",
-                  "BCH",
-                  "LTC",
-                  "USDC",
-                  "USDP",
-                  "AAVE",
-                  "UNI",
-                  "MATIC",
-                  "PYUSD",
-                  "LINK",
-                  "SOL"
-                ]
+                "type": "string"
               }
             }
           }
@@ -465,30 +461,10 @@
           },
           {
             "name": "asset",
-            "description": "",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "enum": [
-                "USD",
-                "EUR",
-                "SGD",
-                "BTC",
-                "ETH",
-                "PAXG",
-                "BUSD",
-                "BCH",
-                "LTC",
-                "USDC",
-                "USDP",
-                "AAVE",
-                "UNI",
-                "MATIC",
-                "PYUSD",
-                "LINK",
-                "SOL"
-              ]
+              "type": "string"
             }
           }
         ],
@@ -539,7 +515,8 @@
                 "type": "object",
                 "properties": {
                   "asset": {
-                    "$ref": "#/components/schemas/Asset"
+                    "type": "string",
+                    "description": "The kind of asset to deposit."
                   },
                   "amount": {
                     "type": "string",
@@ -777,7 +754,7 @@
       },
       "post": {
         "summary": "Create Identity",
-        "description": "This enables you to create a new identity within the Paxos platform. Depending upon the fields provided, the\nidentity will either be person or an institution.\n\n- [create person identity](#create-person-identity)\n- [create institution identity](#create-institution-identity)\n\nA successful response indicates that the identity has been created. This does not mean that\nit has already been processed. You can use the unique ID returned within the response to check\nthe approval status of the identity.\n\n### Create Person Identity\nThe Person identity type is used to represent individuals on the platform. Attributes of the Person identity type are recorded in the *person_details* field.\n\nNote that fields not listed below are forbidden in this request.\n\nField | Notes\n---|---\nperson_details | Required\nmetadata | Optional\ntax_details | Optional\nref_id | Optional\n\nFor US based identities, if the `tax_details` attribute is empty, it will be backfilled with the `cip_id` and `cip_id_country` fields from the `person_details` attribute.\nFor international identities, the `tax_details` attribute must be present.\n\nCurrently both `JUMIO` or `PASSTHROUGH` are supported for verification, but only `JUMIO` is enabled by default.\n\n- [create person identity with jumio verification](#automatic-id-verification-with-jumio)\n- [create person identity with passthrough verification](#automatic-id-verification-with-passthrough)\n\n#### Automatic ID Verification with Jumio\nTo use Jumio, you must submit the fields listed below as part of the `person_details` attribute in your request.\n\nField | Notes\n---|---\nperson_details.verifier_type | Required. Must be `JUMIO`\nperson_details.verifier_id | Required\nperson_details.address | Required\n\nPlease note that when using this method:\n- You must ensure that the identity has already been validated by Jumio before submitting the identity to Paxos.\n- You must have previously [set the API credentials for Jumio access](#operation/SetVerifierCredentials).\n\nPaxos will compare the provided information with the information returned from the Jumio API.\n\nIn the event that there is a conflict between the submitted data and the data returned from the identity provider,\nthe information from the identity provider will be preferred.\n\n##### Example Request\n<!--indentation does not work in swagger code blocks-->\n<pre>\n<code>\n{\n&nbsp;&nbsp;\"person_details\": {\n&nbsp;&nbsp;&nbsp;&nbsp;\"verifier_id\": \"b7b77d82-e6a7-4ae9-9904-36231aedf985\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"verifier_type\": \"JUMIO\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"first_name\": \"John\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"last_name\": \"Doe\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"date_of_birth\": \"1980-01-01\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id\": \"111-11-1111\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id_type\": \"SSN\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id_country\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"nationality\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"profession\": \"Engineer\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"country_of_birth\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"address\": {\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"country\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"address1\": \"1 Example St\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"city\": \"New York\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"province\": \"NY\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"zip_code\": \"10001\"\n&nbsp;&nbsp;&nbsp;&nbsp;},\n&nbsp;&nbsp;&nbsp;&nbsp;\"ref_id\": \"33ece656-eef1-43b5-a851-b6b9099089a5\"\n&nbsp;&nbsp;}\n}\n</code>\n</pre>\n\n#### Automatic ID Verification with Passthrough\nTo use Passthrough, Paxos Compliance must first confirm your eligibility.\n\nOnce confirmed, you can submit the fields listed below as part of the the `person_details` attribute in your request.\n\n| Field                                          | Notes                                                                                                     |\n|------------------------------------------------|-----------------------------------------------------------------------------------------------------------|\n| person_details.verifier_type                   | Required. Must be `PASSTHROUGH`                                                                           |\n| person_details.passthrough_verifier_type       | Required. Specifies the ID Verification provider you originally used                                      |\n| person_details.passthrough_verified_at         | Required                                                                                                  |\n| person_details.passthrough_verification_id     | Unique identifier for the underlying individual's ID verification record.                                 |\n| person_details.passthrough_verification_status | Status of the ID verification indicating whether the identity was approved or denied.                     |\n| person_details.passthrough_verification_fields | List of verification fields used by the external verifier to validate the individual's identity.          |\n| person_details.address                         | Required                                                                                                  |\n\nNote that the following field is forbidden in the request:\n`person_details.verifier_id`\n\n##### Example Request\n<!--indentation does not work in swagger code blocks-->\n<pre>\n<code>\n{\n&nbsp;&nbsp;\"person_details\": {\n&nbsp;&nbsp;&nbsp;&nbsp;\"verifier_type\": \"PASSTHROUGH\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"passthrough_verifier_type\": \"JUMIO\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"passthrough_verified_at\": \"2021-06-16T09:28:14Z\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"passthrough_verification_id\": \"775300ef-4edb-47b9-8ec4-f45fe3cbf41f\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"passthrough_verification_status\": \"APPROVED\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"passthrough_verification_fields\": [\"FULL_LEGAL_NAME\", \"DATE_OF_BIRTH\"]\n&nbsp;&nbsp;&nbsp;&nbsp;\"first_name\": \"John\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"last_name\": \"Doe\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"date_of_birth\": \"1980-01-01\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id_type\": \"SSN\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id\": \"111-11-1111\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id_country\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"nationality\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"profession\": \"Engineer\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"country_of_birth\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"address\": {\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"country\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"address1\": \"1 Example St\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"city\": \"New York\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"province\": \"NY\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"zip_code\": \"10001\"\n&nbsp;&nbsp;&nbsp;&nbsp;},\n&nbsp;&nbsp;&nbsp;&nbsp;\"ref_id\": \"33ece656-eef1-43b5-a851-b6b9099089a5\"\n&nbsp;&nbsp;}\n}\n</code>\n</pre>\n\nNote that this feature is not yet supported - `customer_due_diligence`.\n\n### Create Institution Identity\nInstitution identities are used to represent all non-person entities.\nDetails for institution identity type are recorded in `institution_details`. An institution identity also has `institution_members` associated with it. This defines persons or other entities that have some relationship to the institution.\n\nWe support the following types and sub-types of institutions. Note that all institution types listed do share some common validations that can also be found below.\n\n#### Supported Institution Types\n\ninstitution_type | Supported institution_member roles | Notes\n---| ---| ---\n`TRUST` | `BENEFICIAL_OWNER`<br>`BENEFICIARY`<br>`GRANTOR`<br>`TRUSTEE` | [See Trusts](#trust-institutions-requirement)\n`CORPORATION`<br>`LLC`<br>`PARTNERSHIP` | `ACCOUNT_OPENER`<br>`AUTHORIZED_USER`<br>`BENEFICIAL_OWNER`<br>`MANAGEMENT_CONTROL_PERSON` | [See other Institutions](#institutions-requirement)\n\n#### Industry Type to Institution Subtypes Mapping\ninstitution_sub_type | industry\n---| ---\n`ACCOMMODATION_FOOD_SERVICES` |   Food or Beverage Services\n`ADMINISTRATIVE_SUPPORT_WASTE_MANAGEMENT_REMEDIATION_SERVICES` |  Administrative and Support Services\n`ADULT_ENTERTAINMENT` | Adult Entertainment / Pornography\n`AGRICULTURE_FORESTRY_FISHING_HUNTING` | Agriculture\n`ARTS_ENTERTAINMENT_RECREATION` | Arts, Entertainment, and Recreation\n`AUCTIONS` | Auction Houses / Art Galleries\n`AUTOMOBILES` | Automobiles / Automotives\n`BLOCKCHAIN` | Blockchain Technology\n`CONSTRUCTION` | Construction\n`CRYPTO` | Crypto Services and Products (Mining, Exchange, Broker)\n`DRUGS` | Illicit Drugs / Drug Paraphernalia\n`E_COMMERCE` | E-Commerce\n`EDUCATIONAL_SERVICES` | Educational Services\n`EXPORT_IMPORT` | Export / Import Companies\n`FINANCE_INSURANCE` | Other Financial & Insurance Services (Not Referenced Elsewhere)\n`FINANCIAL_INSTITUTION` | Financial Institution\n`GAMBLING` | Gaming, Gambling, Casinos, or Sports Betting\n`HEALTH_CARE_SOCIAL_ASSISTANCE` | Health Care and Social Assistance\n`HEDGE_FUND` | Pooled Investment Vehicle / Investment Fund / Hedge Fund\n`INFORMATION` | Information, Communications, and Media\n`INSURANCE` | Insurance\n`INVESTMENT` | Investment\n`MANAGEMENT_OF_COMPANIES_ENTERPRISES` | Management of Companies & Enterprises (Holding Companies)\n`MANUFACTURING` | Manufacturing\n`MARKET_MAKER` | Market Maker / Proprietary Trading\n`MINING` | Oil & Gas\n`MONEY_SERVICE_BUSINESS` | Money Services Business / Money Transmitters (including ATMs)\n`NON_PROFIT` | Non-Profit, Charity or Political Organizations\n`OTHER_SERVICES` | Other\n`PRECIOUS_METALS` | Jewelry or Precious Metals (Mining, Transportation, Dealing or Retail)\n`PROFESSIONAL_SCIENTIFIC_TECHNICAL_SERVICES` | Professional Services (Consulting, Legal, Accounting, etc.)\n`PUBLIC_ADMINISTRATION` | Public or Government Services\n`RANSOMWARE` | Ransomware / Facilitators of Ransomware Transactions\n`REAL_ESTATE_RENTAL_LEASING` | Real Estate and Rental and Leasing\n`REGISTERED_INVESTMENT_ADVISOR` | Registered Investment Advisor\n`RETAIL_TRADE` | Retail Trade\n`SHELL_BANK` | Shell Banks or Shell Companies\n`STO_ISSUER` | Security Token Offering (STO) Issuer\n`TRANSPORTATION_WAREHOUSING` | Transportation and Services\n`TRAVEL_TRANSPORT` | Travel, Accomodation or Transport\n`UTILITIES` | Utilities\n`WEAPONS` | Weapons or Arms (Manufacturing, Sales or Transportation)\n`WHOLESALE_TRADE` | Wholesale Trade\n\nNotes:\n- `INVESTMENT` is only supported by the institution type `TRUST`.\n- All other subtypes are only supported by types `CORPORATION`, `LLC` and `PARTNERSHIP`.\n\n#### Prohibited Institution Subtypes\n\nPaxos prohibits certain types of business activity (“Prohibited Businesses”) in accordance with its Compliance policies.\nThe following non-exhaustive list is representative of the type of activity that Paxos prohibits on its platform.\nBy creating a Paxos Identity, Paxos customers agree not to use Paxos services in connection with any of the following Prohibited Businesses.\n\n- `ADULT_ENTERTAINMENT`\n- `DRUGS`\n- `RANSOMWARE`\n- `SHELL_BANK`\n- `WEAPONS`\n\n#### Shared Validations Across All Institution Types\n\nField | Notes\n---|---\ncip_id | One of EIN, REGISTRATION_NUMBER, SSN, ITIN. SSN and ITIN are only supported for passthrough/revocable entities.\ntax_details | Automatically populated if the cip_id_type is SSN, ITIN or EIN.\ntax_details_not_required | Can be set for non-US institutions where tax details are not required.\nmetadata | Optional\nref_id | Optional\n\n#### Specifying Institution Members and Their Roles\n\nField | Notes\n---|---\nidentity_id | Required\nroles | Required.\nownership | Optional. Must be between 0 and 100\nposition | Optional\n\nNote\nSee supported institution types for details on which roles are supported by which institution type.\n\n#### Fields Required for Trusts\n\nType | Fields\n---|---\nRequired | name, cip_id, cip_id_type, cip_id_country, institution_type, institution_sub_type, business_address, govt_registration_date\nOptional | phone_number, email, incorporation_address, regulation_status, trading_type, listed_exchange, ticker_symbol, parent_institution_name, regulator_jurisdiction, regulator_name, regulator_register_number\n\nNotes\nFields not listed are forbidden in the request. `institution_type` must be set to TRUST. `institution_sub_type` must be set to Investment.\n`incorporation_address` is required for Trusts where their cip_id_type is not SSN or ITIN.\n\n##### Example Request for a Trust\n<!--indentation does not work in swagger code blocks-->\n<pre>\n<code>\n{\n&nbsp;&nbsp;\"institution_members\": [{\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"identity_id\": \"33ece656-eef1-43b5-a851-b6b9099089a5\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"roles\": [\"GRANTOR\"]\n&nbsp;&nbsp;&nbsp;&nbsp;},\n&nbsp;&nbsp;&nbsp;&nbsp;{\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"identity_id\": \"44ece656-eef1-43b5-a851-b6b9099089a6\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"roles\": [\"TRUSTEE\"]\n&nbsp;&nbsp;&nbsp;&nbsp;}],\n&nbsp;&nbsp;\"institution_details\": {\n&nbsp;&nbsp;&nbsp;&nbsp;\"name\": \"Trust A\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"business_address\": {\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"country\": \"United States\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"address1\": \"1 Example St\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"city\": \"New York\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"province\": \"NY\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"zip_code\": \"10001\"\n&nbsp;&nbsp;&nbsp;&nbsp;},\n&nbsp;&nbsp;&nbsp;&nbsp;\"email\": \"institution_a@acorp.com\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"institution_type\": \"CORPORATION\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"institution_sub_type\": \"HEDGE_FUND\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id\": \"11-1111111\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id_type\": \"EIN\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id_country\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"govt_registration_date\": \"2021-04-14T00:00:00Z\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"incorporation_address\": {\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"country\": \"United States\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"address1\": \"1 Example St\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"city\": \"New York\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"province\": \"NY\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"zip_code\": \"10001\"\n&nbsp;&nbsp;&nbsp;&nbsp;},\n&nbsp;&nbsp;&nbsp;&nbsp;\"regulation_status\": \"US_REGULATED\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"trading_type\": \"PUBLIC\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"listed_exchange\": \"NASDAQ\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"ticker_symbol\": \"ABC\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"regulator_name\": \"SEC\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"regulator_jurisdiction\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"regulator_register_number\": \"111-111111\"\n&nbsp;&nbsp;}\n}\n</code>\n</pre>\n\n#### Fields Required for Institutions (excluding Trusts and Registered Investment Advisors)\n\nType | Fields\n---|---\nRequired | name, cip_id, cip_id_type, cip_id_country, institution_type, institution_sub_type, business_address, incorporation_address, govt_registration_date, regulation_status, trading_type\nOptional | phone_number, email, listed_exchange, ticker_symbol, parent_institution_name, regulator_jurisdiction, regulator_name, regulator_register_number\n\n#### Creating Financially Regulated Institutions\nPlease refer to the following table for creating institutions which are financially regulated.\n\nregulation_status | Notes\n---|---\nUS_REGULATED | Institution financially regulated in the US\nINTL_REGULATED | Institution financially regulated by an international entity\nNON_REGULATED | Non-financially regulated institution\n\nNote that each category of `regulation_status` then has additional validations tied to `trading type` and other required fields.\n\nregulation_status | trading_type | fields required | Notes\n---|---|---|---\nUS_REGULATED | PRIVATE | regulator_name, regulator_jurisdiction, regulator_register_number | Not publicly traded\nUS_REGULATED | PUBLIC | listed_ exchange, ticker_symbol, regulator_name, regulator_jurisdiction, regulator_register_number | Publicly traded\nUS_REGULATED | PUBLICLY_TRADED_SUBSIDIARY | listed_exchange, ticker_symbol, regulator_name, regulator_jurisdiction, regulator_register_number, parent_institution_name | Subsidiary of a publicly traded company\nINTL_REGULATED | PRIVATE | regulator_name, regulator_jurisdiction, regulator_register_number | Not publicly traded\nINTL_REGULATED | PUBLIC | listed_ exchange, ticker_symbol, regulator_name, regulator_jurisdiction, regulator_register_number | Publicly traded\nINTL_REGULATED | PUBLICLY_TRADED_SUBSIDIARY | listed_exchange, ticker_symbol, regulator_name, regulator_jurisdiction, regulator_register_number, parent_institution_name | Subsidiary of a publicly traded company\nNON_REGULATED | PRIVATE | PRIVATE | Not publicly traded\nNON_REGULATED | PUBLIC | listed_exchange, ticker_symbol | Publicly traded\n\n#### Fields required for Registered Investment Advisors (RIA)\n\nRIAs are a special sub-type of Institution. Usage of this sub-type requires prior authorization and approval from Paxos.\n\nNotes\n`institution_sub_type` must be set to REGISTERED_INVESTMENT_ADVISOR. The list of required and optional fields below varies slightly from other supported institutions\nwhile certain fields are optional (e.g. trading_type), if they are specified in the request, their input will been validated\n\nType | Fields\n---|---\nRequired | name, cip_id, cip_id_type, cip_id_country, institution_type, institution_sub_type, business_address, regulation_status, regulator_jurisdiction, regulator_name, regulator_register_number\nOptional | phone_number, email, listed_exchange, ticker_symbol, parent_institution_name, incorporation_address, govt_registration_date, trading_type",
+        "description": "This enables you to create a new identity within the Paxos platform. Depending upon the fields provided, the\nidentity will either be person or an institution.\n\n- [create person identity](#create-person-identity)\n- [create institution identity](#create-institution-identity)\n\nA successful response indicates that the identity has been created. This does not mean that\nit has already been processed. You can use the unique ID returned within the response to check\nthe approval status of the identity.\n\n### Create Person Identity\nThe Person identity type is used to represent individuals on the platform. Attributes of the Person identity type are recorded in the *person_details* field.\n\nNote that fields not listed below are forbidden in this request.\n\nField | Notes\n---|---\nperson_details | Required\nmetadata | Optional\ntax_details | Optional\nref_id | Optional\n\nFor US based identities, if the `tax_details` attribute is empty, it will be backfilled with the `cip_id` and `cip_id_country` fields from the `person_details` attribute.\nFor international identities, the `tax_details` attribute must be present.\n\nCurrently both `JUMIO` or `PASSTHROUGH` are supported for verification, but only `JUMIO` is enabled by default.\n\n- [create person identity with jumio verification](#automatic-id-verification-with-jumio)\n- [create person identity with passthrough verification](#automatic-id-verification-with-passthrough)\n\n#### Automatic ID Verification with Jumio\nTo use Jumio, you must submit the fields listed below as part of the `person_details` attribute in your request.\n\nField | Notes\n---|---\nperson_details.verifier_type | Required. Must be `JUMIO`\nperson_details.verifier_id | Required\nperson_details.address | Required\n\nPlease note that when using this method:\n- You must ensure that the identity has already been validated by Jumio before submitting the identity to Paxos.\n- You must have previously [set the API credentials for Jumio access](#operation/SetVerifierCredentials).\n\nPaxos will compare the provided information with the information returned from the Jumio API.\n\nIn the event that there is a conflict between the submitted data and the data returned from the identity provider,\nthe information from the identity provider will be preferred.\n\n##### Example Request\n<!--indentation does not work in swagger code blocks-->\n<pre>\n<code>\n{\n&nbsp;&nbsp;\"person_details\": {\n&nbsp;&nbsp;&nbsp;&nbsp;\"verifier_id\": \"b7b77d82-e6a7-4ae9-9904-36231aedf985\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"verifier_type\": \"JUMIO\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"first_name\": \"John\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"last_name\": \"Doe\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"date_of_birth\": \"1980-01-01\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id\": \"111-11-1111\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id_type\": \"SSN\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id_country\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"nationality\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"profession\": \"Engineer\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"country_of_birth\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"address\": {\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"country\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"address1\": \"1 Example St\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"city\": \"New York\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"province\": \"NY\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"zip_code\": \"10001\"\n&nbsp;&nbsp;&nbsp;&nbsp;},\n&nbsp;&nbsp;&nbsp;&nbsp;\"ref_id\": \"33ece656-eef1-43b5-a851-b6b9099089a5\"\n&nbsp;&nbsp;}\n}\n</code>\n</pre>\n\n#### Automatic ID Verification with Passthrough\nTo use Passthrough, Paxos Compliance must first confirm your eligibility.\n\nOnce confirmed, you can submit the fields listed below as part of the the `person_details` attribute in your request.\n\n| Field                                          | Notes                                                                                                     |\n|------------------------------------------------|-----------------------------------------------------------------------------------------------------------|\n| person_details.verifier_type                   | Required. Must be `PASSTHROUGH`                                                                           |\n| person_details.passthrough_verifier_type       | Required. Specifies the ID Verification provider you originally used                                      |\n| person_details.passthrough_verified_at         | Required                                                                                                  |\n| person_details.passthrough_verification_id     | Unique identifier for the underlying individual's ID verification record.                                 |\n| person_details.passthrough_verification_status | Status of the ID verification indicating whether the identity was approved or denied.                     |\n| person_details.passthrough_verification_fields | List of verification fields used by the external verifier to validate the individual's identity.          |\n| person_details.address                         | Required                                                                                                  |\n\nNote that the following field is forbidden in the request:\n`person_details.verifier_id`\n\n##### Example Request\n<!--indentation does not work in swagger code blocks-->\n<pre>\n<code>\n{\n&nbsp;&nbsp;\"person_details\": {\n&nbsp;&nbsp;&nbsp;&nbsp;\"verifier_type\": \"PASSTHROUGH\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"passthrough_verifier_type\": \"JUMIO\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"passthrough_verified_at\": \"2021-06-16T09:28:14Z\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"passthrough_verification_id\": \"775300ef-4edb-47b9-8ec4-f45fe3cbf41f\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"passthrough_verification_status\": \"APPROVED\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"passthrough_verification_fields\": [\"FULL_LEGAL_NAME\", \"DATE_OF_BIRTH\"]\n&nbsp;&nbsp;&nbsp;&nbsp;\"first_name\": \"John\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"last_name\": \"Doe\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"date_of_birth\": \"1980-01-01\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id_type\": \"SSN\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id\": \"111-11-1111\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id_country\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"nationality\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"profession\": \"Engineer\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"country_of_birth\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"address\": {\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"country\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"address1\": \"1 Example St\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"city\": \"New York\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"province\": \"NY\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"zip_code\": \"10001\"\n&nbsp;&nbsp;&nbsp;&nbsp;},\n&nbsp;&nbsp;&nbsp;&nbsp;\"ref_id\": \"33ece656-eef1-43b5-a851-b6b9099089a5\"\n&nbsp;&nbsp;}\n}\n</code>\n</pre>\n\n### Create Institution Identity\nInstitution identities are used to represent all non-person entities.\nDetails for institution identity type are recorded in `institution_details`. An institution identity also has `institution_members` associated with it. This defines persons or other entities that have some relationship to the institution.\n\nWe support the following types and sub-types of institutions. Note that all institution types listed do share some common validations that can also be found below.\n\n#### Supported Institution Types\n\ninstitution_type | Supported institution_member roles | Notes\n---| ---| ---\n`TRUST` | `BENEFICIAL_OWNER`<br>`BENEFICIARY`<br>`GRANTOR`<br>`TRUSTEE` | [See Trusts](#trust-institutions-requirement)\n`CORPORATION`<br>`LLC`<br>`PARTNERSHIP` | `ACCOUNT_OPENER`<br>`AUTHORIZED_USER`<br>`BENEFICIAL_OWNER`<br>`MANAGEMENT_CONTROL_PERSON` | [See other Institutions](#institutions-requirement)\n\n#### Industry Type to Institution Subtypes Mapping\ninstitution_sub_type | industry\n---| ---\n`ACCOMMODATION_FOOD_SERVICES` |   Food or Beverage Services\n`ADMINISTRATIVE_SUPPORT_WASTE_MANAGEMENT_REMEDIATION_SERVICES` |  Administrative and Support Services\n`ADULT_ENTERTAINMENT` | Adult Entertainment / Pornography\n`AGRICULTURE_FORESTRY_FISHING_HUNTING` | Agriculture\n`ARTS_ENTERTAINMENT_RECREATION` | Arts, Entertainment, and Recreation\n`AUCTIONS` | Auction Houses / Art Galleries\n`AUTOMOBILES` | Automobiles / Automotives\n`BLOCKCHAIN` | Blockchain Technology\n`CONSTRUCTION` | Construction\n`CRYPTO` | Crypto Services and Products (Mining, Exchange, Broker)\n`DRUGS` | Illicit Drugs / Drug Paraphernalia\n`E_COMMERCE` | E-Commerce\n`EDUCATIONAL_SERVICES` | Educational Services\n`EXPORT_IMPORT` | Export / Import Companies\n`FINANCE_INSURANCE` | Other Financial & Insurance Services (Not Referenced Elsewhere)\n`FINANCIAL_INSTITUTION` | Financial Institution\n`GAMBLING` | Gaming, Gambling, Casinos, or Sports Betting\n`HEALTH_CARE_SOCIAL_ASSISTANCE` | Health Care and Social Assistance\n`HEDGE_FUND` | Pooled Investment Vehicle / Investment Fund / Hedge Fund\n`INFORMATION` | Information, Communications, and Media\n`INSURANCE` | Insurance\n`INVESTMENT` | Investment\n`MANAGEMENT_OF_COMPANIES_ENTERPRISES` | Management of Companies & Enterprises (Holding Companies)\n`MANUFACTURING` | Manufacturing\n`MARKET_MAKER` | Market Maker / Proprietary Trading\n`MINING` | Oil & Gas\n`MONEY_SERVICE_BUSINESS` | Money Services Business / Money Transmitters (including ATMs)\n`NON_PROFIT` | Non-Profit, Charity or Political Organizations\n`OTHER_SERVICES` | Other\n`PRECIOUS_METALS` | Jewelry or Precious Metals (Mining, Transportation, Dealing or Retail)\n`PROFESSIONAL_SCIENTIFIC_TECHNICAL_SERVICES` | Professional Services (Consulting, Legal, Accounting, etc.)\n`PUBLIC_ADMINISTRATION` | Public or Government Services\n`RANSOMWARE` | Ransomware / Facilitators of Ransomware Transactions\n`REAL_ESTATE_RENTAL_LEASING` | Real Estate and Rental and Leasing\n`REGISTERED_INVESTMENT_ADVISOR` | Registered Investment Advisor\n`RETAIL_TRADE` | Retail Trade\n`SHELL_BANK` | Shell Banks or Shell Companies\n`STO_ISSUER` | Security Token Offering (STO) Issuer\n`TRANSPORTATION_WAREHOUSING` | Transportation and Services\n`TRAVEL_TRANSPORT` | Travel, Accomodation or Transport\n`UTILITIES` | Utilities\n`WEAPONS` | Weapons or Arms (Manufacturing, Sales or Transportation)\n`WHOLESALE_TRADE` | Wholesale Trade\n\nNotes:\n- `INVESTMENT` is only supported by the institution type `TRUST`.\n- All other subtypes are only supported by types `CORPORATION`, `LLC` and `PARTNERSHIP`.\n\n#### Prohibited Institution Subtypes\n\nPaxos prohibits certain types of business activity (“Prohibited Businesses”) in accordance with its Compliance policies.\nThe following non-exhaustive list is representative of the type of activity that Paxos prohibits on its platform.\nBy creating a Paxos Identity, Paxos customers agree not to use Paxos services in connection with any of the following Prohibited Businesses.\n\n- `ADULT_ENTERTAINMENT`\n- `DRUGS`\n- `RANSOMWARE`\n- `SHELL_BANK`\n- `WEAPONS`\n\n#### Shared Validations Across All Institution Types\n\nField | Notes\n---|---\ncip_id | One of EIN, REGISTRATION_NUMBER, SSN, ITIN. SSN and ITIN are only supported for passthrough/revocable entities.\ntax_details | Automatically populated if the cip_id_type is SSN, ITIN or EIN.\ntax_details_not_required | Can be set for non-US institutions where tax details are not required.\nmetadata | Optional\nref_id | Optional\n\n#### Specifying Institution Members and Their Roles\n\nField | Notes\n---|---\nidentity_id | Required\nroles | Required.\nownership | Optional. Must be between 0 and 100\nposition | Optional\n\nNote\nSee supported institution types for details on which roles are supported by which institution type.\n\n#### Fields Required for Trusts\n\nType | Fields\n---|---\nRequired | name, cip_id, cip_id_type, cip_id_country, institution_type, institution_sub_type, business_address, govt_registration_date\nOptional | phone_number, email, incorporation_address, regulation_status, trading_type, listed_exchange, ticker_symbol, parent_institution_name, regulator_jurisdiction, regulator_name, regulator_register_number\n\nNotes\nFields not listed are forbidden in the request. `institution_type` must be set to TRUST. `institution_sub_type` must be set to Investment.\n`incorporation_address` is required for Trusts where their cip_id_type is not SSN or ITIN.\n\n##### Example Request for a Trust\n<!--indentation does not work in swagger code blocks-->\n<pre>\n<code>\n{\n&nbsp;&nbsp;\"institution_members\": [{\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"identity_id\": \"33ece656-eef1-43b5-a851-b6b9099089a5\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"roles\": [\"GRANTOR\"]\n&nbsp;&nbsp;&nbsp;&nbsp;},\n&nbsp;&nbsp;&nbsp;&nbsp;{\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"identity_id\": \"44ece656-eef1-43b5-a851-b6b9099089a6\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"roles\": [\"TRUSTEE\"]\n&nbsp;&nbsp;&nbsp;&nbsp;}],\n&nbsp;&nbsp;\"institution_details\": {\n&nbsp;&nbsp;&nbsp;&nbsp;\"name\": \"Trust A\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"business_address\": {\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"country\": \"United States\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"address1\": \"1 Example St\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"city\": \"New York\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"province\": \"NY\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"zip_code\": \"10001\"\n&nbsp;&nbsp;&nbsp;&nbsp;},\n&nbsp;&nbsp;&nbsp;&nbsp;\"email\": \"institution_a@acorp.com\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"institution_type\": \"CORPORATION\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"institution_sub_type\": \"HEDGE_FUND\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id\": \"11-1111111\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id_type\": \"EIN\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"cip_id_country\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"govt_registration_date\": \"2021-04-14T00:00:00Z\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"incorporation_address\": {\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"country\": \"United States\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"address1\": \"1 Example St\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"city\": \"New York\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"province\": \"NY\",\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"zip_code\": \"10001\"\n&nbsp;&nbsp;&nbsp;&nbsp;},\n&nbsp;&nbsp;&nbsp;&nbsp;\"regulation_status\": \"US_REGULATED\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"trading_type\": \"PUBLIC\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"listed_exchange\": \"NASDAQ\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"ticker_symbol\": \"ABC\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"regulator_name\": \"SEC\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"regulator_jurisdiction\": \"USA\",\n&nbsp;&nbsp;&nbsp;&nbsp;\"regulator_register_number\": \"111-111111\"\n&nbsp;&nbsp;}\n}\n</code>\n</pre>\n\n#### Fields Required for Institutions (excluding Trusts and Registered Investment Advisors)\n\nType | Fields\n---|---\nRequired | name, cip_id, cip_id_type, cip_id_country, institution_type, institution_sub_type, business_address, incorporation_address, govt_registration_date, regulation_status, trading_type\nOptional | phone_number, email, listed_exchange, ticker_symbol, parent_institution_name, regulator_jurisdiction, regulator_name, regulator_register_number\n\n#### Creating Financially Regulated Institutions\nPlease refer to the following table for creating institutions which are financially regulated.\n\nregulation_status | Notes\n---|---\nUS_REGULATED | Institution financially regulated in the US\nINTL_REGULATED | Institution financially regulated by an international entity\nNON_REGULATED | Non-financially regulated institution\n\nNote that each category of `regulation_status` then has additional validations tied to `trading type` and other required fields.\n\nregulation_status | trading_type | fields required | Notes\n---|---|---|---\nUS_REGULATED | PRIVATE | regulator_name, regulator_jurisdiction, regulator_register_number | Not publicly traded\nUS_REGULATED | PUBLIC | listed_ exchange, ticker_symbol, regulator_name, regulator_jurisdiction, regulator_register_number | Publicly traded\nUS_REGULATED | PUBLICLY_TRADED_SUBSIDIARY | listed_exchange, ticker_symbol, regulator_name, regulator_jurisdiction, regulator_register_number, parent_institution_name | Subsidiary of a publicly traded company\nINTL_REGULATED | PRIVATE | regulator_name, regulator_jurisdiction, regulator_register_number | Not publicly traded\nINTL_REGULATED | PUBLIC | listed_ exchange, ticker_symbol, regulator_name, regulator_jurisdiction, regulator_register_number | Publicly traded\nINTL_REGULATED | PUBLICLY_TRADED_SUBSIDIARY | listed_exchange, ticker_symbol, regulator_name, regulator_jurisdiction, regulator_register_number, parent_institution_name | Subsidiary of a publicly traded company\nNON_REGULATED | PRIVATE | PRIVATE | Not publicly traded\nNON_REGULATED | PUBLIC | listed_exchange, ticker_symbol | Publicly traded\n\n#### Fields required for Registered Investment Advisors (RIA)\n\nRIAs are a special sub-type of Institution. Usage of this sub-type requires prior authorization and approval from Paxos.\n\nNotes\n`institution_sub_type` must be set to REGISTERED_INVESTMENT_ADVISOR. The list of required and optional fields below varies slightly from other supported institutions\nwhile certain fields are optional (e.g. trading_type), if they are specified in the request, their input will been validated\n\nType | Fields\n---|---\nRequired | name, cip_id, cip_id_type, cip_id_country, institution_type, institution_sub_type, business_address, regulation_status, regulator_jurisdiction, regulator_name, regulator_register_number\nOptional | phone_number, email, listed_exchange, ticker_symbol, parent_institution_name, incorporation_address, govt_registration_date, trading_type",
         "operationId": "CreateIdentity",
         "responses": {
           "200": {
@@ -1373,7 +1350,7 @@
       },
       "put": {
         "summary": "Update Identity",
-        "description": "This enables you to update an existing identity with new information. Please note that:\n- Updating any field other than `set_user_disabled`, `metadata` or `ref_id` will transition the identity to a PENDING status.\nThis will restrict the identity until it has been re-verified.\n- Setting `set_user_disabled` to `true` will disable the identity, limiting its ability to be used within\nthe Paxos platform.\n- Details of the identity can be updated by providing `person_details` or `institution_details` depending upon the type.\n- You can add, update or remove tax_details by providing the `tax_details` list. The tax_details will be updated to exactly\ncomprise the given list\n\nNote: Identity conversion from person to institution type or vice-versa is not permitted.",
+        "description": "This enables you to update an existing identity with new information. Please note that:\n- Updating any field other than `set_user_disabled`, `metadata`, `ref_id`, or `is_merchant` will transition the identity to a PENDING status.\nThis will restrict the identity until it has been re-verified.\n- Setting `set_user_disabled` to `true` will disable the identity, limiting its ability to be used within\nthe Paxos platform.\n- Setting `is_merchant` to `true` will indicate that this identity is a merchant.\n- Details of the identity can be updated by providing `person_details` or `institution_details` depending upon the type.\n- You can add, update or remove tax_details by providing the `tax_details` list. The tax_details will be updated to exactly\ncomprise the given list\n\nNote: Identity conversion from person to institution type or vice-versa is not permitted.",
         "operationId": "UpdateIdentity",
         "responses": {
           "200": {
@@ -1440,6 +1417,13 @@
                   "set_tax_details_not_required": {
                     "type": "boolean",
                     "description": "Set to true if tax details are not legally required."
+                  },
+                  "customer_due_diligence": {
+                    "$ref": "#/components/schemas/CustomerDueDiligence"
+                  },
+                  "is_merchant": {
+                    "type": "boolean",
+                    "description": "Set to true to indicate that this identity is a merchant."
                   }
                 },
                 "title": "UpdateIdentityRequest"
@@ -4464,6 +4448,238 @@
           {
             "OAuth2": [
               "transfer:write_sandbox_fiat_deposit"
+            ]
+          }
+        ]
+      }
+    },
+    "/transfer/crypto-deposits/{id}/reject": {
+      "post": {
+        "summary": "Reject Crypto Deposit",
+        "description": "Reject a crypto deposit which is waiting for required travel rule information about the originator address.\nIf the rejected deposit has any status other than `NEEDS_INFO`, the request will return an error.\nOnly the creator of the crypto deposit can reject it.",
+        "operationId": "RejectCryptoDeposit",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RejectCryptoDepositResponse"
+                },
+                "example": {}
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Bad Request",
+                  "status": 400,
+                  "detail": "id must be uuid, given 2d929a0d-e1e3-4781-b7f8-7b34e66f"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Not Found",
+                  "status": 404,
+                  "detail": "no crypto deposit found for id: 2d929a0d-e1e3-4781-b7f8-7b34e66f7832"
+                }
+              }
+            },
+            "description": "Could not find deposit"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Conflict",
+                  "status": 409,
+                  "detail": "crypto deposit 2d929a0d-e1e3-4781-b7f8-7b34e66f7832 does not need info"
+                }
+              }
+            },
+            "description": "Deposit does not need info"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Paxos ID of the crypto deposit to reject.\nTo retrieve the ID, log in to your Paxos account and go to the [Activity](https://account.paxos.com/wallet/activity) tab.\nDownload the CSV activity file and check the ID column.",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "identity_id": "54385e67-d7ef-40d1-b488-ceda6dd9b264"
+                },
+                "properties": {
+                  "identity_id": {
+                    "type": "string",
+                    "description": "The Identity (`identity_id`) of the end user that requests to reject the deposit."
+                  }
+                },
+                "title": "RejectCryptoDepositRequest",
+                "required": [
+                  "identity_id"
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "Crypto Deposits"
+        ],
+        "security": [
+          {
+            "OAuth2": [
+              "transfer:reject_crypto_deposit"
+            ]
+          }
+        ]
+      }
+    },
+    "/transfer/crypto-deposits/{id}/update": {
+      "post": {
+        "summary": "Update Crypto Deposit",
+        "description": "Crypto deposits that do not meet the minimum travel rule requirements are blocked.\nTo update a crypto deposit, provide the required travel rule information about the originator address.",
+        "operationId": "UpdateCryptoDeposit",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateCryptoDepositResponse"
+                },
+                "example": {}
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Bad Request",
+                  "status": 400,
+                  "detail": "id must be uuid, given 2d929a0d-e1e3-4781-b7f8-7b34e66f"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Not Found",
+                  "status": 404,
+                  "detail": "no crypto deposit found for id: 2d929a0d-e1e3-4781-b7f8-7b34e66f7832"
+                }
+              }
+            },
+            "description": "Could not find deposit"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Conflict",
+                  "status": 409,
+                  "detail": "crypto deposit 2d929a0d-e1e3-4781-b7f8-7b34e66f7832 does not need info"
+                }
+              }
+            },
+            "description": "Deposit does not need info"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Paxos ID of the crypto deposit to update.\nTo retrieve the ID, log in to your Paxos account and go to the [Activity](https://account.paxos.com/wallet/activity) tab.\nDownload the CSV activity file and check the ID column.",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "identity_id": "54385e67-d7ef-40d1-b488-ceda6dd9b264",
+                  "originator_address_info": {
+                    "first_name": "John",
+                    "last_name": "Doe"
+                  }
+                },
+                "properties": {
+                  "identity_id": {
+                    "type": "string",
+                    "description": "The Identity (`identity_id`) of the end user updating the deposit."
+                  },
+                  "originator_address_info": {
+                    "$ref": "#/components/schemas/AddressInfo"
+                  }
+                },
+                "title": "UpdateCryptoDepositRequest",
+                "required": [
+                  "identity_id",
+                  "originator_address_info"
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "tags": [
+          "Crypto Deposits"
+        ],
+        "security": [
+          {
+            "OAuth2": [
+              "transfer:update_crypto_deposit"
             ]
           }
         ]
@@ -7680,6 +7896,588 @@
           }
         ]
       }
+    },
+    "/settlement/transactions": {
+      "get": {
+        "summary": "List Transactions",
+        "description": "This endpoint enables you to fetch a list of Settlement Transactions that you have created (own the `source_profile_id`) or have been alleged against you (own the `target_profile_id`).\nYou can use query parameters to filter the results returned by `statuses`, `source_profile_id` and `target_profile_id`.\n\nNote that this endpoint supports pagination and returns a cursor token for fetching next pages.",
+        "operationId": "ListTransactions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListTransactionsResponse"
+                },
+                "example": [
+                  {
+                    "id": "d99a03ee-6b88-4362-89da-087c2c8cd4a7",
+                    "ref_id": "d840cf31-352f-4190-a476-7522bf3eafda",
+                    "settlement_window_start": "2023-08-25 14:25:41 UTC",
+                    "settlement_window_end": "2023-08-25 14:25:41 UTC",
+                    "source_profile_id": "4fd025ab-f29f-47e6-a02e-df90a61c7ec9",
+                    "target_profile_id": "47db6271-50d6-4934-8c81-c42d87bfb390",
+                    "legs": [
+                      {
+                        "id": "ace21517-447e-4764-8733-765cb12a7fab",
+                        "direction": "DELIVER",
+                        "asset": "BTC",
+                        "amount": "100"
+                      }
+                    ],
+                    "status": "PENDING",
+                    "created_at": "2023-08-25 14:25:41 UTC",
+                    "updated_at": "2023-08-25 14:25:41 UTC"
+                  },
+                  {
+                    "id": "738b465a-7bea-42cf-be8d-63572f5745e7",
+                    "ref_id": "8f1dcf84-56e7-4e84-80aa-f01ef2eb1ab0",
+                    "settlement_window_start": "2023-08-26 00:25:41 UTC",
+                    "settlement_window_end": "2023-08-29 19:25:41 UTC",
+                    "source_profile_id": "4fd025ab-f29f-47e6-a02e-df90a61c7ec9",
+                    "target_profile_id": "47db6271-50d6-4934-8c81-c42d87bfb390",
+                    "legs": [
+                      {
+                        "id": "ace21517-447e-4764-8733-765cb12a7fab",
+                        "direction": "RECEIVE",
+                        "asset": "ETH",
+                        "amount": "39.231"
+                      }
+                    ],
+                    "status": "PENDING",
+                    "created_at": "2023-08-24 18:29:41 UTC",
+                    "updated_at": "2023-08-24 18:29:41 UTC"
+                  }
+                ]
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scopes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "examples": {
+                  "Insufficient scopes": {
+                    "value": {
+                      "type": "about:blank",
+                      "title": "Forbidden",
+                      "status": 403,
+                      "detail": "insufficient scopes: found 'settlement:write_transaction', required one of '[settlement:read_transaction]'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "statuses",
+            "description": "Transaction statuses to filter on\n\n - PENDING: Initial state of a settlement transaction upon creation.\n - SETTLED: Indicates all obligations belong to the settlement transaction have been enacted.\n - EXPIRED: Indicates the settlement transaction is no longer eligible for settlement.\n - CANCELLED: Indicates the settlement transaction was cancelled by the source profile.\n - AFFIRMED: Indicates the settlement transaction will be eligible for settlement once within the window.",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "PENDING",
+                  "SETTLED",
+                  "EXPIRED",
+                  "CANCELLED",
+                  "AFFIRMED"
+                ]
+              }
+            }
+          },
+          {
+            "name": "source_profile_id",
+            "description": "The `profile_id` of the entity on the submitting side of the transaction.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "target_profile_id",
+            "description": "The `profile_id` of the entity on the receiving side of the transaction.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "Number of results to return. Defaults to 100 if no limit is provided.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "page_cursor",
+            "description": "Cursor for getting the next page of results.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Settlement"
+        ],
+        "security": [
+          {
+            "OAuth2": [
+              "settlement:read_transaction"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create Transaction",
+        "description": "Creates a new bilateral Settlement Transaction with one or more legs. The customer must own the\n`source_profile_id` specified in the transaction.\n\nA successful response indicates the transaction has been accepted and will be in an initial `status` of `\"PENDING\"`\nfor settlement, the transaction is only eligible for settlement once the `status` is `\"AFFIRMED\"` by the\n`target_profile_id` and the current time is between the provided `settlement_window_start` and `settlement_window_end`.\n\nSettlement will only be enacted once both `source_profile_id` and `target_profile_id` have sufficient balances to\nfulfill all legs specified as settlement is **atomic**.",
+        "operationId": "CreateTransaction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                },
+                "example": {
+                  "id": "d99a03ee-6b88-4362-89da-087c2c8cd4a7",
+                  "ref_id": "d840cf31-352f-4190-a476-7522bf3eafda",
+                  "settlement_window_start": "2023-08-25 14:25:41 UTC",
+                  "settlement_window_end": "2023-08-25 14:25:41 UTC",
+                  "source_profile_id": "4fd025ab-f29f-47e6-a02e-df90a61c7ec9",
+                  "target_profile_id": "47db6271-50d6-4934-8c81-c42d87bfb390",
+                  "legs": [
+                    {
+                      "id": "ace21517-447e-4764-8733-765cb12a7fab",
+                      "direction": "DELIVER",
+                      "asset": "BTC",
+                      "amount": "100"
+                    }
+                  ],
+                  "status": "PENDING",
+                  "created_at": "2023-08-25 14:25:41 UTC",
+                  "updated_at": "2023-08-25 14:25:41 UTC"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "examples": {
+                  "Insufficient scopes": {
+                    "value": {
+                      "type": "about:blank",
+                      "title": "Bad Request",
+                      "status": 400
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scopes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "examples": {
+                  "Insufficient scopes": {
+                    "value": {
+                      "type": "about:blank",
+                      "title": "Forbidden",
+                      "status": 403,
+                      "detail": "insufficient scopes: found 'settlement:read_transaction', required one of '[settlement:write_transaction]'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "examples": {
+                  "Already Exists": {
+                    "value": {
+                      "status": 409,
+                      "title": "Conflict",
+                      "type": "about:blank"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTransactionRequest"
+              },
+              "examples": {
+                "Create Transaction": {
+                  "value": {
+                    "ref_id": "d840cf31-352f-4190-a476-7522bf3eafda",
+                    "settlement_window_start": "2023-08-25 14:25:41 UTC",
+                    "settlement_window_end": "2023-08-25 16:25:41 UTC",
+                    "source_profile_id": "4fd025ab-f29f-47e6-a02e-df90a61c7ec9",
+                    "target_profile_id": "47db6271-50d6-4934-8c81-c42d87bfb390",
+                    "legs": [
+                      {
+                        "direction": "DELIVER",
+                        "asset": "BTC",
+                        "amount": "100"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "description": "Request to create a bilateral settlement transaction with one or more legs.",
+          "required": true
+        },
+        "tags": [
+          "Settlement"
+        ],
+        "security": [
+          {
+            "OAuth2": [
+              "settlement:write_transaction"
+            ]
+          }
+        ]
+      }
+    },
+    "/settlement/transactions/{transaction_id}": {
+      "get": {
+        "summary": "Get Transaction",
+        "description": "Get a Settlement Transaction by its (transaction) id, you must have created the transaction (own the `source_profile_id`) or\nhave had the transaction alleged against you (own the `target_profile_id`).",
+        "operationId": "GetTransaction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                },
+                "example": [
+                  {
+                    "id": "d99a03ee-6b88-4362-89da-087c2c8cd4a7",
+                    "ref_id": "d840cf31-352f-4190-a476-7522bf3eafda",
+                    "settlement_window_start": "2023-08-25 14:25:41 UTC",
+                    "settlement_window_end": "2023-08-25 14:25:41 UTC",
+                    "source_profile_id": "4fd025ab-f29f-47e6-a02e-df90a61c7ec9",
+                    "target_profile_id": "47db6271-50d6-4934-8c81-c42d87bfb390",
+                    "legs": [
+                      {
+                        "id": "ace21517-447e-4764-8733-765cb12a7fab",
+                        "direction": "DELIVER",
+                        "asset": "BTC",
+                        "amount": "100"
+                      }
+                    ],
+                    "status": "PENDING",
+                    "created_at": "2023-08-25 14:25:41 UTC",
+                    "updated_at": "2023-08-25 17:53:23 UTC"
+                  }
+                ]
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scopes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "examples": {
+                  "Insufficient scopes": {
+                    "value": {
+                      "type": "about:blank",
+                      "title": "Forbidden",
+                      "status": 403,
+                      "detail": "insufficient scopes: found 'settlement:write_transaction', required one of '[settlement:read_transaction]'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "examples": {
+                  "Not Found": {
+                    "value": {
+                      "status": 404,
+                      "title": "Not Found",
+                      "type": "about:blank"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "transaction_id",
+            "description": "The unique `id` in the `Transaction` object.",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Settlement"
+        ],
+        "security": [
+          {
+            "OAuth2": [
+              "settlement:read_transaction"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Cancel Transaction",
+        "description": "Cancels the Settlement Transaction, this action can only be done by the customer owning the source profile (`source_profile_id`).\nThe transaction must be in a `\"PENDING\"` status for this to take effect, you cannot cancel a transaction which\nis `\"AFFIRMED\"`.",
+        "operationId": "CancelTransaction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                },
+                "example": {
+                  "id": "d99a03ee-6b88-4362-89da-087c2c8cd4a7",
+                  "ref_id": "d840cf31-352f-4190-a476-7522bf3eafda",
+                  "settlement_window_start": "2023-08-25 14:25:41 UTC",
+                  "settlement_window_end": "2023-08-25 14:25:41 UTC",
+                  "source_profile_id": "4fd025ab-f29f-47e6-a02e-df90a61c7ec9",
+                  "target_profile_id": "47db6271-50d6-4934-8c81-c42d87bfb390",
+                  "legs": [
+                    {
+                      "id": "ace21517-447e-4764-8733-765cb12a7fab",
+                      "direction": "DELIVER",
+                      "asset": "BTC",
+                      "amount": "100"
+                    }
+                  ],
+                  "status": "CANCELLED",
+                  "created_at": "2023-08-25 14:25:41 UTC",
+                  "updated_at": "2023-08-25 17:53:23 UTC"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scopes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "examples": {
+                  "Insufficient scopes": {
+                    "value": {
+                      "type": "about:blank",
+                      "title": "Forbidden",
+                      "status": 403,
+                      "detail": "insufficient scopes: found 'settlement:read_transaction', required one of '[settlement:write_transaction]'"
+                    }
+                  },
+                  "Forbidden": {
+                    "value": {
+                      "type": "about:blank",
+                      "title": "Forbidden",
+                      "status": 403
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "examples": {
+                  "Not Found": {
+                    "value": {
+                      "status": 409,
+                      "title": "Conflict",
+                      "type": "about:blank"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "transaction_id",
+            "description": "The unique `id` in the `Transaction` object.",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Settlement"
+        ],
+        "security": [
+          {
+            "OAuth2": [
+              "settlement:write_transaction"
+            ]
+          }
+        ]
+      }
+    },
+    "/settlement/transactions/{transaction_id}/affirm": {
+      "put": {
+        "summary": "Affirm Transaction",
+        "description": "Affirms the Settlement Transaction for settlement, the transaction is now eligible for settlement once the current time is\nbetween the provided `settlement_window_start` and `settlement_window_end`. This action can only be done by the\ncustomer owning the target profile (`target_profile_id`).\nThe transaction must be in a `\"PENDING\"` status for this to take effect.",
+        "operationId": "AffirmTransaction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                },
+                "example": {
+                  "id": "d99a03ee-6b88-4362-89da-087c2c8cd4a7",
+                  "ref_id": "d840cf31-352f-4190-a476-7522bf3eafda",
+                  "settlement_window_start": "2023-08-25 14:25:41 UTC",
+                  "settlement_window_end": "2023-08-25 14:25:41 UTC",
+                  "source_profile_id": "4fd025ab-f29f-47e6-a02e-df90a61c7ec9",
+                  "target_profile_id": "47db6271-50d6-4934-8c81-c42d87bfb390",
+                  "legs": [
+                    {
+                      "id": "ace21517-447e-4764-8733-765cb12a7fab",
+                      "direction": "DELIVER",
+                      "asset": "BTC",
+                      "amount": "100"
+                    }
+                  ],
+                  "status": "AFFIRMED",
+                  "created_at": "2023-08-25 14:25:41 UTC",
+                  "updated_at": "2023-08-25 17:53:23 UTC"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "examples": {
+                  "Insufficient scopes": {
+                    "value": {
+                      "type": "about:blank",
+                      "title": "Bad Request",
+                      "status": 400
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient scopes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "examples": {
+                  "Insufficient scopes": {
+                    "value": {
+                      "type": "about:blank",
+                      "title": "Forbidden",
+                      "status": 403,
+                      "detail": "insufficient scopes: found 'settlement:write_transaction', required one of '[settlement:read_transaction]'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "transaction_id",
+            "description": "The unique `id` in the `Transaction` object.",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Settlement"
+        ],
+        "security": [
+          {
+            "OAuth2": [
+              "settlement:write_transaction"
+            ]
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -7689,29 +8487,6 @@
         "enum": [
           "CREATED_AT"
         ]
-      },
-      "Asset": {
-        "type": "string",
-        "enum": [
-          "USD",
-          "EUR",
-          "SGD",
-          "BTC",
-          "ETH",
-          "PAXG",
-          "BUSD",
-          "BCH",
-          "LTC",
-          "USDC",
-          "USDP",
-          "AAVE",
-          "UNI",
-          "MATIC",
-          "PYUSD",
-          "LINK",
-          "SOL"
-        ],
-        "description": "The given asset or assets held in a Paxos balance."
       },
       "CreateProfileRequest": {
         "type": "object",
@@ -7798,7 +8573,8 @@
         },
         "properties": {
           "asset": {
-            "$ref": "#/components/schemas/Asset"
+            "type": "string",
+            "description": "The asset held by the profile."
           },
           "available": {
             "type": "string",
@@ -7878,7 +8654,8 @@
           "BITCOIN_CASH",
           "LITECOIN",
           "SOLANA",
-          "POLYGON_POS"
+          "POLYGON_POS",
+          "ARBITRUM_ONE"
         ],
         "description": "A CryptoNetwork is a blockchain transmitting cryptocurrencies."
       },
@@ -8011,7 +8788,7 @@
           },
           "is_merchant": {
             "type": "boolean",
-            "description": "Set to true if the identity is a merchant."
+            "description": "Set to true to indicate that this identity is a merchant."
           }
         }
       },
@@ -8344,7 +9121,7 @@
           },
           "cip_id": {
             "type": "string",
-            "title": "Allowed in create and update",
+            "title": "Allowed in create and update\nSSN format: xxx-xx-xxxx\nITIN format: xxx-xx-xxxx\nEIN format: xx-xxxxxxx",
             "maxLength": 200,
             "pattern": "^[0-9A-Za-z /?:().,&'+-]+$"
           },
@@ -8637,7 +9414,7 @@
           },
           "cip_id": {
             "type": "string",
-            "title": "SSN or TIN, unique for each Identity object. Allowed in create and update",
+            "title": "SSN or TIN, unique for each Identity object. Allowed in create and update\nSSN format: xxx-xx-xxxx\nITIN format: xxx-xx-xxxx\nEIN format: xx-xxxxxxx",
             "maxLength": 200,
             "pattern": "^[0-9A-Za-z /?:().,&'+-]+$"
           },
@@ -9138,14 +9915,16 @@
             "description": "Amount of commission paid."
           },
           "commission_asset": {
-            "$ref": "#/components/schemas/Asset"
+            "type": "string",
+            "description": "Currency of Commission payment. Fiat Only (USD, EUR, SGD)."
           },
           "rebate": {
             "type": "string",
             "description": "Amount of rebate applied."
           },
           "rebate_asset": {
-            "$ref": "#/components/schemas/Asset"
+            "type": "string",
+            "description": "Currency of the rebate. Fiat Only (USD, EUR, SGD)."
           },
           "account_id": {
             "type": "string",
@@ -9335,10 +10114,12 @@
             "$ref": "#/components/schemas/Market"
           },
           "base_asset": {
-            "$ref": "#/components/schemas/Asset"
+            "type": "string",
+            "title": "Base asset. Crypto Only (BTC, ETH, PAXG)"
           },
           "quote_asset": {
-            "$ref": "#/components/schemas/Asset"
+            "type": "string",
+            "description": "Quote asset. Fiat Only (USD, EUR, SGD)."
           },
           "tick_rate": {
             "type": "string",
@@ -9540,10 +10321,12 @@
             "description": "The guaranteed price, held until expires_at."
           },
           "base_asset": {
-            "$ref": "#/components/schemas/Asset"
+            "type": "string",
+            "description": "The \"base\" side of the trading pair (crypto - like BTC, ETH, PAXG)."
           },
           "quote_asset": {
-            "$ref": "#/components/schemas/Asset"
+            "type": "string",
+            "description": "The \"quote\" side of the trading pair (fiat - like USD, EUR, SGD)."
           },
           "created_at": {
             "type": "string",
@@ -9623,14 +10406,16 @@
             "description": "The amount of assets (crypto) in the transaction."
           },
           "base_asset": {
-            "$ref": "#/components/schemas/Asset"
+            "type": "string",
+            "description": "The \"base\" side of the trading pair (crypto - like BTC, ETH, PAXG)."
           },
           "quote_amount": {
             "type": "string",
             "description": "The amount of quote currency (cash) in the transaction."
           },
           "quote_asset": {
-            "$ref": "#/components/schemas/Asset"
+            "type": "string",
+            "description": "The \"quote\" side of the trading pair (fiat - like USD, EUR, SGD)."
           },
           "created_at": {
             "type": "string",
@@ -9910,6 +10695,20 @@
           "bank_address"
         ]
       },
+      "AddressInfo": {
+        "type": "object",
+        "properties": {
+          "individual_info": {
+            "$ref": "#/components/schemas/IndividualInfo"
+          },
+          "institution_info": {
+            "$ref": "#/components/schemas/InstitutionInfo"
+          }
+        },
+        "required": [
+          "originator_info"
+        ]
+      },
       "AutoConversion": {
         "type": "object",
         "properties": {
@@ -10106,7 +10905,7 @@
             "additionalProperties": {
               "type": "string"
             },
-            "description": "Optional client-specified metadata, which will be added to the deposit address but not to deposit transfers to the created address.\nUp to 6 key/value pairs may be provided.\nEach key and value must be less than or equal to 100 characters."
+            "description": "Optional client-specified metadata, which will be added to both the deposit address itself and transfers to the created address.\nUp to 6 key/value pairs may be provided.\nEach key and value must be less than or equal to 100 characters."
           },
           "account_id": {
             "type": "string",
@@ -10625,6 +11424,21 @@
           "SWIFT"
         ]
       },
+      "IndividualInfo": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "first_name",
+          "last_name"
+        ]
+      },
       "InitiateSandboxFiatDepositRequest": {
         "type": "object",
         "properties": {
@@ -10657,6 +11471,17 @@
       },
       "InitiateSandboxFiatDepositResponse": {
         "type": "object"
+      },
+      "InstitutionInfo": {
+        "type": "object",
+        "properties": {
+          "institution_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "institution_name"
+        ]
       },
       "ListDepositAddressesRequestOrderBy": {
         "type": "string",
@@ -10789,6 +11614,29 @@
           "country"
         ]
       },
+      "RejectCryptoDepositResponse": {
+        "type": "object"
+      },
+      "SecondaryStatus": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/SecondaryStatusName"
+          },
+          "detail": {
+            "type": "string",
+            "description": "Additional information about the current status of the transfer (e.g. if information is missing)."
+          }
+        },
+        "description": "Secondary status for the transfer, used for more granular explanation of the transfer status."
+      },
+      "SecondaryStatusName": {
+        "type": "string",
+        "enum": [
+          "TRAVEL_RULE_INFO_REQUESTED"
+        ],
+        "description": "Identifier for secondary status.\n\n - TRAVEL_RULE_INFO_REQUESTED: Travel rule information is required to continue processing the transfer."
+      },
       "Transfer": {
         "type": "object",
         "example": {
@@ -10913,6 +11761,9 @@
           "fiat_account_id": {
             "type": "string",
             "description": "For fiat withdrawals, the Paxos ID of the owner's fiat account (UUID)."
+          },
+          "secondary_status": {
+            "$ref": "#/components/schemas/SecondaryStatus"
           }
         },
         "required": [
@@ -10995,6 +11846,9 @@
           "CBIT_DEPOSIT"
         ],
         "description": "Type of transfer."
+      },
+      "UpdateCryptoDepositResponse": {
+        "type": "object"
       },
       "CapitalGainType": {
         "type": "string",
@@ -11317,6 +12171,207 @@
             "description": "Optional client-specified stored metadata."
           }
         }
+      },
+      "CreateObligationRequest": {
+        "type": "object",
+        "properties": {
+          "direction": {
+            "$ref": "#/components/schemas/ObligationDirection"
+          },
+          "asset": {
+            "type": "string",
+            "description": "Asset which is obliged."
+          },
+          "amount": {
+            "type": "string",
+            "description": "Amount of the asset which is obliged."
+          }
+        },
+        "description": "Request to create a obligation."
+      },
+      "CreateTransactionRequest": {
+        "type": "object",
+        "properties": {
+          "ref_id": {
+            "type": "string",
+            "description": "Idempotency key."
+          },
+          "settlement_window_start": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The start of the window which the transaction is eligible for settlement.\nIf omitted, transactions are immediately eligible for settlement upon success.\nRFC3339 format, like `2006-01-02T15:04:05Z`."
+          },
+          "settlement_window_end": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The end of the window which the transaction is eligible for settlement.\nTransactions which are not cancelled or settled by this time will expire.\nRFC3339 format, like `2006-01-02T15:04:05Z`."
+          },
+          "source_profile_id": {
+            "type": "string",
+            "description": "The `profile_id` of the entity submitting the transaction."
+          },
+          "target_profile_id": {
+            "type": "string",
+            "description": "The `profile_id` of the entity receiving the transaction."
+          },
+          "legs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateObligationRequest"
+            },
+            "description": "The obligations (representing one-way asset movements) to be settled atomically."
+          }
+        },
+        "description": "Request to create a bilateral settlement transaction with one or more legs."
+      },
+      "ListTransactionsResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            }
+          },
+          "next_page_cursor": {
+            "type": "string"
+          }
+        }
+      },
+      "Obligation": {
+        "type": "object",
+        "example": {
+          "id": "e7b6892a-00f7-40fb-8871-bdd1eefb6192",
+          "direction": "DELIVER",
+          "asset": "BTC",
+          "amount": "0.10000000"
+        },
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "direction": {
+            "$ref": "#/components/schemas/ObligationDirection"
+          },
+          "asset": {
+            "type": "string",
+            "description": "Asset which is obliged."
+          },
+          "amount": {
+            "type": "string",
+            "description": "Amount of the asset which is obliged.",
+            "pattern": "^[0-9]*\\.?[0-9]+$"
+          }
+        },
+        "required": [
+          "id",
+          "direction",
+          "asset",
+          "amount"
+        ]
+      },
+      "ObligationDirection": {
+        "type": "string",
+        "enum": [
+          "DELIVER",
+          "RECEIVE"
+        ],
+        "description": "Direction of asset delivery for an obligation.\n\n - DELIVER: Assets are delivered from the source profile to the target profile.\n - RECEIVE: Assets are delivered from the target profile to the source profile."
+      },
+      "Transaction": {
+        "type": "object",
+        "example": {
+          "id": "d99a03ee-6b88-4362-89da-087c2c8cd4a7",
+          "ref_id": "d840cf31-352f-4190-a476-7522bf3eafda",
+          "settlement_window_start": "2023-08-25T14:25:41.648486573Z",
+          "settlement_window_end": "2023-08-25T14:25:41.648486953Z",
+          "source_profile_id": "4fd025ab-f29f-47e6-a02e-df90a61c7ec9",
+          "target_profile_id": "47db6271-50d6-4934-8c81-c42d87bfb390",
+          "legs": [
+            {
+              "id": "ace21517-447e-4764-8733-765cb12a7fab",
+              "direction": "DELIVER",
+              "asset": "BTC",
+              "amount": "100"
+            }
+          ],
+          "status": "PENDING",
+          "created_at": "2023-08-25T14:25:41.648489333Z",
+          "updated_at": "2023-08-25T14:25:41.648489493Z"
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The transaction identifier used to query or refer to a specific transaction."
+          },
+          "ref_id": {
+            "type": "string",
+            "description": "Idempotency key."
+          },
+          "settlement_window_start": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The start of the window which the transaction is eligible for settlement.\nIf omitted, transactions are immediately eligible for settlement upon success.\nRFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`. ex: `2006-01-02T15:04:05Z`."
+          },
+          "settlement_window_end": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The end of the window which the transaction is eligible for settlement.\nTransactions which are not cancelled or settled by this time will expire.\nRFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`. ex: `2006-01-02T15:04:05Z`."
+          },
+          "source_profile_id": {
+            "type": "string",
+            "description": "The Profile ID (profile_id) of the entity submitting the transaction."
+          },
+          "target_profile_id": {
+            "type": "string",
+            "description": "The Profile ID (profile_id) of the entity receiving the transaction."
+          },
+          "legs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Obligation"
+            },
+            "description": "The obligations (representing one-way asset movements) to be settled atomically."
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the transaction was first created, RFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the transaction was last updated, RFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`."
+          }
+        },
+        "description": "Transaction returned on create (Create Transaction), list (List Transactions) and get (Get Transaction) requests.",
+        "required": [
+          "id",
+          "ref_id",
+          "settlement_window_start",
+          "settlement_window_end",
+          "source_profile_id",
+          "target_profile_id",
+          "legs",
+          "status",
+          "created_at",
+          "updated_at"
+        ]
+      },
+      "TransactionStatus": {
+        "type": "string",
+        "enum": [
+          "PENDING",
+          "SETTLED",
+          "EXPIRED",
+          "CANCELLED",
+          "AFFIRMED"
+        ],
+        "description": "- PENDING: Initial state of a settlement transaction upon creation.\n - SETTLED: Indicates all obligations belong to the settlement transaction have been enacted.\n - EXPIRED: Indicates the settlement transaction is no longer eligible for settlement.\n - CANCELLED: Indicates the settlement transaction was cancelled by the source profile.\n - AFFIRMED: Indicates the settlement transaction will be eligible for settlement once within the window.",
+        "title": "Status of the transaction"
       },
       "GetOrderBookResponse": {
         "properties": {
@@ -11770,6 +12825,12 @@
       ]
     },
     {
+      "name": "Settlements",
+      "tags": [
+        "Settlement"
+      ]
+    },
+    {
       "name": "Stablecoin Conversion",
       "tags": [
         "Stablecoin Conversion"
@@ -11800,6 +12861,7 @@
         "Transfers",
         "Fiat Transfers",
         "Deposit Addresses",
+        "Crypto Deposits",
         "Crypto Withdrawals",
         "Fees",
         "Internal Transfers",

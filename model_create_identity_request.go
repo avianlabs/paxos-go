@@ -30,7 +30,7 @@ type CreateIdentityRequest struct {
 	// Set to true if tax details are not legally required.
 	TaxDetailsNotRequired *bool `json:"tax_details_not_required,omitempty"`
 	CustomerDueDiligence *CustomerDueDiligence `json:"customer_due_diligence,omitempty"`
-	// Set to true if the identity is a merchant.
+	// Set to true to indicate that this identity is a merchant.
 	IsMerchant *bool `json:"is_merchant,omitempty"`
 }
 

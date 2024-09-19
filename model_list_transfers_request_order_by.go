@@ -20,8 +20,8 @@ type ListTransfersRequestOrderBy string
 
 // List of ListTransfersRequestOrderBy
 const (
-	ListTransfersRequestOrderBy_CREATED_AT ListTransfersRequestOrderBy = "CREATED_AT"
-	ListTransfersRequestOrderBy_UPDATED_AT ListTransfersRequestOrderBy = "UPDATED_AT"
+	CREATED_AT ListTransfersRequestOrderBy = "CREATED_AT"
+	UPDATED_AT ListTransfersRequestOrderBy = "UPDATED_AT"
 )
 
 // All allowed values of ListTransfersRequestOrderBy enum

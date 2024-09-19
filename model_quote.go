@@ -28,8 +28,10 @@ type Quote struct {
 	Side OrderSide `json:"side"`
 	// The guaranteed price, held until expires_at.
 	Price string `json:"price"`
-	BaseAsset Asset `json:"base_asset"`
-	QuoteAsset Asset `json:"quote_asset"`
+	// The \"base\" side of the trading pair (crypto - like BTC, ETH, PAXG).
+	BaseAsset string `json:"base_asset"`
+	// The \"quote\" side of the trading pair (fiat - like USD, EUR, SGD).
+	QuoteAsset string `json:"quote_asset"`
 	// The time at which the quote was first offered.
 	CreatedAt time.Time `json:"created_at"`
 	// The time at which the quote expires.
@@ -42,7 +44,7 @@ type _Quote Quote
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewQuote(id string, market Market, side OrderSide, price string, baseAsset Asset, quoteAsset Asset, createdAt time.Time, expiresAt time.Time) *Quote {
+func NewQuote(id string, market Market, side OrderSide, price string, baseAsset string, quoteAsset string, createdAt time.Time, expiresAt time.Time) *Quote {
 	this := Quote{}
 	this.Id = id
 	this.Market = market
@@ -160,9 +162,9 @@ func (o *Quote) SetPrice(v string) {
 }
 
 // GetBaseAsset returns the BaseAsset field value
-func (o *Quote) GetBaseAsset() Asset {
+func (o *Quote) GetBaseAsset() string {
 	if o == nil {
-		var ret Asset
+		var ret string
 		return ret
 	}
 
@@ -171,7 +173,7 @@ func (o *Quote) GetBaseAsset() Asset {
 
 // GetBaseAssetOk returns a tuple with the BaseAsset field value
 // and a boolean to check if the value has been set.
-func (o *Quote) GetBaseAssetOk() (*Asset, bool) {
+func (o *Quote) GetBaseAssetOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -179,14 +181,14 @@ func (o *Quote) GetBaseAssetOk() (*Asset, bool) {
 }
 
 // SetBaseAsset sets field value
-func (o *Quote) SetBaseAsset(v Asset) {
+func (o *Quote) SetBaseAsset(v string) {
 	o.BaseAsset = v
 }
 
 // GetQuoteAsset returns the QuoteAsset field value
-func (o *Quote) GetQuoteAsset() Asset {
+func (o *Quote) GetQuoteAsset() string {
 	if o == nil {
-		var ret Asset
+		var ret string
 		return ret
 	}
 
@@ -195,7 +197,7 @@ func (o *Quote) GetQuoteAsset() Asset {
 
 // GetQuoteAssetOk returns a tuple with the QuoteAsset field value
 // and a boolean to check if the value has been set.
-func (o *Quote) GetQuoteAssetOk() (*Asset, bool) {
+func (o *Quote) GetQuoteAssetOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -203,7 +205,7 @@ func (o *Quote) GetQuoteAssetOk() (*Asset, bool) {
 }
 
 // SetQuoteAsset sets field value
-func (o *Quote) SetQuoteAsset(v Asset) {
+func (o *Quote) SetQuoteAsset(v string) {
 	o.QuoteAsset = v
 }
 

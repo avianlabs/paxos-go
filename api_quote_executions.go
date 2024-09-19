@@ -410,31 +410,31 @@ func (a *QuoteExecutionsAPIService) ListQuoteExecutionsExecute(r ApiListQuoteExe
 	localVarFormParams := url.Values{}
 
 	if r.side != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "side", r.side, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "side", r.side, "form", "")
 	}
 	if r.market != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "market", r.market, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "market", r.market, "form", "")
 	}
 	if r.status != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "status", r.status, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "status", r.status, "form", "")
 	}
 	if r.createdAtBegin != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.begin", r.createdAtBegin, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.begin", r.createdAtBegin, "form", "")
 	}
 	if r.createdAtEnd != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.end", r.createdAtEnd, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.end", r.createdAtEnd, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	if r.order != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "form", "")
 	}
 	if r.orderBy != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "form", "")
 	}
 	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

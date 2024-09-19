@@ -20,16 +20,16 @@ type CustomerDueDiligenceNetWorthRange string
 
 // List of CustomerDueDiligenceNetWorthRange
 const (
-	CustomerDueDiligenceNetWorthRange__0_TO_100_K CustomerDueDiligenceNetWorthRange = "NET_WORTH_0_TO_100K"
-	CustomerDueDiligenceNetWorthRange__100_K_TO_500_K CustomerDueDiligenceNetWorthRange = "NET_WORTH_100K_TO_500K"
-	CustomerDueDiligenceNetWorthRange__500_K_TO_1_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_500K_TO_1M"
-	CustomerDueDiligenceNetWorthRange__1_M_TO_2_5_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_1M_TO_2_5M"
-	CustomerDueDiligenceNetWorthRange__2_5_M_TO_5_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_2_5M_TO_5M"
-	CustomerDueDiligenceNetWorthRange__5_M_TO_7_5_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_5M_TO_7_5M"
-	CustomerDueDiligenceNetWorthRange__7_5_M_TO_10_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_7_5M_TO_10M"
-	CustomerDueDiligenceNetWorthRange__10_M_TO_25_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_10M_TO_25M"
-	CustomerDueDiligenceNetWorthRange__25_M_TO_50_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_25M_TO_50M"
-	CustomerDueDiligenceNetWorthRange_OVER_50_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_OVER_50M"
+	_0_TO_100_K CustomerDueDiligenceNetWorthRange = "NET_WORTH_0_TO_100K"
+	_100_K_TO_500_K CustomerDueDiligenceNetWorthRange = "NET_WORTH_100K_TO_500K"
+	_500_K_TO_1_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_500K_TO_1M"
+	_1_M_TO_2_5_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_1M_TO_2_5M"
+	_2_5_M_TO_5_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_2_5M_TO_5M"
+	_5_M_TO_7_5_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_5M_TO_7_5M"
+	_7_5_M_TO_10_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_7_5M_TO_10M"
+	_10_M_TO_25_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_10M_TO_25M"
+	_25_M_TO_50_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_25M_TO_50M"
+	OVER_50_M CustomerDueDiligenceNetWorthRange = "NET_WORTH_OVER_50M"
 )
 
 // All allowed values of CustomerDueDiligenceNetWorthRange enum

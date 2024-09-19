@@ -24,7 +24,7 @@ type CreateStablecoinConversionRequest struct {
 	// The Profile associated with a conversion.
 	ProfileId string `json:"profile_id"`
 	// Asset amount to convert. <a href=\"/stablecoin/conversion/asset\">Details</a>.
-	Amount string `json:"amount"`
+	Amount string `json:"amount" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	// The asset to convert from. <a href=\"/stablecoin/conversion/asset\">Details</a>.
 	SourceAsset string `json:"source_asset"`
 	// The asset to convert to. <a href=\"/stablecoin/conversion/asset\">Details</a>.

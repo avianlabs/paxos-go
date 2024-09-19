@@ -30,7 +30,7 @@ import (
 
 func main() {
 	profileId := "profileId_example" // string | The ID of the profile that will credited with the assets.
-	createSandboxDepositRequest := *openapiclient.NewCreateSandboxDepositRequest(openapiclient.Asset("USD"), "Amount_example") // CreateSandboxDepositRequest | 
+	createSandboxDepositRequest := *openapiclient.NewCreateSandboxDepositRequest("Asset_example", "Amount_example") // CreateSandboxDepositRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

@@ -172,8 +172,6 @@ Note that the following field is forbidden in the request:
 </code>
 </pre>
 
-Note that this feature is not yet supported - `customer_due_diligence`.
-
 ### Create Institution Identity
 Institution identities are used to represent all non-person entities.
 Details for institution identity type are recorded in `institution_details`. An institution identity also has `institution_members` associated with it. This defines persons or other entities that have some relationship to the institution.
@@ -541,10 +539,10 @@ func (a *IdentityAPIService) GetIdentityExecute(r ApiGetIdentityRequest) (*Ident
 	localVarFormParams := url.Values{}
 
 	if r.includeDetails != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "include_details", r.includeDetails, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_details", r.includeDetails, "form", "")
 	}
 	if r.includeInstitutionMembers != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "include_institution_members", r.includeInstitutionMembers, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_institution_members", r.includeInstitutionMembers, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -764,52 +762,52 @@ func (a *IdentityAPIService) ListIdentitiesExecute(r ApiListIdentitiesRequest) (
 	localVarFormParams := url.Values{}
 
 	if r.summaryStatus != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "summary_status", r.summaryStatus, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "summary_status", r.summaryStatus, "form", "")
 	}
 	if r.createdAtLt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lt", r.createdAtLt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lt", r.createdAtLt, "form", "")
 	}
 	if r.createdAtLte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lte", r.createdAtLte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lte", r.createdAtLte, "form", "")
 	}
 	if r.createdAtEq != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.eq", r.createdAtEq, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.eq", r.createdAtEq, "form", "")
 	}
 	if r.createdAtGte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gte", r.createdAtGte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gte", r.createdAtGte, "form", "")
 	}
 	if r.createdAtGt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gt", r.createdAtGt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gt", r.createdAtGt, "form", "")
 	}
 	if r.updatedAtLt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.lt", r.updatedAtLt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.lt", r.updatedAtLt, "form", "")
 	}
 	if r.updatedAtLte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.lte", r.updatedAtLte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.lte", r.updatedAtLte, "form", "")
 	}
 	if r.updatedAtEq != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.eq", r.updatedAtEq, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.eq", r.updatedAtEq, "form", "")
 	}
 	if r.updatedAtGte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.gte", r.updatedAtGte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.gte", r.updatedAtGte, "form", "")
 	}
 	if r.updatedAtGt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.gt", r.updatedAtGt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.gt", r.updatedAtGt, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	if r.order != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "form", "")
 	}
 	if r.orderBy != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "form", "")
 	}
 	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "form", "")
 	}
 	if r.identityType != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "identity_type", r.identityType, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "identity_type", r.identityType, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -885,10 +883,11 @@ func (r ApiUpdateIdentityRequest) Execute() (*Identity, *http.Response, error) {
 UpdateIdentity Update Identity
 
 This enables you to update an existing identity with new information. Please note that:
-- Updating any field other than `set_user_disabled`, `metadata` or `ref_id` will transition the identity to a PENDING status.
+- Updating any field other than `set_user_disabled`, `metadata`, `ref_id`, or `is_merchant` will transition the identity to a PENDING status.
 This will restrict the identity until it has been re-verified.
 - Setting `set_user_disabled` to `true` will disable the identity, limiting its ability to be used within
 the Paxos platform.
+- Setting `is_merchant` to `true` will indicate that this identity is a merchant.
 - Details of the identity can be updated by providing `person_details` or `institution_details` depending upon the type.
 - You can add, update or remove tax_details by providing the `tax_details` list. The tax_details will be updated to exactly
 comprise the given list

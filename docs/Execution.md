@@ -12,9 +12,9 @@ Name | Type | Description | Notes
 **Amount** | Pointer to **string** | Execution amount. | [optional] 
 **Price** | Pointer to **string** | Execution price. | [optional] 
 **Commission** | Pointer to **string** | Amount of commission paid. | [optional] 
-**CommissionAsset** | Pointer to [**Asset**](Asset.md) |  | [optional] 
+**CommissionAsset** | Pointer to **string** | Currency of Commission payment. Fiat Only (USD, EUR, SGD). | [optional] 
 **Rebate** | Pointer to **string** | Amount of rebate applied. | [optional] 
-**RebateAsset** | Pointer to [**Asset**](Asset.md) |  | [optional] 
+**RebateAsset** | Pointer to **string** | Currency of the rebate. Fiat Only (USD, EUR, SGD). | [optional] 
 **AccountId** | Pointer to **string** | Account ID associated with the execution. | [optional] 
 **GrossTradeAmount** | Pointer to **string** | The total asset traded (asset amount multiplied by price paid). | [optional] 
 
@@ -239,20 +239,20 @@ HasCommission returns a boolean if a field has been set.
 
 ### GetCommissionAsset
 
-`func (o *Execution) GetCommissionAsset() Asset`
+`func (o *Execution) GetCommissionAsset() string`
 
 GetCommissionAsset returns the CommissionAsset field if non-nil, zero value otherwise.
 
 ### GetCommissionAssetOk
 
-`func (o *Execution) GetCommissionAssetOk() (*Asset, bool)`
+`func (o *Execution) GetCommissionAssetOk() (*string, bool)`
 
 GetCommissionAssetOk returns a tuple with the CommissionAsset field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetCommissionAsset
 
-`func (o *Execution) SetCommissionAsset(v Asset)`
+`func (o *Execution) SetCommissionAsset(v string)`
 
 SetCommissionAsset sets CommissionAsset field to given value.
 
@@ -289,20 +289,20 @@ HasRebate returns a boolean if a field has been set.
 
 ### GetRebateAsset
 
-`func (o *Execution) GetRebateAsset() Asset`
+`func (o *Execution) GetRebateAsset() string`
 
 GetRebateAsset returns the RebateAsset field if non-nil, zero value otherwise.
 
 ### GetRebateAssetOk
 
-`func (o *Execution) GetRebateAssetOk() (*Asset, bool)`
+`func (o *Execution) GetRebateAssetOk() (*string, bool)`
 
 GetRebateAssetOk returns a tuple with the RebateAsset field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetRebateAsset
 
-`func (o *Execution) SetRebateAsset(v Asset)`
+`func (o *Execution) SetRebateAsset(v string)`
 
 SetRebateAsset sets RebateAsset field to given value.
 

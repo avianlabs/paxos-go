@@ -22,7 +22,7 @@ var _ MappedNullable = &InitiateSandboxFiatDepositRequest{}
 // InitiateSandboxFiatDepositRequest struct for InitiateSandboxFiatDepositRequest
 type InitiateSandboxFiatDepositRequest struct {
 	// The amount to deposit.
-	Amount string `json:"amount"`
+	Amount string `json:"amount" validate:"regexp=^[0-9]*\\\\.?[0-9]{1,2}$"`
 	// The asset to deposit. Current supported asset: \"USD\".
 	Asset string `json:"asset"`
 	// The string that the client must provide in the memo field on their deposit to credit their Paxos platform balance.

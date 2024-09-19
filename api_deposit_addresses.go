@@ -292,10 +292,10 @@ func (a *DepositAddressesAPIService) ListDepositAddressesExecute(r ApiListDeposi
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "profile_ids", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "profile_ids", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "profile_ids", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "profile_ids", t, "form", "multi")
 		}
 	}
 	if r.identityIds != nil {
@@ -303,10 +303,10 @@ func (a *DepositAddressesAPIService) ListDepositAddressesExecute(r ApiListDeposi
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "identity_ids", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "identity_ids", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "identity_ids", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "identity_ids", t, "form", "multi")
 		}
 	}
 	if r.ids != nil {
@@ -314,10 +314,10 @@ func (a *DepositAddressesAPIService) ListDepositAddressesExecute(r ApiListDeposi
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "ids", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "ids", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "ids", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "ids", t, "form", "multi")
 		}
 	}
 	if r.refIds != nil {
@@ -325,48 +325,48 @@ func (a *DepositAddressesAPIService) ListDepositAddressesExecute(r ApiListDeposi
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "ref_ids", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "ref_ids", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "ref_ids", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "ref_ids", t, "form", "multi")
 		}
 	}
 	if r.createdAtLt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lt", r.createdAtLt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lt", r.createdAtLt, "form", "")
 	}
 	if r.createdAtLte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lte", r.createdAtLte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lte", r.createdAtLte, "form", "")
 	}
 	if r.createdAtEq != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.eq", r.createdAtEq, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.eq", r.createdAtEq, "form", "")
 	}
 	if r.createdAtGte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gte", r.createdAtGte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gte", r.createdAtGte, "form", "")
 	}
 	if r.createdAtGt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gt", r.createdAtGt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gt", r.createdAtGt, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	if r.order != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "form", "")
 	}
 	if r.orderBy != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "form", "")
 	}
 	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "form", "")
 	}
 	if r.accountIds != nil {
 		t := *r.accountIds
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "account_ids", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "account_ids", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "account_ids", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "account_ids", t, "form", "multi")
 		}
 	}
 	// to determine the Content-Type header
