@@ -21,6 +21,8 @@ var _ MappedNullable = &FiatNetworkInstructions{}
 type FiatNetworkInstructions struct {
 	Wire *FiatNetworkInstructionsWire `json:"wire,omitempty"`
 	Cbit *FiatNetworkInstructionsCbit `json:"cbit,omitempty"`
+	DbsAct *FiatNetworkInstructionsDbsAct `json:"dbs_act,omitempty"`
+	Cubix *FiatNetworkInstructionsCubix `json:"cubix,omitempty"`
 }
 
 // NewFiatNetworkInstructions instantiates a new FiatNetworkInstructions object
@@ -104,6 +106,70 @@ func (o *FiatNetworkInstructions) SetCbit(v FiatNetworkInstructionsCbit) {
 	o.Cbit = &v
 }
 
+// GetDbsAct returns the DbsAct field value if set, zero value otherwise.
+func (o *FiatNetworkInstructions) GetDbsAct() FiatNetworkInstructionsDbsAct {
+	if o == nil || IsNil(o.DbsAct) {
+		var ret FiatNetworkInstructionsDbsAct
+		return ret
+	}
+	return *o.DbsAct
+}
+
+// GetDbsActOk returns a tuple with the DbsAct field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *FiatNetworkInstructions) GetDbsActOk() (*FiatNetworkInstructionsDbsAct, bool) {
+	if o == nil || IsNil(o.DbsAct) {
+		return nil, false
+	}
+	return o.DbsAct, true
+}
+
+// HasDbsAct returns a boolean if a field has been set.
+func (o *FiatNetworkInstructions) HasDbsAct() bool {
+	if o != nil && !IsNil(o.DbsAct) {
+		return true
+	}
+
+	return false
+}
+
+// SetDbsAct gets a reference to the given FiatNetworkInstructionsDbsAct and assigns it to the DbsAct field.
+func (o *FiatNetworkInstructions) SetDbsAct(v FiatNetworkInstructionsDbsAct) {
+	o.DbsAct = &v
+}
+
+// GetCubix returns the Cubix field value if set, zero value otherwise.
+func (o *FiatNetworkInstructions) GetCubix() FiatNetworkInstructionsCubix {
+	if o == nil || IsNil(o.Cubix) {
+		var ret FiatNetworkInstructionsCubix
+		return ret
+	}
+	return *o.Cubix
+}
+
+// GetCubixOk returns a tuple with the Cubix field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *FiatNetworkInstructions) GetCubixOk() (*FiatNetworkInstructionsCubix, bool) {
+	if o == nil || IsNil(o.Cubix) {
+		return nil, false
+	}
+	return o.Cubix, true
+}
+
+// HasCubix returns a boolean if a field has been set.
+func (o *FiatNetworkInstructions) HasCubix() bool {
+	if o != nil && !IsNil(o.Cubix) {
+		return true
+	}
+
+	return false
+}
+
+// SetCubix gets a reference to the given FiatNetworkInstructionsCubix and assigns it to the Cubix field.
+func (o *FiatNetworkInstructions) SetCubix(v FiatNetworkInstructionsCubix) {
+	o.Cubix = &v
+}
+
 func (o FiatNetworkInstructions) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -119,6 +185,12 @@ func (o FiatNetworkInstructions) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Cbit) {
 		toSerialize["cbit"] = o.Cbit
+	}
+	if !IsNil(o.DbsAct) {
+		toSerialize["dbs_act"] = o.DbsAct
+	}
+	if !IsNil(o.Cubix) {
+		toSerialize["cubix"] = o.Cubix
 	}
 	return toSerialize, nil
 }

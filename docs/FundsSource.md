@@ -17,6 +17,8 @@
 
 * `SAVINGS_ACCOUNT_WITHDRAWAL` (value: `"SAVINGS_ACCOUNT_WITHDRAWAL"`)
 
+* `GOVERNMENT_BENEFITS` (value: `"GOVERNMENT_BENEFITS"`)
+
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

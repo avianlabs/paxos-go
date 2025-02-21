@@ -37,7 +37,7 @@ import (
 )
 
 func main() {
-	createFiatAccountRequest := *openapiclient.NewCreateFiatAccountRequest("IdentityId_example", *openapiclient.NewFiatAccountOwner(), *openapiclient.NewFiatNetworkInstructions()) // CreateFiatAccountRequest | 
+	createFiatAccountRequest := *openapiclient.NewCreateFiatAccountRequest(*openapiclient.NewFiatAccountOwner(), *openapiclient.NewFiatNetworkInstructions()) // CreateFiatAccountRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -103,7 +103,7 @@ import (
 )
 
 func main() {
-	createFiatDepositInstructionsRequest := *openapiclient.NewCreateFiatDepositInstructionsRequest("ProfileId_example", "IdentityId_example", openapiclient.FiatNetwork("WIRE")) // CreateFiatDepositInstructionsRequest | 
+	createFiatDepositInstructionsRequest := *openapiclient.NewCreateFiatDepositInstructionsRequest("ProfileId_example", openapiclient.FiatNetwork("WIRE")) // CreateFiatDepositInstructionsRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -169,7 +169,7 @@ import (
 )
 
 func main() {
-	createFiatWithdrawalRequest := *openapiclient.NewCreateFiatWithdrawalRequest("Amount_example", "Asset_example", "FiatAccountId_example", "ProfileId_example", "IdentityId_example") // CreateFiatWithdrawalRequest | 
+	createFiatWithdrawalRequest := *openapiclient.NewCreateFiatWithdrawalRequest("Asset_example", "FiatAccountId_example", "ProfileId_example") // CreateFiatWithdrawalRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

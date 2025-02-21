@@ -15,6 +15,8 @@
 
 * `POLYGON_POS` (value: `"POLYGON_POS"`)
 
+* `ARBITRUM_ONE` (value: `"ARBITRUM_ONE"`)
+
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -135,10 +135,123 @@ func (a *ProfilesAPIService) CreateProfileExecute(r ApiCreateProfileRequest) (*P
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiDeactivateProfileRequest struct {
+	ctx context.Context
+	ApiService *ProfilesAPIService
+	profileId string
+}
+
+func (r ApiDeactivateProfileRequest) Execute() (map[string]interface{}, *http.Response, error) {
+	return r.ApiService.DeactivateProfileExecute(r)
+}
+
+/*
+DeactivateProfile Deactivate Profile
+
+Deactivate the given `profile_id`. The default profile cannot be deactivated.
+Deactivated profiles won't be visible for deposits.
+Profiles with more than zero balances cannot be deactivated.
+If a deactivated profile has a non-zero balance it will be reactivated.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param profileId The UUID of the profile. The default profile cannot be deactivated. The profile must have a zero balance to be deactivated.
+ @return ApiDeactivateProfileRequest
+*/
+func (a *ProfilesAPIService) DeactivateProfile(ctx context.Context, profileId string) ApiDeactivateProfileRequest {
+	return ApiDeactivateProfileRequest{
+		ApiService: a,
+		ctx: ctx,
+		profileId: profileId,
+	}
+}
+
+// Execute executes the request
+//  @return map[string]interface{}
+func (a *ProfilesAPIService) DeactivateProfileExecute(r ApiDeactivateProfileRequest) (map[string]interface{}, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPut
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  map[string]interface{}
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProfilesAPIService.DeactivateProfile")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/profiles/{profile_id}/deactivate"
+	localVarPath = strings.Replace(localVarPath, "{"+"profile_id"+"}", url.PathEscape(parameterValueToString(r.profileId, "profileId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetProfileRequest struct {
 	ctx context.Context
 	ApiService *ProfilesAPIService
 	profileId string
+	includeDeactivated *bool
+}
+
+// Used to include deactivated profiles in the response.
+func (r ApiGetProfileRequest) IncludeDeactivated(includeDeactivated bool) ApiGetProfileRequest {
+	r.includeDeactivated = &includeDeactivated
+	return r
 }
 
 func (r ApiGetProfileRequest) Execute() (*Profile, *http.Response, error) {
@@ -184,6 +297,9 @@ func (a *ProfilesAPIService) GetProfileExecute(r ApiGetProfileRequest) (*Profile
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if r.includeDeactivated != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_deactivated", r.includeDeactivated, "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -256,7 +372,7 @@ Get the balance of `asset` in a profile.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param profileId
- @param asset 
+ @param asset
  @return ApiGetProfileBalanceRequest
 */
 func (a *ProfilesAPIService) GetProfileBalance(ctx context.Context, profileId string, asset string) ApiGetProfileBalanceRequest {
@@ -352,7 +468,6 @@ type ApiListProfileBalancesRequest struct {
 	assets *[]string
 }
 
-// 
 func (r ApiListProfileBalancesRequest) Assets(assets []string) ApiListProfileBalancesRequest {
 	r.assets = &assets
 	return r
@@ -480,6 +595,7 @@ type ApiListProfilesRequest struct {
 	order *string
 	orderBy *string
 	pageCursor *string
+	nickname *string
 }
 
 // Include timestamps strictly less than lt. RFC3339 format, like &#x60;2006-01-02T15:04:05Z&#x60;.
@@ -533,6 +649,12 @@ func (r ApiListProfilesRequest) OrderBy(orderBy string) ApiListProfilesRequest {
 // Cursor token for fetching the next page.
 func (r ApiListProfilesRequest) PageCursor(pageCursor string) ApiListProfilesRequest {
 	r.pageCursor = &pageCursor
+	return r
+}
+
+// Optionally filter by Profile display name. Retrieves nickname(s) based on the beginning characters of the given display name (prefix matching). Case insensitive. WIldcards and regular expressions not supported.
+func (r ApiListProfilesRequest) Nickname(nickname string) ApiListProfilesRequest {
+	r.nickname = &nickname
 	return r
 }
 
@@ -606,6 +728,9 @@ func (a *ProfilesAPIService) ListProfilesExecute(r ApiListProfilesRequest) (*Lis
 	if r.pageCursor != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
 	}
+	if r.nickname != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "nickname", r.nickname, "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -623,6 +748,120 @@ func (a *ProfilesAPIService) ListProfilesExecute(r ApiListProfilesRequest) (*Lis
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiUpdateProfileRequest struct {
+	ctx context.Context
+	ApiService *ProfilesAPIService
+	profileId string
+	updateProfileRequest *UpdateProfileRequest
+}
+
+func (r ApiUpdateProfileRequest) UpdateProfileRequest(updateProfileRequest UpdateProfileRequest) ApiUpdateProfileRequest {
+	r.updateProfileRequest = &updateProfileRequest
+	return r
+}
+
+func (r ApiUpdateProfileRequest) Execute() (*Profile, *http.Response, error) {
+	return r.ApiService.UpdateProfileExecute(r)
+}
+
+/*
+UpdateProfile Update Profile
+
+Change the `nickname` label for the given `profile_id` (Profile).
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param profileId
+ @return ApiUpdateProfileRequest
+*/
+func (a *ProfilesAPIService) UpdateProfile(ctx context.Context, profileId string) ApiUpdateProfileRequest {
+	return ApiUpdateProfileRequest{
+		ApiService: a,
+		ctx: ctx,
+		profileId: profileId,
+	}
+}
+
+// Execute executes the request
+//  @return Profile
+func (a *ProfilesAPIService) UpdateProfileExecute(r ApiUpdateProfileRequest) (*Profile, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPut
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *Profile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProfilesAPIService.UpdateProfile")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/profiles/{profile_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"profile_id"+"}", url.PathEscape(parameterValueToString(r.profileId, "profileId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.updateProfileRequest == nil {
+		return localVarReturnValue, nil, reportError("updateProfileRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.updateProfileRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

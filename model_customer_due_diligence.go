@@ -36,6 +36,11 @@ type CustomerDueDiligence struct {
 	// Whether or not the institution tied to the Identity has nominee shareholders.
 	HasNomineeShareholders *bool `json:"has_nominee_shareholders,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
+	// `true` or `false` indicating whether or not the company is listed on a public stock exchange.
+	IsPubliclyTraded *bool `json:"is_publicly_traded,omitempty"`
+	MerchantFundingSource *MerchantFundingSourceFundingSource `json:"merchant_funding_source,omitempty"`
+	// Regions where the customer base is located.
+	CustomerRegions []CustomerRegion `json:"customer_regions,omitempty"`
 }
 
 // NewCustomerDueDiligence instantiates a new CustomerDueDiligence object
@@ -471,6 +476,102 @@ func (o *CustomerDueDiligence) SetCreatedAt(v time.Time) {
 	o.CreatedAt = &v
 }
 
+// GetIsPubliclyTraded returns the IsPubliclyTraded field value if set, zero value otherwise.
+func (o *CustomerDueDiligence) GetIsPubliclyTraded() bool {
+	if o == nil || IsNil(o.IsPubliclyTraded) {
+		var ret bool
+		return ret
+	}
+	return *o.IsPubliclyTraded
+}
+
+// GetIsPubliclyTradedOk returns a tuple with the IsPubliclyTraded field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustomerDueDiligence) GetIsPubliclyTradedOk() (*bool, bool) {
+	if o == nil || IsNil(o.IsPubliclyTraded) {
+		return nil, false
+	}
+	return o.IsPubliclyTraded, true
+}
+
+// HasIsPubliclyTraded returns a boolean if a field has been set.
+func (o *CustomerDueDiligence) HasIsPubliclyTraded() bool {
+	if o != nil && !IsNil(o.IsPubliclyTraded) {
+		return true
+	}
+
+	return false
+}
+
+// SetIsPubliclyTraded gets a reference to the given bool and assigns it to the IsPubliclyTraded field.
+func (o *CustomerDueDiligence) SetIsPubliclyTraded(v bool) {
+	o.IsPubliclyTraded = &v
+}
+
+// GetMerchantFundingSource returns the MerchantFundingSource field value if set, zero value otherwise.
+func (o *CustomerDueDiligence) GetMerchantFundingSource() MerchantFundingSourceFundingSource {
+	if o == nil || IsNil(o.MerchantFundingSource) {
+		var ret MerchantFundingSourceFundingSource
+		return ret
+	}
+	return *o.MerchantFundingSource
+}
+
+// GetMerchantFundingSourceOk returns a tuple with the MerchantFundingSource field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustomerDueDiligence) GetMerchantFundingSourceOk() (*MerchantFundingSourceFundingSource, bool) {
+	if o == nil || IsNil(o.MerchantFundingSource) {
+		return nil, false
+	}
+	return o.MerchantFundingSource, true
+}
+
+// HasMerchantFundingSource returns a boolean if a field has been set.
+func (o *CustomerDueDiligence) HasMerchantFundingSource() bool {
+	if o != nil && !IsNil(o.MerchantFundingSource) {
+		return true
+	}
+
+	return false
+}
+
+// SetMerchantFundingSource gets a reference to the given MerchantFundingSourceFundingSource and assigns it to the MerchantFundingSource field.
+func (o *CustomerDueDiligence) SetMerchantFundingSource(v MerchantFundingSourceFundingSource) {
+	o.MerchantFundingSource = &v
+}
+
+// GetCustomerRegions returns the CustomerRegions field value if set, zero value otherwise.
+func (o *CustomerDueDiligence) GetCustomerRegions() []CustomerRegion {
+	if o == nil || IsNil(o.CustomerRegions) {
+		var ret []CustomerRegion
+		return ret
+	}
+	return o.CustomerRegions
+}
+
+// GetCustomerRegionsOk returns a tuple with the CustomerRegions field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustomerDueDiligence) GetCustomerRegionsOk() ([]CustomerRegion, bool) {
+	if o == nil || IsNil(o.CustomerRegions) {
+		return nil, false
+	}
+	return o.CustomerRegions, true
+}
+
+// HasCustomerRegions returns a boolean if a field has been set.
+func (o *CustomerDueDiligence) HasCustomerRegions() bool {
+	if o != nil && !IsNil(o.CustomerRegions) {
+		return true
+	}
+
+	return false
+}
+
+// SetCustomerRegions gets a reference to the given []CustomerRegion and assigns it to the CustomerRegions field.
+func (o *CustomerDueDiligence) SetCustomerRegions(v []CustomerRegion) {
+	o.CustomerRegions = v
+}
+
 func (o CustomerDueDiligence) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -519,6 +620,15 @@ func (o CustomerDueDiligence) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.CreatedAt) {
 		toSerialize["created_at"] = o.CreatedAt
+	}
+	if !IsNil(o.IsPubliclyTraded) {
+		toSerialize["is_publicly_traded"] = o.IsPubliclyTraded
+	}
+	if !IsNil(o.MerchantFundingSource) {
+		toSerialize["merchant_funding_source"] = o.MerchantFundingSource
+	}
+	if !IsNil(o.CustomerRegions) {
+		toSerialize["customer_regions"] = o.CustomerRegions
 	}
 	return toSerialize, nil
 }

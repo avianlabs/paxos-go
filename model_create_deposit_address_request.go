@@ -28,7 +28,7 @@ type CreateDepositAddressRequest struct {
 	IdentityId *string `json:"identity_id,omitempty"`
 	// Client-specified ID for replay protection and lookup.
 	RefId *string `json:"ref_id,omitempty"`
-	// Optional client-specified metadata, which will be added to the deposit address but not to deposit transfers to the created address. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters.
+	// Optional client-specified metadata, which will be added to both the deposit address itself and transfers to the created address. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters.
 	Metadata *map[string]string `json:"metadata,omitempty"`
 	// The Account associated to the identity of the user that will be linked to the created address.
 	AccountId *string `json:"account_id,omitempty"`

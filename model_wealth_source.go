@@ -24,6 +24,8 @@ const (
 	WealthSource_INVESTMENT_GAINS WealthSource = "INVESTMENT_GAINS"
 	WealthSource_BUSINESS_OWNERSHIP_DIVIDENDS WealthSource = "BUSINESS_OWNERSHIP_DIVIDENDS"
 	WealthSource_EMPLOYMENT_INCOME WealthSource = "EMPLOYMENT_INCOME"
+	WealthSource_REAL_ESTATE WealthSource = "REAL_ESTATE"
+	WealthSource_OTHER_SOURCE_OF_WEALTH WealthSource = "OTHER_SOURCE_OF_WEALTH"
 )
 
 // All allowed values of WealthSource enum
@@ -32,6 +34,8 @@ var AllowedWealthSourceEnumValues = []WealthSource{
 	"INVESTMENT_GAINS",
 	"BUSINESS_OWNERSHIP_DIVIDENDS",
 	"EMPLOYMENT_INCOME",
+	"REAL_ESTATE",
+	"OTHER_SOURCE_OF_WEALTH",
 }
 
 func (v *WealthSource) UnmarshalJSON(src []byte) error {

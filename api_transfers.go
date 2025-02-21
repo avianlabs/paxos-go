@@ -17,8 +17,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"reflect"
 	"time"
+	"reflect"
 )
 
 
@@ -155,6 +155,8 @@ type ApiListTransfersRequest struct {
 	ids *[]string
 	type_ *[]string
 	groupIds *[]string
+	cryptoTxHashes *[]string
+	secondaryStatuses *[]string
 }
 
 // Optionally filter by the target profiles of the transfers. Limit 100. Can be combined with created_at.* or updated_at.* filtering options only.
@@ -280,6 +282,18 @@ func (r ApiListTransfersRequest) Type_(type_ []string) ApiListTransfersRequest {
 // Optionally filter by transfer &#x60;group_ids&#x60;. Limit 100.
 func (r ApiListTransfersRequest) GroupIds(groupIds []string) ApiListTransfersRequest {
 	r.groupIds = &groupIds
+	return r
+}
+
+// Optionally filter by the on-chain transaction hash for crypto transactions. Limit 100.
+func (r ApiListTransfersRequest) CryptoTxHashes(cryptoTxHashes []string) ApiListTransfersRequest {
+	r.cryptoTxHashes = &cryptoTxHashes
+	return r
+}
+
+// Optionally filter by secondary status.   - TRAVEL_RULE_INFO_REQUESTED: Travel rule information is required to continue processing the transfer.  - TRAVEL_RULE_REJECTED: Transfer has been terminally rejected due to failing travel rule checks.
+func (r ApiListTransfersRequest) SecondaryStatuses(secondaryStatuses []string) ApiListTransfersRequest {
+	r.secondaryStatuses = &secondaryStatuses
 	return r
 }
 
@@ -449,6 +463,28 @@ func (a *TransfersAPIService) ListTransfersExecute(r ApiListTransfersRequest) (*
 			}
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "group_ids", t, "multi")
+		}
+	}
+	if r.cryptoTxHashes != nil {
+		t := *r.cryptoTxHashes
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "crypto_tx_hashes", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "crypto_tx_hashes", t, "multi")
+		}
+	}
+	if r.secondaryStatuses != nil {
+		t := *r.secondaryStatuses
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "secondary_statuses", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "secondary_statuses", t, "multi")
 		}
 	}
 	// to determine the Content-Type header

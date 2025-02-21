@@ -25,8 +25,8 @@ type CreateFiatDepositInstructionsRequest struct {
 	RefId *string `json:"ref_id,omitempty"`
 	// The Profile (`profile_id`) to deposit to.
 	ProfileId string `json:"profile_id"`
-	// The Identity (`identity_id`) of the user making the deposit.
-	IdentityId string `json:"identity_id"`
+	// The Identity (`identity_id`) of the user making the deposit. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) making deposits on behalf of their end users.
+	IdentityId *string `json:"identity_id,omitempty"`
 	// The Account (`account_id`) associated with the Identity of the user making the deposit. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) making deposits on behalf of their end users.
 	AccountId *string `json:"account_id,omitempty"`
 	FiatNetwork FiatNetwork `json:"fiat_network"`
@@ -41,10 +41,9 @@ type _CreateFiatDepositInstructionsRequest CreateFiatDepositInstructionsRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateFiatDepositInstructionsRequest(profileId string, identityId string, fiatNetwork FiatNetwork) *CreateFiatDepositInstructionsRequest {
+func NewCreateFiatDepositInstructionsRequest(profileId string, fiatNetwork FiatNetwork) *CreateFiatDepositInstructionsRequest {
 	this := CreateFiatDepositInstructionsRequest{}
 	this.ProfileId = profileId
-	this.IdentityId = identityId
 	this.FiatNetwork = fiatNetwork
 	return &this
 }
@@ -113,28 +112,36 @@ func (o *CreateFiatDepositInstructionsRequest) SetProfileId(v string) {
 	o.ProfileId = v
 }
 
-// GetIdentityId returns the IdentityId field value
+// GetIdentityId returns the IdentityId field value if set, zero value otherwise.
 func (o *CreateFiatDepositInstructionsRequest) GetIdentityId() string {
-	if o == nil {
+	if o == nil || IsNil(o.IdentityId) {
 		var ret string
 		return ret
 	}
-
-	return o.IdentityId
+	return *o.IdentityId
 }
 
-// GetIdentityIdOk returns a tuple with the IdentityId field value
+// GetIdentityIdOk returns a tuple with the IdentityId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateFiatDepositInstructionsRequest) GetIdentityIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.IdentityId) {
 		return nil, false
 	}
-	return &o.IdentityId, true
+	return o.IdentityId, true
 }
 
-// SetIdentityId sets field value
+// HasIdentityId returns a boolean if a field has been set.
+func (o *CreateFiatDepositInstructionsRequest) HasIdentityId() bool {
+	if o != nil && !IsNil(o.IdentityId) {
+		return true
+	}
+
+	return false
+}
+
+// SetIdentityId gets a reference to the given string and assigns it to the IdentityId field.
 func (o *CreateFiatDepositInstructionsRequest) SetIdentityId(v string) {
-	o.IdentityId = v
+	o.IdentityId = &v
 }
 
 // GetAccountId returns the AccountId field value if set, zero value otherwise.
@@ -271,7 +278,9 @@ func (o CreateFiatDepositInstructionsRequest) ToMap() (map[string]interface{}, e
 		toSerialize["ref_id"] = o.RefId
 	}
 	toSerialize["profile_id"] = o.ProfileId
-	toSerialize["identity_id"] = o.IdentityId
+	if !IsNil(o.IdentityId) {
+		toSerialize["identity_id"] = o.IdentityId
+	}
 	if !IsNil(o.AccountId) {
 		toSerialize["account_id"] = o.AccountId
 	}
@@ -291,7 +300,6 @@ func (o *CreateFiatDepositInstructionsRequest) UnmarshalJSON(data []byte) (err e
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"profile_id",
-		"identity_id",
 		"fiat_network",
 	}
 

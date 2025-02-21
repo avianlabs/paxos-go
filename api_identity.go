@@ -172,8 +172,6 @@ Note that the following field is forbidden in the request:
 </code>
 </pre>
 
-Note that this feature is not yet supported - `customer_due_diligence`.
-
 ### Create Institution Identity
 Institution identities are used to represent all non-person entities.
 Details for institution identity type are recorded in `institution_details`. An institution identity also has `institution_members` associated with it. This defines persons or other entities that have some relationship to the institution.
@@ -200,7 +198,7 @@ institution_sub_type | industry
 `BLOCKCHAIN` | Blockchain Technology
 `CONSTRUCTION` | Construction
 `CRYPTO` | Crypto Services and Products (Mining, Exchange, Broker)
-`DRUGS` | Illicit Drugs / Drug Paraphernalia
+`DRUGS` | Medicine Dispensary
 `E_COMMERCE` | E-Commerce
 `EDUCATIONAL_SERVICES` | Educational Services
 `EXPORT_IMPORT` | Export / Import Companies
@@ -222,7 +220,6 @@ institution_sub_type | industry
 `PRECIOUS_METALS` | Jewelry or Precious Metals (Mining, Transportation, Dealing or Retail)
 `PROFESSIONAL_SCIENTIFIC_TECHNICAL_SERVICES` | Professional Services (Consulting, Legal, Accounting, etc.)
 `PUBLIC_ADMINISTRATION` | Public or Government Services
-`RANSOMWARE` | Ransomware / Facilitators of Ransomware Transactions
 `REAL_ESTATE_RENTAL_LEASING` | Real Estate and Rental and Leasing
 `REGISTERED_INVESTMENT_ADVISOR` | Registered Investment Advisor
 `RETAIL_TRADE` | Retail Trade
@@ -885,10 +882,11 @@ func (r ApiUpdateIdentityRequest) Execute() (*Identity, *http.Response, error) {
 UpdateIdentity Update Identity
 
 This enables you to update an existing identity with new information. Please note that:
-- Updating any field other than `set_user_disabled`, `metadata` or `ref_id` will transition the identity to a PENDING status.
+- Updating any field other than `set_user_disabled`, `metadata`, `ref_id`, or `is_merchant` will transition the identity to a PENDING status.
 This will restrict the identity until it has been re-verified.
 - Setting `set_user_disabled` to `true` will disable the identity, limiting its ability to be used within
 the Paxos platform.
+- Setting `is_merchant` to `true` will indicate that this identity is a merchant.
 - Details of the identity can be updated by providing `person_details` or `institution_details` depending upon the type.
 - You can add, update or remove tax_details by providing the `tax_details` list. The tax_details will be updated to exactly
 comprise the given list

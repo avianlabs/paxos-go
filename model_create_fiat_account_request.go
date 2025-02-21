@@ -23,8 +23,8 @@ var _ MappedNullable = &CreateFiatAccountRequest{}
 type CreateFiatAccountRequest struct {
 	// The optional client-specified ID (for idempotence).
 	RefId *string `json:"ref_id,omitempty"`
-	// The Paxos Identity (`identity_id`) of the user's FiatAccount.
-	IdentityId string `json:"identity_id"`
+	// The Paxos Identity (`identity_id`) of the user's FiatAccount. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users.
+	IdentityId *string `json:"identity_id,omitempty"`
 	// The Paxos Account (`account_id`) of the user's FiatAccount. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users.
 	AccountId *string `json:"account_id,omitempty"`
 	FiatAccountOwner FiatAccountOwner `json:"fiat_account_owner"`
@@ -39,9 +39,8 @@ type _CreateFiatAccountRequest CreateFiatAccountRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateFiatAccountRequest(identityId string, fiatAccountOwner FiatAccountOwner, fiatNetworkInstructions FiatNetworkInstructions) *CreateFiatAccountRequest {
+func NewCreateFiatAccountRequest(fiatAccountOwner FiatAccountOwner, fiatNetworkInstructions FiatNetworkInstructions) *CreateFiatAccountRequest {
 	this := CreateFiatAccountRequest{}
-	this.IdentityId = identityId
 	this.FiatAccountOwner = fiatAccountOwner
 	this.FiatNetworkInstructions = fiatNetworkInstructions
 	return &this
@@ -87,28 +86,36 @@ func (o *CreateFiatAccountRequest) SetRefId(v string) {
 	o.RefId = &v
 }
 
-// GetIdentityId returns the IdentityId field value
+// GetIdentityId returns the IdentityId field value if set, zero value otherwise.
 func (o *CreateFiatAccountRequest) GetIdentityId() string {
-	if o == nil {
+	if o == nil || IsNil(o.IdentityId) {
 		var ret string
 		return ret
 	}
-
-	return o.IdentityId
+	return *o.IdentityId
 }
 
-// GetIdentityIdOk returns a tuple with the IdentityId field value
+// GetIdentityIdOk returns a tuple with the IdentityId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateFiatAccountRequest) GetIdentityIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.IdentityId) {
 		return nil, false
 	}
-	return &o.IdentityId, true
+	return o.IdentityId, true
 }
 
-// SetIdentityId sets field value
+// HasIdentityId returns a boolean if a field has been set.
+func (o *CreateFiatAccountRequest) HasIdentityId() bool {
+	if o != nil && !IsNil(o.IdentityId) {
+		return true
+	}
+
+	return false
+}
+
+// SetIdentityId gets a reference to the given string and assigns it to the IdentityId field.
 func (o *CreateFiatAccountRequest) SetIdentityId(v string) {
-	o.IdentityId = v
+	o.IdentityId = &v
 }
 
 // GetAccountId returns the AccountId field value if set, zero value otherwise.
@@ -236,7 +243,9 @@ func (o CreateFiatAccountRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.RefId) {
 		toSerialize["ref_id"] = o.RefId
 	}
-	toSerialize["identity_id"] = o.IdentityId
+	if !IsNil(o.IdentityId) {
+		toSerialize["identity_id"] = o.IdentityId
+	}
 	if !IsNil(o.AccountId) {
 		toSerialize["account_id"] = o.AccountId
 	}
@@ -253,7 +262,6 @@ func (o *CreateFiatAccountRequest) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"identity_id",
 		"fiat_account_owner",
 		"fiat_network_instructions",
 	}

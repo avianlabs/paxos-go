@@ -6,18 +6,19 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | Pointer to **string** | System provided UUID for the conversion is provided in the [Create Stablecoin Conversion](#operation/CreateStablecoinConversion) response.  Required parameter for the &lt;a href&#x3D;\&quot;#operation/GetStablecoinConversion\&quot;&gt;Get Stablecoin Conversion&lt;/a&gt; request. | [optional] 
 **ProfileId** | Pointer to **string** | The Profile associated with a conversion. Required in the &lt;a href&#x3D;\&quot;#operation/CreateStablecoinConversion\&quot;&gt;Create Stablecoin Conversion&lt;/a&gt; request. | [optional] 
-**Amount** | Pointer to **string** | Asset amount to convert. &lt;a href&#x3D;\&quot;/stablecoin/conversion/asset\&quot;&gt;Details&lt;/a&gt;. | [optional] 
-**SourceAsset** | Pointer to **string** | The asset to convert from. &lt;a href&#x3D;\&quot;/stablecoin/conversion/asset\&quot;&gt;Details&lt;/a&gt;. | [optional] 
-**TargetAsset** | Pointer to **string** | The asset to convert to. &lt;a href&#x3D;\&quot;/stablecoin/conversion/asset\&quot;&gt;Details&lt;/a&gt;. | [optional] 
-**Status** | Pointer to **string** | The current status of the conversion. &lt;a href&#x3D;\&quot;/stablecoin/conversion/status\&quot;&gt;Details&lt;/a&gt;. | [optional] 
+**Amount** | Pointer to **string** | Asset amount to convert. &lt;a href&#x3D;\&quot;https://docs.paxos.com/developer/convert#assets\&quot;&gt;Details&lt;/a&gt;. | [optional] 
+**SourceAsset** | Pointer to **string** | The asset to convert from. &lt;a href&#x3D;\&quot;https://docs.paxos.com/developer/convert#assets\&quot;&gt;Details&lt;/a&gt;. | [optional] 
+**TargetAsset** | Pointer to **string** | The asset to convert to. &lt;a href&#x3D;\&quot;https://docs.paxos.com/developer/convert#assets\&quot;&gt;Details&lt;/a&gt;. | [optional] 
+**Status** | Pointer to **string** | The current status of the conversion. &lt;a href&#x3D;\&quot;https://docs.paxos.com/developer/convert#stablecoin-conversion-statuses\&quot;&gt;Details&lt;/a&gt;. | [optional] 
 **RefId** | Pointer to **string** | Client provided, unique Reference ID included the &lt;a href&#x3D;\&quot;#operation/CreateStablecoinConversion\&quot;&gt;Create Stablecoin Conversion&lt;/a&gt; request. | [optional] 
 **IdentityId** | Pointer to **string** | The Identity ID associated with the user requesting the conversion. Required only for customers with [3rd-Party integrations](/crypto-brokerage/ledger-type#fiat-and-crypto-subledger). | [optional] 
 **AccountId** | Pointer to **string** | The Account ID associated with the user requesting the conversion. Required only for customers with [3rd-Party integrations](/crypto-brokerage/ledger-type#fiat-and-crypto-subledger). | [optional] 
 **CreatedAt** | Pointer to **time.Time** | The time at which the conversion was requested. See RFC3339 format, like &#x60;2006-01-02T15:04:05Z&#x60;. | [optional] 
 **UpdatedAt** | Pointer to **time.Time** | The time at which the conversion was last updated. RFC3339 format, like &#x60;2006-01-02T15:04:05Z&#x60;. | [optional] 
-**SettledAt** | Pointer to **time.Time** | The time at which the conversion was settled. &lt;a href&#x3D;\&quot;/stablecoin/conversion/status\&quot;&gt;Details&lt;/a&gt;. RFC3339 format, like &#x60;2006-01-02T15:04:05Z&#x60;. | [optional] 
-**CancelledAt** | Pointer to **time.Time** | The time at which the conversion has been cancelled. &lt;a href&#x3D;\&quot;/stablecoin/conversion/status\&quot;&gt;Details&lt;/a&gt;. RFC3339 format, like &#x60;2006-01-02T15:04:05Z&#x60;. | [optional] 
+**SettledAt** | Pointer to **time.Time** | The time at which the conversion was settled. &lt;a href&#x3D;\&quot;https://docs.paxos.com/developer/convert#stablecoin-conversion-statuses\&quot;&gt;Details&lt;/a&gt;. RFC3339 format, like &#x60;2006-01-02T15:04:05Z&#x60;. | [optional] 
+**CancelledAt** | Pointer to **time.Time** | The time at which the conversion has been cancelled. &lt;a href&#x3D;\&quot;https://docs.paxos.com/developer/convert#stablecoin-conversion-statuses\&quot;&gt;Details&lt;/a&gt;. RFC3339 format, like &#x60;2006-01-02T15:04:05Z&#x60;. | [optional] 
 **Metadata** | Pointer to **map[string]string** | Optional client-specified stored metadata. | [optional] 
+**RecipientProfileId** | Pointer to **string** | For directed settlement, the receiving side &#x60;profile_id&#x60;. | [optional] 
 
 ## Methods
 
@@ -387,6 +388,31 @@ SetMetadata sets Metadata field to given value.
 `func (o *StablecoinConversion) HasMetadata() bool`
 
 HasMetadata returns a boolean if a field has been set.
+
+### GetRecipientProfileId
+
+`func (o *StablecoinConversion) GetRecipientProfileId() string`
+
+GetRecipientProfileId returns the RecipientProfileId field if non-nil, zero value otherwise.
+
+### GetRecipientProfileIdOk
+
+`func (o *StablecoinConversion) GetRecipientProfileIdOk() (*string, bool)`
+
+GetRecipientProfileIdOk returns a tuple with the RecipientProfileId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRecipientProfileId
+
+`func (o *StablecoinConversion) SetRecipientProfileId(v string)`
+
+SetRecipientProfileId sets RecipientProfileId field to given value.
+
+### HasRecipientProfileId
+
+`func (o *StablecoinConversion) HasRecipientProfileId() bool`
+
+HasRecipientProfileId returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

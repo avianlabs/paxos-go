@@ -36,6 +36,8 @@ const (
 	TransferType_SIGNET_WITHDRAWAL TransferType = "SIGNET_WITHDRAWAL"
 	TransferType_CBIT_WITHDRAWAL TransferType = "CBIT_WITHDRAWAL"
 	TransferType_CBIT_DEPOSIT TransferType = "CBIT_DEPOSIT"
+	TransferType_CUBIX_DEPOSIT TransferType = "CUBIX_DEPOSIT"
+	TransferType_CUBIX_WITHDRAWAL TransferType = "CUBIX_WITHDRAWAL"
 )
 
 // All allowed values of TransferType enum
@@ -56,6 +58,8 @@ var AllowedTransferTypeEnumValues = []TransferType{
 	"SIGNET_WITHDRAWAL",
 	"CBIT_WITHDRAWAL",
 	"CBIT_DEPOSIT",
+	"CUBIX_DEPOSIT",
+	"CUBIX_WITHDRAWAL",
 }
 
 func (v *TransferType) UnmarshalJSON(src []byte) error {

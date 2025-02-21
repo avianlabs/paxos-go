@@ -13,9 +13,9 @@ Name | Type | Description | Notes
 **Side** | [**OrderSide**](OrderSide.md) |  | 
 **Price** | **string** | The guaranteed price of the quote. | 
 **BaseAmount** | **string** | The amount of assets (crypto) in the transaction. | 
-**BaseAsset** | [**Asset**](Asset.md) |  | 
+**BaseAsset** | **string** | The \&quot;base\&quot; side of the trading pair (crypto - like BTC, ETH, PAXG). | 
 **QuoteAmount** | **string** | The amount of quote currency (cash) in the transaction. | 
-**QuoteAsset** | [**Asset**](Asset.md) |  | 
+**QuoteAsset** | **string** | The \&quot;quote\&quot; side of the trading pair (fiat - like USD, EUR, SGD). | 
 **CreatedAt** | **time.Time** | The time at which the quote execution was created. | 
 **SettledAt** | Pointer to **time.Time** | The time at which the quote execution was settled, completing its lifecycle. | [optional] 
 **Metadata** | Pointer to **map[string]string** | Client-specified metadata. | [optional] 
@@ -27,7 +27,7 @@ Name | Type | Description | Notes
 
 ### NewQuoteExecution
 
-`func NewQuoteExecution(id string, profileId string, quoteId string, status QuoteExecutionStatus, market Market, side OrderSide, price string, baseAmount string, baseAsset Asset, quoteAmount string, quoteAsset Asset, createdAt time.Time, ) *QuoteExecution`
+`func NewQuoteExecution(id string, profileId string, quoteId string, status QuoteExecutionStatus, market Market, side OrderSide, price string, baseAmount string, baseAsset string, quoteAmount string, quoteAsset string, createdAt time.Time, ) *QuoteExecution`
 
 NewQuoteExecution instantiates a new QuoteExecution object
 This constructor will assign default values to properties that have it defined,
@@ -229,20 +229,20 @@ SetBaseAmount sets BaseAmount field to given value.
 
 ### GetBaseAsset
 
-`func (o *QuoteExecution) GetBaseAsset() Asset`
+`func (o *QuoteExecution) GetBaseAsset() string`
 
 GetBaseAsset returns the BaseAsset field if non-nil, zero value otherwise.
 
 ### GetBaseAssetOk
 
-`func (o *QuoteExecution) GetBaseAssetOk() (*Asset, bool)`
+`func (o *QuoteExecution) GetBaseAssetOk() (*string, bool)`
 
 GetBaseAssetOk returns a tuple with the BaseAsset field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetBaseAsset
 
-`func (o *QuoteExecution) SetBaseAsset(v Asset)`
+`func (o *QuoteExecution) SetBaseAsset(v string)`
 
 SetBaseAsset sets BaseAsset field to given value.
 
@@ -269,20 +269,20 @@ SetQuoteAmount sets QuoteAmount field to given value.
 
 ### GetQuoteAsset
 
-`func (o *QuoteExecution) GetQuoteAsset() Asset`
+`func (o *QuoteExecution) GetQuoteAsset() string`
 
 GetQuoteAsset returns the QuoteAsset field if non-nil, zero value otherwise.
 
 ### GetQuoteAssetOk
 
-`func (o *QuoteExecution) GetQuoteAssetOk() (*Asset, bool)`
+`func (o *QuoteExecution) GetQuoteAssetOk() (*string, bool)`
 
 GetQuoteAssetOk returns a tuple with the QuoteAsset field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetQuoteAsset
 
-`func (o *QuoteExecution) SetQuoteAsset(v Asset)`
+`func (o *QuoteExecution) SetQuoteAsset(v string)`
 
 SetQuoteAsset sets QuoteAsset field to given value.
 

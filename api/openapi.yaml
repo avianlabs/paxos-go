@@ -112,7 +112,7 @@ tags:
     Uploaded document metadata will be availiable via <code>GET</code> request to <code>/identity/identities/{id}/documents</code>
   name: Identity Documents
 - description: |
-    The Fiat Transfers API allows clients to deposit and withdraw fiat via the following Fiat Networks: Wire (Fedwire and SWIFT) and CBIT. The supported asset is USD.
+    The Fiat Transfers API allows clients to deposit and withdraw fiat via the following Fiat Networks: Wire (Fedwire and SWIFT) and CUBIX. The supported asset is USD.
 
     The full set of Fiat Transfers API endpoints is:
     - For Deposits:
@@ -128,7 +128,10 @@ tags:
       - [Create Fiat Withdrawal](#operation/CreateFiatWithdrawal)
   name: Fiat Transfers
 - description: |
-    <p>Swap between fiat and stablecoin using <a href="#operation/CreateStablecoinConversion">Create Stablecoin Conversion</a> and check the status of a <a href="#operation/GetStablecoinConversion">single conversion</a> or retrieve a <a href="#operation/ListStablecoinConversions">list of conversions</a>.</p>
+    <p>Convert between fiat and stablecoin using <a href="#operation/CreateStablecoinConversion">Create Stablecoin Conversion</a> and check the status of a <a href="#operation/GetStablecoinConversion">single conversion</a> or retrieve a <a href="#operation/ListStablecoinConversions">list of conversions</a>.</p>
+  externalDocs:
+    description: Learn more about stablecoin conversions →
+    url: https://docs.paxos.com/developer/convert
   name: Stablecoin Conversion
 - description: |
     Each deposit to and withdrawal from a Paxos account is a Transfer.
@@ -141,6 +144,34 @@ tags:
     US 1099-B and 1099-Misc tax forms for the previous fiscal year will be available in February of the current calendar year.
     Previous years tax forms are also available by request.
   name: Tax Forms
+- description: |
+    For [Paxos Global PTE Ltd](https://help.paxos.com/hc/en-us/articles/9647005243284) users, update or reject a crypto deposit that does not contain the required [travel rule](https://help.paxos.com/hc/en-us/articles/25928845778068) information.
+    Deposits with the `NEEDS_INFO` status require additional sender information before they can be processed.
+    - For individuals, both first and last name are required.
+    - For institutions, the institution name is required.
+
+    If a deposit is rejected, the funds will no longer be available.
+  externalDocs:
+    description: Learn more about travel rule udpates →
+    url: https://help.paxos.com/hc/en-us/articles/25422999706900
+  name: Crypto Deposits
+- description: |
+    Use the Settlements API to facilitate simultaneous exchange of pre-funded assets. Automate a variety of use cases that require two-party approval, including net settlement of over-the-counter trades, withdrawal requests for tri-party collateral, payment requests, and bilateral settlement for marketplace end users.
+
+    The simple request-and-approval workflow supports both one-directional and bidirectional transactions to allow a user to receive an asset (for example, send USDP) or simultaneously send and receive assets (for example, send USD and receive BTC and ETH). Only when all parties are in agreement and assets are fully funded does the Settlements API allow for change of custody. Upon completion, all settled assets are immediately available for trading, transferring, withdrawal or other supported activities.
+
+    The Source Profile initiates the transaction for the Target Profile to approve. The `DIRECTION` of each asset is always relative to the Source Profile and only the owner of the Source Profile can cancel a transaction if it hasn’t been approved by the Target Profile.
+  externalDocs:
+    description: Learn more about the Settlement APIs →
+    url: https://docs.paxos.com/settlements
+  name: Settlement
+- description: |
+    Move assets between two Entities belonging to the same Organization or to a different Organization on the Paxos platform.
+
+    > Transferring USD between Entities is prohibited in some jurisdictions. Contact [Support](https://support.paxos.com/) if you run into any problems with this restriction.
+
+    Ensure the destination [Profile](https://docs.paxos.com/dashboard/organization#profile) already exists before beginning the transfer. This may require contacting someone outside your Organization to get the destination Profile ID.
+  name: Paxos Transfers
 paths:
   /profiles:
     get:
@@ -240,6 +271,16 @@ paths:
         schema:
           type: string
         style: form
+      - description: Optionally filter by Profile display name. Retrieves nickname(s)
+          based on the beginning characters of the given display name (prefix matching).
+          Case insensitive. WIldcards and regular expressions not supported.
+        explode: true
+        in: query
+        name: nickname
+        required: false
+        schema:
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -300,6 +341,14 @@ paths:
         schema:
           type: string
         style: simple
+      - description: Used to include deactivated profiles in the response.
+        explode: true
+        in: query
+        name: include_deactivated
+        required: false
+        schema:
+          type: boolean
+        style: form
       responses:
         "200":
           content:
@@ -319,6 +368,36 @@ paths:
       summary: Get Profile
       tags:
       - Profiles
+    put:
+      description: Change the `nickname` label for the given `profile_id` (Profile).
+      operationId: UpdateProfile
+      parameters:
+      - explode: false
+        in: path
+        name: profile_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfile_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+          description: A successful response.
+      security:
+      - OAuth2:
+        - funding:write_profile
+      summary: Update Profile
+      tags:
+      - Profiles
   /profiles/{profile_id}/balances:
     get:
       description: |-
@@ -334,31 +413,12 @@ paths:
         schema:
           type: string
         style: simple
-      - description: ""
-        explode: true
+      - explode: true
         in: query
         name: assets
         required: false
         schema:
           items:
-            enum:
-            - USD
-            - EUR
-            - SGD
-            - BTC
-            - ETH
-            - PAXG
-            - BUSD
-            - BCH
-            - LTC
-            - USDC
-            - USDP
-            - AAVE
-            - UNI
-            - MATIC
-            - PYUSD
-            - LINK
-            - SOL
             type: string
           type: array
         style: form
@@ -424,30 +484,11 @@ paths:
         schema:
           type: string
         style: simple
-      - description: ""
-        explode: false
+      - explode: false
         in: path
         name: asset
         required: true
         schema:
-          enum:
-          - USD
-          - EUR
-          - SGD
-          - BTC
-          - ETH
-          - PAXG
-          - BUSD
-          - BCH
-          - LTC
-          - USDC
-          - USDP
-          - AAVE
-          - UNI
-          - MATIC
-          - PYUSD
-          - LINK
-          - SOL
           type: string
         style: simple
       responses:
@@ -461,6 +502,39 @@ paths:
       - OAuth2:
         - funding:read_profile
       summary: Get Profile Balance
+      tags:
+      - Profiles
+  /profiles/{profile_id}/deactivate:
+    put:
+      description: |-
+        Deactivate the given `profile_id`. The default profile cannot be deactivated.
+        Deactivated profiles won't be visible for deposits.
+        Profiles with more than zero balances cannot be deactivated.
+        If a deactivated profile has a non-zero balance it will be reactivated.
+      operationId: DeactivateProfile
+      parameters:
+      - description: |-
+          The UUID of the profile.
+          The default profile cannot be deactivated.
+          The profile must have a zero balance to be deactivated.
+        explode: false
+        in: path
+        name: profile_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeactivateProfileResponse'
+          description: A successful response.
+      security:
+      - OAuth2:
+        - funding:write_profile
+      summary: Deactivate Profile
       tags:
       - Profiles
   /sandbox/profiles/{profile_id}/deposit:
@@ -821,8 +895,6 @@ paths:
         </code>
         </pre>
 
-        Note that this feature is not yet supported - `customer_due_diligence`.
-
         ### Create Institution Identity
         Institution identities are used to represent all non-person entities.
         Details for institution identity type are recorded in `institution_details`. An institution identity also has `institution_members` associated with it. This defines persons or other entities that have some relationship to the institution.
@@ -849,7 +921,7 @@ paths:
         `BLOCKCHAIN` | Blockchain Technology
         `CONSTRUCTION` | Construction
         `CRYPTO` | Crypto Services and Products (Mining, Exchange, Broker)
-        `DRUGS` | Illicit Drugs / Drug Paraphernalia
+        `DRUGS` | Medicine Dispensary
         `E_COMMERCE` | E-Commerce
         `EDUCATIONAL_SERVICES` | Educational Services
         `EXPORT_IMPORT` | Export / Import Companies
@@ -871,7 +943,6 @@ paths:
         `PRECIOUS_METALS` | Jewelry or Precious Metals (Mining, Transportation, Dealing or Retail)
         `PROFESSIONAL_SCIENTIFIC_TECHNICAL_SERVICES` | Professional Services (Consulting, Legal, Accounting, etc.)
         `PUBLIC_ADMINISTRATION` | Public or Government Services
-        `RANSOMWARE` | Ransomware / Facilitators of Ransomware Transactions
         `REAL_ESTATE_RENTAL_LEASING` | Real Estate and Rental and Leasing
         `REGISTERED_INVESTMENT_ADVISOR` | Registered Investment Advisor
         `RETAIL_TRADE` | Retail Trade
@@ -1431,10 +1502,11 @@ paths:
     put:
       description: |-
         This enables you to update an existing identity with new information. Please note that:
-        - Updating any field other than `set_user_disabled`, `metadata` or `ref_id` will transition the identity to a PENDING status.
+        - Updating any field other than `set_user_disabled`, `metadata`, `ref_id`, or `is_merchant` will transition the identity to a PENDING status.
         This will restrict the identity until it has been re-verified.
         - Setting `set_user_disabled` to `true` will disable the identity, limiting its ability to be used within
         the Paxos platform.
+        - Setting `is_merchant` to `true` will indicate that this identity is a merchant.
         - Details of the identity can be updated by providing `person_details` or `institution_details` depending upon the type.
         - You can add, update or remove tax_details by providing the `tax_details` list. The tax_details will be updated to exactly
         comprise the given list
@@ -3880,6 +3952,151 @@ paths:
       summary: Initiate Sandbox Fiat Deposit
       tags:
       - Sandbox Fiat Transfers
+  /transfer/crypto-deposits/{id}/reject:
+    post:
+      description: |-
+        Reject a crypto deposit which is waiting for required travel rule information about the originator address.
+        If the rejected deposit has any status other than `NEEDS_INFO`, the request will return an error.
+        Only the creator of the crypto deposit can reject it.
+      operationId: RejectCryptoDeposit
+      parameters:
+      - description: |-
+          Paxos ID of the crypto deposit to reject.
+          To retrieve the ID, log in to your Paxos account and go to the [Activity](https://account.paxos.com/wallet/activity) tab.
+          Download the CSV activity file and check the ID column.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RejectCryptoDepositRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              example: {}
+              schema:
+                $ref: '#/components/schemas/RejectCryptoDepositResponse'
+          description: A successful response.
+        "400":
+          content:
+            application/json:
+              example:
+                type: about:blank
+                title: Bad Request
+                status: 400
+                detail: "id must be uuid, given 2d929a0d-e1e3-4781-b7f8-7b34e66f"
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              example:
+                type: about:blank
+                title: Not Found
+                status: 404
+                detail: "no crypto deposit found for id: 2d929a0d-e1e3-4781-b7f8-7b34e66f7832"
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Could not find deposit
+        "409":
+          content:
+            application/json:
+              example:
+                type: about:blank
+                title: Conflict
+                status: 409
+                detail: crypto deposit 2d929a0d-e1e3-4781-b7f8-7b34e66f7832 does not
+                  need info
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Deposit does not need info
+      security:
+      - OAuth2:
+        - transfer:reject_crypto_deposit
+      summary: Reject Crypto Deposit
+      tags:
+      - Crypto Deposits
+  /transfer/crypto-deposits/{id}/update:
+    post:
+      description: |-
+        Crypto deposits that do not meet the minimum travel rule requirements are blocked.
+        To update a crypto deposit, provide the required travel rule information about the originator address.
+      operationId: UpdateCryptoDeposit
+      parameters:
+      - description: |-
+          Paxos ID of the crypto deposit to update.
+          To retrieve the ID, log in to your Paxos account and go to the [Activity](https://account.paxos.com/wallet/activity) tab.
+          Download the CSV activity file and check the ID column.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCryptoDepositRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              example: {}
+              schema:
+                $ref: '#/components/schemas/UpdateCryptoDepositResponse'
+          description: A successful response.
+        "400":
+          content:
+            application/json:
+              example:
+                type: about:blank
+                title: Bad Request
+                status: 400
+                detail: "id must be uuid, given 2d929a0d-e1e3-4781-b7f8-7b34e66f"
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              example:
+                type: about:blank
+                title: Not Found
+                status: 404
+                detail: "no crypto deposit found for id: 2d929a0d-e1e3-4781-b7f8-7b34e66f7832"
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Could not find deposit
+        "409":
+          content:
+            application/json:
+              example:
+                type: about:blank
+                title: Conflict
+                status: 409
+                detail: crypto deposit 2d929a0d-e1e3-4781-b7f8-7b34e66f7832 does not
+                  need info
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Deposit does not need info
+      security:
+      - OAuth2:
+        - transfer:update_crypto_deposit
+      summary: Update Crypto Deposit
+      tags:
+      - Crypto Deposits
   /transfer/crypto-withdrawals:
     post:
       description: Withdraw a cryptocurrency asset to a specified destination address.
@@ -4343,8 +4560,7 @@ paths:
         Create an account to initiate a fiat withdrawal.
 
         For U.S. wires, set `fiat_network_instructions` > `wire` > `routing_details` > `routing_number_type` to `ABA`. For international (SWIFT) wires, set `fiat_network_instructions` > `wire` > `routing_details` > `routing_number_type` to `SWIFT`.
-
-        For CBIT, set `fiat_network_instructions` > `cbit` > `wallet_address`, and do not specify `routing_number_type`. For CBIT, the `wallet_address` on `fiat_network_instructions` is not a crypto wallet, it is a Customers Bank account wallet address.
+        For CUBIX, set `fiat_network_instructions` > `cubix` > `account_id`, and do not specify `routing_number_type`. For CUBIX, the `account_id` is the CUBIX account ID.
       operationId: CreateFiatAccount
       requestBody:
         content:
@@ -5065,7 +5281,7 @@ paths:
                 asset: USD
                 balance_asset: USD
                 direction: DEBIT
-                type: CBIT_WITHDRAWAL
+                type: CUBIX_WITHDRAWAL
                 status: PENDING
                 created_at: 2023-07-13T18:36:08.737Z
                 updated_at: 2023-07-13T18:36:08.737Z
@@ -5221,6 +5437,8 @@ paths:
           - SIGNET_WITHDRAWAL
           - CBIT_WITHDRAWAL
           - CBIT_DEPOSIT
+          - CUBIX_DEPOSIT
+          - CUBIX_WITHDRAWAL
           type: string
         style: form
       responses:
@@ -5236,6 +5454,75 @@ paths:
       summary: List Transfer Limits
       tags:
       - Limits
+  /transfer/paxos:
+    post:
+      description: "Transfer assets between two Profiles belonging to different [Entities](https://docs.paxos.com/dashboard/organization#entity)."
+      operationId: CreatePaxosTransfer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaxosTransferRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                amount: "0.03"
+                asset: USDP
+                auto_conversion: {}
+                balance_asset: USDP
+                created_at: 2024-12-11T17:45:14.423911Z
+                customer_id: be05ac89-d1dc-4be7-b64e-a003012e9359
+                direction: DEBIT
+                fee: "0"
+                group_id: b7b6cde7-9053-47e7-bbc0-22d5fa4344ef
+                id: fe6bc170-a5be-43ff-bf5b-63c8b6489597
+                profile_id: e6b30762-0689-46fa-b208-35eb347e284c
+                ref_id: 92528c72-4962-4d14-ae4d-6b262df698b2
+                status: COMPLETED
+                total: "0.03"
+                type: PAXOS_TRANSFER_DEBIT
+                updated_at: 2024-12-11T17:45:14.479258Z
+              schema:
+                $ref: '#/components/schemas/Transfer'
+          description: A successful response.
+        "403":
+          content:
+            application/problem+json:
+              examples:
+                Insufficient Funds:
+                  $ref: '#/components/examples/Problem_insufficient_funds'
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Insufficient funds
+        "404":
+          content:
+            application/problem+json:
+              examples:
+                Profile Not Found:
+                  $ref: '#/components/examples/Problem_not_found'
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Could not find profile
+        "409":
+          content:
+            application/problem+json:
+              example:
+                type: https://api.paxos.com/v2/problems/already-exists
+                detail: Transfer with ref_id already exists
+                status: 409
+                title: Already exists
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Transfer already exists
+      security:
+      - OAuth2:
+        - transfer:write_paxos_transfer
+      summary: Create Paxos Transfer
+      tags:
+      - Paxos Transfers
   /transfer/transfers:
     get:
       description: |-
@@ -5490,6 +5777,8 @@ paths:
             - SIGNET_WITHDRAWAL
             - CBIT_WITHDRAWAL
             - CBIT_DEPOSIT
+            - CUBIX_DEPOSIT
+            - CUBIX_WITHDRAWAL
             type: string
           type: array
         style: form
@@ -5500,6 +5789,34 @@ paths:
         required: false
         schema:
           items:
+            type: string
+          type: array
+        style: form
+      - description: Optionally filter by the on-chain transaction hash for crypto
+          transactions. Limit 100.
+        explode: true
+        in: query
+        name: crypto_tx_hashes
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: |-
+          Optionally filter by secondary status.
+
+           - TRAVEL_RULE_INFO_REQUESTED: Travel rule information is required to continue processing the transfer.
+           - TRAVEL_RULE_REJECTED: Transfer has been terminally rejected due to failing travel rule checks.
+        explode: true
+        in: query
+        name: secondary_statuses
+        required: false
+        schema:
+          items:
+            enum:
+            - TRAVEL_RULE_INFO_REQUESTED
+            - TRAVEL_RULE_REJECTED
             type: string
           type: array
         style: form
@@ -5697,254 +6014,6 @@ paths:
       summary: List Tax Forms
       tags:
       - Tax Forms
-  /tax/tax-lots:
-    get:
-      description: "List Tax Lots using filter, result is paginated."
-      operationId: ListTaxLots
-      parameters:
-      - description: A list of tax lot ids. Must be provided if no profile ids nor
-          account ids provided.
-        explode: true
-        in: query
-        name: tax_lot_ids
-        required: false
-        schema:
-          items:
-            type: string
-          type: array
-        style: form
-      - description: A list of profile ids. Can not be provided together with account
-          ids.
-        explode: true
-        in: query
-        name: profile_ids
-        required: false
-        schema:
-          items:
-            type: string
-          type: array
-        style: form
-      - description: A list of account ids. Can not be provided together with profile
-          ids.
-        explode: true
-        in: query
-        name: account_ids
-        required: false
-        schema:
-          items:
-            type: string
-          type: array
-        style: form
-      - description: A list of transaction types. Requires profile ids or account
-          ids to be provided.
-        explode: true
-        in: query
-        name: transaction_types
-        required: false
-        schema:
-          items:
-            enum:
-            - BUY
-            - SELL
-            - DEPOSIT
-            - WITHDRAWAL
-            type: string
-          type: array
-        style: form
-      - description: "Status of tax lot, OPEN or CLOSED. Requires profile ids or account\
-          \ ids to be provided."
-        explode: true
-        in: query
-        name: status
-        required: false
-        schema:
-          enum:
-          - OPEN
-          - CLOSED
-          type: string
-        style: form
-      - description: Crypto currency of the tax lot. Requires profile ids or account
-          ids to be provided.
-        explode: true
-        in: query
-        name: cryptocurrency
-        required: false
-        schema:
-          type: string
-        style: form
-      - description: "The capital gain type, values of LONG_TERM, SHORT_TERM, EXEMPT.\
-          \ Requires profile ids or account ids to be provided."
-        explode: true
-        in: query
-        name: capital_gain_type
-        required: false
-        schema:
-          enum:
-          - LONG_TERM
-          - SHORT_TERM
-          - EXEMPT
-          type: string
-        style: form
-      - description: "Include timestamps strictly less than lt. RFC3339 format, like\
-          \ `2006-01-02T15:04:05Z`."
-        explode: true
-        in: query
-        name: created_at.lt
-        required: false
-        schema:
-          format: date-time
-          type: string
-        style: form
-      - description: "Include timestamps less than or equal to lte. RFC3339 format,\
-          \ like `2006-01-02T15:04:05Z`."
-        explode: true
-        in: query
-        name: created_at.lte
-        required: false
-        schema:
-          format: date-time
-          type: string
-        style: form
-      - description: "Include timestamps exactly equal to eq. RFC3339 format, like\
-          \ `2006-01-02T15:04:05Z`."
-        explode: true
-        in: query
-        name: created_at.eq
-        required: false
-        schema:
-          format: date-time
-          type: string
-        style: form
-      - description: "Include timestamps greater than or equal to lte. RFC3339 format,\
-          \ like `2006-01-02T15:04:05Z`."
-        explode: true
-        in: query
-        name: created_at.gte
-        required: false
-        schema:
-          format: date-time
-          type: string
-        style: form
-      - description: "Include timestamps strictly greater than gt. RFC3339 format,\
-          \ like `2006-01-02T15:04:05Z`."
-        explode: true
-        in: query
-        name: created_at.gt
-        required: false
-        schema:
-          format: date-time
-          type: string
-        style: form
-      - description: Number of results to return. Default value is 100.
-        explode: true
-        in: query
-        name: limit
-        required: false
-        schema:
-          format: int32
-          type: integer
-        style: form
-      - description: Return items in ascending (ASC) or descending (DESC) order. Defaults
-          to DESC.
-        explode: true
-        in: query
-        name: order
-        required: false
-        schema:
-          enum:
-          - DESC
-          - ASC
-          type: string
-        style: form
-      - description: The specific method by which the returned results will be ordered.
-        explode: true
-        in: query
-        name: order_by
-        required: false
-        schema:
-          enum:
-          - CREATED_AT
-          type: string
-        style: form
-      - description: Cursor token for fetching the next page.
-        explode: true
-        in: query
-        name: page_cursor
-        required: false
-        schema:
-          type: string
-        style: form
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListTaxLotsResponse'
-          description: A successful response.
-      security:
-      - OAuth2:
-        - tax:read_tax_lot
-      summary: List Tax Lots
-      tags:
-      - Tax Lot
-  /tax/tax-lots/{id}:
-    get:
-      description: Get Tax Lot allows you to retrieve tax lot detail by its id.
-      operationId: GetTaxLot
-      parameters:
-      - description: The UUID of the tax lot
-        explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TaxLot'
-          description: A successful response.
-      security:
-      - OAuth2:
-        - tax:read_tax_lot
-      summary: Get Tax Lot
-      tags:
-      - Tax Lot
-    put:
-      description: Update Tax Lot allows you to update the tax lot specified by its
-        ID. The updated tax lot will be returned in the response.
-      operationId: UpdateTaxLot
-      parameters:
-      - description: The UUID of the tax lot.
-        explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateTaxLotRequest'
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TaxLot'
-          description: A successful response.
-      security:
-      - OAuth2:
-        - tax:write_tax_lot
-      summary: Update Tax Lot
-      tags:
-      - Tax Lot
   /conversion/stablecoins:
     get:
       description: |-
@@ -6388,6 +6457,440 @@ paths:
       summary: Get Stablecoin Conversion
       tags:
       - Stablecoin Conversion
+  /settlement/transactions:
+    get:
+      description: |-
+        This endpoint enables you to fetch a list of Settlement Transactions that you have created (own the `source_profile_id`) or have been alleged against you (own the `target_profile_id`).
+        You can use query parameters to filter the results returned by `statuses`, `source_profile_id` and `target_profile_id`.
+
+        Note that this endpoint supports pagination and returns a cursor token for fetching next pages.
+      operationId: ListTransactions
+      parameters:
+      - description: |-
+          Transaction statuses to filter on
+
+           - PENDING: Initial state of a settlement transaction upon creation.
+           - SETTLED: Indicates all obligations belong to the settlement transaction have been enacted.
+           - EXPIRED: Indicates the settlement transaction is no longer eligible for settlement.
+           - CANCELLED: Indicates the settlement transaction was cancelled by the source profile.
+           - AFFIRMED: Indicates the settlement transaction will be eligible for settlement once within the window.
+        explode: true
+        in: query
+        name: statuses
+        required: false
+        schema:
+          items:
+            enum:
+            - PENDING
+            - SETTLED
+            - EXPIRED
+            - CANCELLED
+            - AFFIRMED
+            type: string
+          type: array
+        style: form
+      - description: The `profile_id` of the entity on the submitting side of the
+          transaction.
+        explode: true
+        in: query
+        name: source_profile_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The `profile_id` of the entity on the receiving side of the transaction.
+        explode: true
+        in: query
+        name: target_profile_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Number of results to return. Defaults to 100 if no limit is provided.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      - description: Cursor for getting the next page of results.
+        explode: true
+        in: query
+        name: page_cursor
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+              - id: d99a03ee-6b88-4362-89da-087c2c8cd4a7
+                ref_id: d840cf31-352f-4190-a476-7522bf3eafda
+                settlement_window_start: 2023-08-25 14:25:41 UTC
+                settlement_window_end: 2023-08-25 14:25:41 UTC
+                source_profile_id: 4fd025ab-f29f-47e6-a02e-df90a61c7ec9
+                target_profile_id: 47db6271-50d6-4934-8c81-c42d87bfb390
+                legs:
+                - id: ace21517-447e-4764-8733-765cb12a7fab
+                  direction: DELIVER
+                  asset: BTC
+                  amount: "100"
+                status: PENDING
+                created_at: 2023-08-25 14:25:41 UTC
+                updated_at: 2023-08-25 14:25:41 UTC
+              - id: 738b465a-7bea-42cf-be8d-63572f5745e7
+                ref_id: 8f1dcf84-56e7-4e84-80aa-f01ef2eb1ab0
+                settlement_window_start: 2023-08-26 00:25:41 UTC
+                settlement_window_end: 2023-08-29 19:25:41 UTC
+                source_profile_id: 4fd025ab-f29f-47e6-a02e-df90a61c7ec9
+                target_profile_id: 47db6271-50d6-4934-8c81-c42d87bfb390
+                legs:
+                - id: ace21517-447e-4764-8733-765cb12a7fab
+                  direction: RECEIVE
+                  asset: ETH
+                  amount: "39.231"
+                status: PENDING
+                created_at: 2023-08-24 18:29:41 UTC
+                updated_at: 2023-08-24 18:29:41 UTC
+              schema:
+                $ref: '#/components/schemas/ListTransactionsResponse'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              examples:
+                Insufficient scopes:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: "insufficient scopes: found 'settlement:write_transaction',\
+                      \ required one of '[settlement:read_transaction]'"
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Insufficient scopes
+      security:
+      - OAuth2:
+        - settlement:read_transaction
+      summary: List Transactions
+      tags:
+      - Settlement
+    post:
+      description: |-
+        Creates a new bilateral Settlement Transaction with one or more legs. The customer must own the
+        `source_profile_id` specified in the transaction.
+
+        A successful response indicates the transaction has been accepted and will be in an initial `status` of `"PENDING"`
+        for settlement, the transaction is only eligible for settlement once the `status` is `"AFFIRMED"` by the
+        `target_profile_id` and the current time is between the provided `settlement_window_start` and `settlement_window_end`.
+
+        Settlement will only be enacted once both `source_profile_id` and `target_profile_id` have sufficient balances to
+        fulfill all legs specified as settlement is **atomic**.
+      operationId: CreateTransaction
+      requestBody:
+        content:
+          application/json:
+            examples:
+              Create Transaction:
+                value:
+                  ref_id: d840cf31-352f-4190-a476-7522bf3eafda
+                  settlement_window_start: 2023-08-25 14:25:41 UTC
+                  settlement_window_end: 2023-08-25 16:25:41 UTC
+                  source_profile_id: 4fd025ab-f29f-47e6-a02e-df90a61c7ec9
+                  target_profile_id: 47db6271-50d6-4934-8c81-c42d87bfb390
+                  legs:
+                  - direction: DELIVER
+                    asset: BTC
+                    amount: "100"
+            schema:
+              $ref: '#/components/schemas/CreateTransactionRequest'
+        description: Request to create a bilateral settlement transaction with one
+          or more legs.
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                id: d99a03ee-6b88-4362-89da-087c2c8cd4a7
+                ref_id: d840cf31-352f-4190-a476-7522bf3eafda
+                settlement_window_start: 2023-08-25 14:25:41 UTC
+                settlement_window_end: 2023-08-25 14:25:41 UTC
+                source_profile_id: 4fd025ab-f29f-47e6-a02e-df90a61c7ec9
+                target_profile_id: 47db6271-50d6-4934-8c81-c42d87bfb390
+                legs:
+                - id: ace21517-447e-4764-8733-765cb12a7fab
+                  direction: DELIVER
+                  asset: BTC
+                  amount: "100"
+                status: PENDING
+                created_at: 2023-08-25 14:25:41 UTC
+                updated_at: 2023-08-25 14:25:41 UTC
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: A successful response.
+        "400":
+          content:
+            application/json:
+              examples:
+                Insufficient scopes:
+                  value:
+                    type: about:blank
+                    title: Bad Request
+                    status: 400
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              examples:
+                Insufficient scopes:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: "insufficient scopes: found 'settlement:read_transaction',\
+                      \ required one of '[settlement:write_transaction]'"
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Insufficient scopes
+        "409":
+          content:
+            application/json:
+              examples:
+                Already Exists:
+                  value:
+                    status: 409
+                    title: Conflict
+                    type: about:blank
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Already Exists
+      security:
+      - OAuth2:
+        - settlement:write_transaction
+      summary: Create Transaction
+      tags:
+      - Settlement
+  /settlement/transactions/{transaction_id}:
+    delete:
+      description: |-
+        Cancels the Settlement Transaction, this action can only be done by the customer owning the source profile (`source_profile_id`).
+        The transaction must be in a `"PENDING"` status for this to take effect, you cannot cancel a transaction which
+        is `"AFFIRMED"`.
+      operationId: CancelTransaction
+      parameters:
+      - description: The unique `id` in the `Transaction` object.
+        explode: false
+        in: path
+        name: transaction_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                id: d99a03ee-6b88-4362-89da-087c2c8cd4a7
+                ref_id: d840cf31-352f-4190-a476-7522bf3eafda
+                settlement_window_start: 2023-08-25 14:25:41 UTC
+                settlement_window_end: 2023-08-25 14:25:41 UTC
+                source_profile_id: 4fd025ab-f29f-47e6-a02e-df90a61c7ec9
+                target_profile_id: 47db6271-50d6-4934-8c81-c42d87bfb390
+                legs:
+                - id: ace21517-447e-4764-8733-765cb12a7fab
+                  direction: DELIVER
+                  asset: BTC
+                  amount: "100"
+                status: CANCELLED
+                created_at: 2023-08-25 14:25:41 UTC
+                updated_at: 2023-08-25 17:53:23 UTC
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              examples:
+                Insufficient scopes:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: "insufficient scopes: found 'settlement:read_transaction',\
+                      \ required one of '[settlement:write_transaction]'"
+                Forbidden:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Insufficient scopes
+        "409":
+          content:
+            application/json:
+              examples:
+                Not Found:
+                  value:
+                    status: 409
+                    title: Conflict
+                    type: about:blank
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Already Exists
+      security:
+      - OAuth2:
+        - settlement:write_transaction
+      summary: Cancel Transaction
+      tags:
+      - Settlement
+    get:
+      description: |-
+        Get a Settlement Transaction by its (transaction) id, you must have created the transaction (own the `source_profile_id`) or
+        have had the transaction alleged against you (own the `target_profile_id`).
+      operationId: GetTransaction
+      parameters:
+      - description: The unique `id` in the `Transaction` object.
+        explode: false
+        in: path
+        name: transaction_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+              - id: d99a03ee-6b88-4362-89da-087c2c8cd4a7
+                ref_id: d840cf31-352f-4190-a476-7522bf3eafda
+                settlement_window_start: 2023-08-25 14:25:41 UTC
+                settlement_window_end: 2023-08-25 14:25:41 UTC
+                source_profile_id: 4fd025ab-f29f-47e6-a02e-df90a61c7ec9
+                target_profile_id: 47db6271-50d6-4934-8c81-c42d87bfb390
+                legs:
+                - id: ace21517-447e-4764-8733-765cb12a7fab
+                  direction: DELIVER
+                  asset: BTC
+                  amount: "100"
+                status: PENDING
+                created_at: 2023-08-25 14:25:41 UTC
+                updated_at: 2023-08-25 17:53:23 UTC
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              examples:
+                Insufficient scopes:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: "insufficient scopes: found 'settlement:write_transaction',\
+                      \ required one of '[settlement:read_transaction]'"
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Insufficient scopes
+        "404":
+          content:
+            application/json:
+              examples:
+                Not Found:
+                  value:
+                    status: 404
+                    title: Not Found
+                    type: about:blank
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Not Found
+      security:
+      - OAuth2:
+        - settlement:read_transaction
+      summary: Get Transaction
+      tags:
+      - Settlement
+  /settlement/transactions/{transaction_id}/affirm:
+    put:
+      description: |-
+        Affirms the Settlement Transaction for settlement, the transaction is now eligible for settlement once the current time is
+        between the provided `settlement_window_start` and `settlement_window_end`. This action can only be done by the
+        customer owning the target profile (`target_profile_id`).
+        The transaction must be in a `"PENDING"` status for this to take effect.
+      operationId: AffirmTransaction
+      parameters:
+      - description: The unique `id` in the `Transaction` object.
+        explode: false
+        in: path
+        name: transaction_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                id: d99a03ee-6b88-4362-89da-087c2c8cd4a7
+                ref_id: d840cf31-352f-4190-a476-7522bf3eafda
+                settlement_window_start: 2023-08-25 14:25:41 UTC
+                settlement_window_end: 2023-08-25 14:25:41 UTC
+                source_profile_id: 4fd025ab-f29f-47e6-a02e-df90a61c7ec9
+                target_profile_id: 47db6271-50d6-4934-8c81-c42d87bfb390
+                legs:
+                - id: ace21517-447e-4764-8733-765cb12a7fab
+                  direction: DELIVER
+                  asset: BTC
+                  amount: "100"
+                status: AFFIRMED
+                created_at: 2023-08-25 14:25:41 UTC
+                updated_at: 2023-08-25 17:53:23 UTC
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: A successful response.
+        "400":
+          content:
+            application/json:
+              examples:
+                Insufficient scopes:
+                  value:
+                    type: about:blank
+                    title: Bad Request
+                    status: 400
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              examples:
+                Insufficient scopes:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: "insufficient scopes: found 'settlement:write_transaction',\
+                      \ required one of '[settlement:read_transaction]'"
+              schema:
+                $ref: '#/components/schemas/Problem'
+          description: Insufficient scopes
+      security:
+      - OAuth2:
+        - settlement:write_transaction
+      summary: Affirm Transaction
+      tags:
+      - Settlement
 components:
   examples:
     Problem_already_exists:
@@ -6602,6 +7105,12 @@ components:
         title: Not Found
         status: 404
         detail: quote not found with id 366a26d2-3098-4226-a520-4bb43ae4d922
+    Problem_not_implemented:
+      value:
+        type: about:blank
+        title: Not Implemented
+        status: 501
+        detail: Not implemented
     Problem_notional_value_too_large:
       value:
         type: https://developer.paxos.com/docs/v2/problems/notional-value-too-large
@@ -6660,27 +7169,6 @@ components:
       enum:
       - CREATED_AT
       type: string
-    Asset:
-      description: The given asset or assets held in a Paxos balance.
-      enum:
-      - USD
-      - EUR
-      - SGD
-      - BTC
-      - ETH
-      - PAXG
-      - BUSD
-      - BCH
-      - LTC
-      - USDC
-      - USDP
-      - AAVE
-      - UNI
-      - MATIC
-      - PYUSD
-      - LINK
-      - SOL
-      type: string
     CreateProfileRequest:
       example:
         nickname: nickname
@@ -6694,6 +7182,8 @@ components:
           type: string
       required:
       - nickname
+      type: object
+    DeactivateProfileResponse:
       type: object
     ListProfileBalancesResponse:
       example:
@@ -6762,7 +7252,8 @@ components:
         trading: ".25"
       properties:
         asset:
-          $ref: '#/components/schemas/Asset'
+          description: The asset held by the profile.
+          type: string
         available:
           description: The available asset balance for new debit requests.
           type: string
@@ -6834,6 +7325,7 @@ components:
       - LITECOIN
       - SOLANA
       - POLYGON_POS
+      - ARBITRUM_ONE
       type: string
     CustomerDueDiligenceNetWorthRange:
       enum:
@@ -6874,6 +7366,16 @@ components:
     ListIdentitiesRequestOrderBy:
       enum:
       - CREATED_AT
+      type: string
+    MerchantFundingSourceFundingSource:
+      enum:
+      - BUSINESS_LOANS_FINANCING
+      - SALARY_SAVINGS
+      - INVESTMENT_GAINS
+      - INHERITANCE
+      - REAL_ESTATE_INCOME
+      - NON_PROFIT_SOURCES
+      - OTHER_BUSINESS_INCOME
       type: string
     PassthroughVerificationField:
       enum:
@@ -6935,10 +7437,15 @@ components:
           - aliases
           purpose_of_account: INVESTMENT_TRADING
           industry_sector: null
+          is_publicly_traded: true
           employment_industry_sector: null
           created_at: 2000-01-23T04:56:07.000+00:00
+          customer_regions:
+          - US_CANADA
+          - US_CANADA
           has_underlying_trust_structure: true
           estimated_yearly_income: INCOME_0_TO_50K
+          merchant_funding_source: BUSINESS_LOANS_FINANCING
           estimated_net_worth: NET_WORTH_0_TO_100K
           has_nominee_shareholders: true
           employment_status: CONTRACTUAL
@@ -7001,6 +7508,7 @@ components:
           regulator_jurisdiction: regulator_jurisdiction
           name: name
           regulator_name: regulator_name
+          business_description: business_description
           incorporation_address:
             country: country
             province: province
@@ -7056,7 +7564,7 @@ components:
         customer_due_diligence:
           $ref: '#/components/schemas/CustomerDueDiligence'
         is_merchant:
-          description: Set to true if the identity is a merchant.
+          description: Set to true to indicate that this identity is a merchant.
           type: boolean
       type: object
     CustomerDueDiligence:
@@ -7067,10 +7575,15 @@ components:
         - aliases
         purpose_of_account: INVESTMENT_TRADING
         industry_sector: null
+        is_publicly_traded: true
         employment_industry_sector: null
         created_at: 2000-01-23T04:56:07.000+00:00
+        customer_regions:
+        - US_CANADA
+        - US_CANADA
         has_underlying_trust_structure: true
         estimated_yearly_income: INCOME_0_TO_50K
+        merchant_funding_source: BUSINESS_LOANS_FINANCING
         estimated_net_worth: NET_WORTH_0_TO_100K
         has_nominee_shareholders: true
         employment_status: CONTRACTUAL
@@ -7112,7 +7625,28 @@ components:
           format: date-time
           title: When the customer due diligence was created
           type: string
+        is_publicly_traded:
+          description: '`true` or `false` indicating whether or not the company is
+            listed on a public stock exchange.'
+          type: boolean
+        merchant_funding_source:
+          $ref: '#/components/schemas/MerchantFundingSourceFundingSource'
+        customer_regions:
+          description: Regions where the customer base is located.
+          items:
+            $ref: '#/components/schemas/CustomerRegion'
+          type: array
       type: object
+    CustomerRegion:
+      enum:
+      - US_CANADA
+      - MEXICO_CENTRAL_AMERICA
+      - SOUTH_AMERICA
+      - EUROPE
+      - ASIA
+      - AFRICA
+      - OCEANIA
+      type: string
     DocumentDescription:
       example:
         archived_at: 2000-01-23T04:56:07.000+00:00
@@ -7159,6 +7693,15 @@ components:
       - MONEY_SERVICE_DOCUMENTS
       - INVESTMENT_DOCUMENTS
       - CURP
+      - AML_DOCUMENTS
+      - FUND_STRUCTURE_CHART
+      - FUND_MANAGER_REGISTRATION
+      - MEMORANDUM_OF_ASSOCIATION
+      - ORGANIZATIONAL_CHART
+      - FOUNDATION_BY_LAWS
+      - APPOINTMENT_OF_GUARDIAN_EVIDENCE
+      - LEGAL_DOMICILE_OF_BENEFICIAL_OWNERS
+      - GOVERNING_BODY_MEMBER_NAMES
       type: string
     DocumentUploadResponse:
       example:
@@ -7195,6 +7738,7 @@ components:
       - PROPERTY_SALE
       - LOAN_DISBURSEMENT
       - SAVINGS_ACCOUNT_WITHDRAWAL
+      - GOVERNMENT_BENEFITS
       type: string
     Identity:
       example:
@@ -7343,6 +7887,7 @@ components:
         regulator_jurisdiction: regulator_jurisdiction
         name: name
         regulator_name: regulator_name
+        business_description: business_description
         incorporation_address:
           country: country
           province: province
@@ -7382,7 +7927,11 @@ components:
         cip_id:
           maxLength: 200
           pattern: "^[0-9A-Za-z /?:().,&'+-]+$"
-          title: Allowed in create and update
+          title: |-
+            Allowed in create and update
+            SSN format: xxx-xx-xxxx
+            ITIN format: xxx-xx-xxxx
+            EIN format: xx-xxxxxxx
           type: string
         cip_id_type:
           $ref: '#/components/schemas/InstitutionCIPIDType'
@@ -7426,6 +7975,9 @@ components:
           $ref: '#/components/schemas/IdentityStatus'
         doing_business_as:
           title: Allowed in create and update
+          type: string
+        business_description:
+          title: free text description of business
           type: string
       type: object
     InstitutionMember:
@@ -7518,7 +8070,6 @@ components:
       - GAMBLING
       - INSURANCE
       - MARKET_MAKER
-      - RANSOMWARE
       - SHELL_BANK
       - TRAVEL_TRANSPORT
       - WEAPONS
@@ -7691,8 +8242,11 @@ components:
         cip_id:
           maxLength: 200
           pattern: "^[0-9A-Za-z /?:().,&'+-]+$"
-          title: "SSN or TIN, unique for each Identity object. Allowed in create and\
-            \ update"
+          title: |-
+            SSN or TIN, unique for each Identity object. Allowed in create and update
+            SSN format: xxx-xx-xxxx
+            ITIN format: xxx-xx-xxxx
+            EIN format: xx-xxxxxxx
           type: string
         cip_id_type:
           $ref: '#/components/schemas/PersonDetailsCIPIDType'
@@ -7793,6 +8347,8 @@ components:
       - INVESTMENT_GAINS
       - BUSINESS_OWNERSHIP_DIVIDENDS
       - EMPLOYMENT_INCOME
+      - REAL_ESTATE
+      - OTHER_SOURCE_OF_WEALTH
       type: string
     AddInstitutionMembersRequest:
       example:
@@ -8302,8 +8858,8 @@ components:
         account_id: account_id
         price: price
         commission: commission
-        commission_asset: USD
-        rebate_asset: null
+        commission_asset: commission_asset
+        rebate_asset: rebate_asset
         order_id: order_id
       properties:
         execution_id:
@@ -8331,12 +8887,14 @@ components:
           description: Amount of commission paid.
           type: string
         commission_asset:
-          $ref: '#/components/schemas/Asset'
+          description: "Currency of Commission payment. Fiat Only (USD, EUR, SGD)."
+          type: string
         rebate:
           description: Amount of rebate applied.
           type: string
         rebate_asset:
-          $ref: '#/components/schemas/Asset'
+          description: "Currency of the rebate. Fiat Only (USD, EUR, SGD)."
+          type: string
         account_id:
           description: Account ID associated with the execution.
           type: string
@@ -8387,8 +8945,8 @@ components:
           account_id: account_id
           price: price
           commission: commission
-          commission_asset: USD
-          rebate_asset: null
+          commission_asset: commission_asset
+          rebate_asset: rebate_asset
           order_id: order_id
         - gross_trade_amount: gross_trade_amount
           side: BUY
@@ -8400,8 +8958,8 @@ components:
           account_id: account_id
           price: price
           commission: commission
-          commission_asset: USD
-          rebate_asset: null
+          commission_asset: commission_asset
+          rebate_asset: rebate_asset
           order_id: order_id
         next_page_cursor: next_page_cursor
       properties:
@@ -8435,12 +8993,12 @@ components:
       example:
         markets:
         - market: ETHEUR
-          base_asset: USD
-          quote_asset: null
+          base_asset: base_asset
+          quote_asset: quote_asset
           tick_rate: tick_rate
         - market: ETHEUR
-          base_asset: USD
-          quote_asset: null
+          base_asset: base_asset
+          quote_asset: quote_asset
           tick_rate: tick_rate
       properties:
         markets:
@@ -8702,16 +9260,18 @@ components:
     MarketDetails:
       example:
         market: ETHEUR
-        base_asset: USD
-        quote_asset: null
+        base_asset: base_asset
+        quote_asset: quote_asset
         tick_rate: tick_rate
       properties:
         market:
           $ref: '#/components/schemas/Market'
         base_asset:
-          $ref: '#/components/schemas/Asset'
+          title: "Base asset. Crypto Only (BTC, ETH, PAXG)"
+          type: string
         quote_asset:
-          $ref: '#/components/schemas/Asset'
+          description: "Quote asset. Fiat Only (USD, EUR, SGD)."
+          type: string
         tick_rate:
           title: Tick rate for market
           type: string
@@ -8905,9 +9465,13 @@ components:
           description: "The guaranteed price, held until expires_at."
           type: string
         base_asset:
-          $ref: '#/components/schemas/Asset'
+          description: "The \"base\" side of the trading pair (crypto - like BTC,\
+            \ ETH, PAXG)."
+          type: string
         quote_asset:
-          $ref: '#/components/schemas/Asset'
+          description: "The \"quote\" side of the trading pair (fiat - like USD, EUR,\
+            \ SGD)."
+          type: string
         created_at:
           description: The time at which the quote was first offered.
           format: date-time
@@ -8971,12 +9535,16 @@ components:
           description: The amount of assets (crypto) in the transaction.
           type: string
         base_asset:
-          $ref: '#/components/schemas/Asset'
+          description: "The \"base\" side of the trading pair (crypto - like BTC,\
+            \ ETH, PAXG)."
+          type: string
         quote_amount:
           description: The amount of quote currency (cash) in the transaction.
           type: string
         quote_asset:
-          $ref: '#/components/schemas/Asset'
+          description: "The \"quote\" side of the trading pair (fiat - like USD, EUR,\
+            \ SGD)."
+          type: string
         created_at:
           description: The time at which the quote execution was created.
           format: date-time
@@ -9157,8 +9725,12 @@ components:
             if (any.is(Foo.class)) {
               foo = any.unpack(Foo.class);
             }
+            // or ...
+            if (any.isSameTypeAs(Foo.getDefaultInstance())) {
+              foo = any.unpack(Foo.getDefaultInstance());
+            }
 
-        Example 3: Pack and unpack a message in Python.
+         Example 3: Pack and unpack a message in Python.
 
             foo = Foo(...)
             any = Any()
@@ -9168,7 +9740,7 @@ components:
               any.Unpack(foo)
               ...
 
-        Example 4: Pack and unpack a message in Go
+         Example 4: Pack and unpack a message in Go
 
              foo := &pb.Foo{...}
              any, err := anypb.New(foo)
@@ -9187,9 +9759,8 @@ components:
         in the type URL, for example "foo.bar.com/x/y.z" will yield type
         name "y.z".
 
-
         JSON
-
+        ====
         The JSON representation of an `Any` value uses the regular
         representation of the deserialized, embedded message, with an
         additional field `@type` which contains the type URL. Example:
@@ -9241,7 +9812,8 @@ components:
 
             Note: this functionality is not currently available in the official
             protobuf release, and it is not used for type URLs beginning with
-            type.googleapis.com.
+            type.googleapis.com. As of May 2023, there are no widely used type server
+            implementations and no plans to implement one.
 
             Schemes other than `http`, `https` (or the empty scheme) might be
             used with implementation specific semantics.
@@ -9284,6 +9856,26 @@ components:
           type: string
       required:
       - wallet_address
+      type: object
+    FiatNetworkInstructionsCubix:
+      example:
+        account_id: account_id
+      properties:
+        account_id:
+          description: The uuid account id of the CUBIX account.
+          type: string
+      required:
+      - account_id
+      type: object
+    FiatNetworkInstructionsDbsAct:
+      example:
+        account_number: account_number
+      properties:
+        account_number:
+          description: The account number of the DBS account.
+          type: string
+      required:
+      - account_number
       type: object
     FiatNetworkInstructionsWire:
       example:
@@ -9454,6 +10046,15 @@ components:
       - routing_number
       - routing_number_type
       type: object
+    AddressInfo:
+      properties:
+        individual_info:
+          $ref: '#/components/schemas/IndividualInfo'
+        institution_info:
+          $ref: '#/components/schemas/InstitutionInfo'
+      required:
+      - originator_info
+      type: object
     AutoConversion:
       properties:
         from_transfer_id:
@@ -9614,7 +10215,7 @@ components:
           additionalProperties:
             type: string
           description: |-
-            Optional client-specified metadata, which will be added to the deposit address but not to deposit transfers to the created address.
+            Optional client-specified metadata, which will be added to both the deposit address itself and transfers to the created address.
             Up to 6 key/value pairs may be provided.
             Each key and value must be less than or equal to 100 characters.
           type: object
@@ -9652,7 +10253,9 @@ components:
           description: The optional client-specified ID (for idempotence).
           type: string
         identity_id:
-          description: The Paxos Identity (`identity_id`) of the user's FiatAccount.
+          description: |-
+            The Paxos Identity (`identity_id`) of the user's FiatAccount.
+            Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users.
           type: string
         account_id:
           description: |-
@@ -9674,7 +10277,6 @@ components:
       required:
       - fiat_account_owner
       - fiat_network_instructions
-      - identity_id
       type: object
     CreateFiatDepositInstructionsRequest:
       example:
@@ -9694,7 +10296,9 @@ components:
           description: The Profile (`profile_id`) to deposit to.
           type: string
         identity_id:
-          description: The Identity (`identity_id`) of the user making the deposit.
+          description: |-
+            The Identity (`identity_id`) of the user making the deposit.
+            Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) making deposits on behalf of their end users.
           type: string
         account_id:
           description: |-
@@ -9715,7 +10319,6 @@ components:
           type: object
       required:
       - fiat_network
-      - identity_id
       - profile_id
       type: object
     CreateFiatWithdrawalRequest:
@@ -9730,7 +10333,9 @@ components:
           description: The optional client-specified ID (for idempotence).
           type: string
         amount:
-          description: The amount to withdraw.
+          description: "Amount to withdraw, excluding fees. Specify exactly one of\
+            \ `amount` or `total`. When `amount` is specified, Paxos initiates the\
+            \ withdrawal for `amount` and then charges fees."
           pattern: "^[0-9]*\\.?[0-9]{1,2}$"
           type: string
         asset:
@@ -9743,7 +10348,9 @@ components:
           description: The Profile (`profile_id`) to withdraw from.
           type: string
         identity_id:
-          description: The Identity (`identity_id`) of the user making the withdrawal.
+          description: |-
+            The Identity (`identity_id`) of the user making the withdrawal.
+            Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users.
           type: string
         account_id:
           description: |-
@@ -9764,11 +10371,14 @@ components:
           maxLength: 100
           pattern: "^[0-9A-Za-z /?:().,&'+-]*$"
           type: string
+        total:
+          description: "Total to withdraw, including fees. Specify exactly one of\
+            \ `amount` or `total`. When `total` is specified, Paxos initiates the\
+            \ withdrawal for `total` minus the fee."
+          type: string
       required:
-      - amount
       - asset
       - fiat_account_id
-      - identity_id
       - profile_id
       type: object
     CreateInternalTransferRequest:
@@ -9802,6 +10412,55 @@ components:
             type: string
           description: |-
             Optional client-specified metadata.
+            Up to 6 key/value pairs may be provided.
+            Each key and value must be less than or equal to 100 characters.
+          type: object
+      required:
+      - amount
+      - asset
+      - from_profile_id
+      - to_profile_id
+      type: object
+    CreatePaxosTransferRequest:
+      example:
+        ref_id: idempotence_id
+        from_profile_id: b7b77d82-e6a7-4ae9-9904-36231aedf985
+        to_profile_id: 37867177-f88c-45cc-b9b5-d786e7079609
+        asset: BTC
+        amount: "0.05"
+        metadata:
+          my_id: 4024ee50-eefb-4f2e-85c7-e7899c0b7da5
+        recipient_metadata:
+          your_id: 43ab8d28-be1e-4729-8731-37fd976b167b
+      properties:
+        ref_id:
+          description: Client-specified ID for replay protection and lookup.
+          type: string
+        from_profile_id:
+          description: The profile from which to send funds.
+          type: string
+        to_profile_id:
+          description: The destination profile.
+          type: string
+        amount:
+          description: The amount to transfer.
+          type: string
+        asset:
+          description: "The asset to transfer, e.g. \"USD\", \"BTC\", \"ETH\"."
+          type: string
+        metadata:
+          additionalProperties:
+            type: string
+          description: |-
+            Optional client-specified metadata on the sender side of the transaction.
+            Up to 6 key/value pairs may be provided.
+            Each key and value must be less than or equal to 100 characters.
+          type: object
+        recipient_metadata:
+          additionalProperties:
+            type: string
+          description: |-
+            Optional client-specified metadata for the recipient side of the transaction.
             Up to 6 key/value pairs may be provided.
             Each key and value must be less than or equal to 100 characters.
           type: object
@@ -9967,8 +10626,12 @@ components:
               city: city
               address1: address1
               zip_code: zip_code
+          dbs_act:
+            account_number: account_number
           cbit:
             wallet_address: wallet_address
+          cubix:
+            account_id: account_id
         created_at: 2000-01-23T04:56:07.000+00:00
         id: id
         fiat_account_owner:
@@ -10077,8 +10740,12 @@ components:
               city: city
               address1: address1
               zip_code: zip_code
+          dbs_act:
+            account_number: account_number
           cbit:
             wallet_address: wallet_address
+          cubix:
+            account_id: account_id
         created_at: 2000-01-23T04:56:07.000+00:00
         id: id
         status: VALID
@@ -10147,7 +10814,8 @@ components:
     FiatNetwork:
       enum:
       - WIRE
-      - CBIT
+      - DBS_ACT
+      - CUBIX
       type: string
     FiatNetworkInstructions:
       example:
@@ -10182,19 +10850,37 @@ components:
             city: city
             address1: address1
             zip_code: zip_code
+        dbs_act:
+          account_number: account_number
         cbit:
           wallet_address: wallet_address
+        cubix:
+          account_id: account_id
       properties:
         wire:
           $ref: '#/components/schemas/FiatNetworkInstructionsWire'
         cbit:
           $ref: '#/components/schemas/FiatNetworkInstructionsCbit'
+        dbs_act:
+          $ref: '#/components/schemas/FiatNetworkInstructionsDbsAct'
+        cubix:
+          $ref: '#/components/schemas/FiatNetworkInstructionsCubix'
       type: object
     FiatWireAccountType:
       enum:
       - ABA
       - SWIFT
       type: string
+    IndividualInfo:
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+      required:
+      - first_name
+      - last_name
+      type: object
     InitiateSandboxFiatDepositRequest:
       example:
         amount: amount
@@ -10231,8 +10917,12 @@ components:
               city: city
               address1: address1
               zip_code: zip_code
+          dbs_act:
+            account_number: account_number
           cbit:
             wallet_address: wallet_address
+          cubix:
+            account_id: account_id
         asset: asset
         fiat_account_owner:
           person_details:
@@ -10263,6 +10953,13 @@ components:
       - memo_id
       type: object
     InitiateSandboxFiatDepositResponse:
+      type: object
+    InstitutionInfo:
+      properties:
+        institution_name:
+          type: string
+      required:
+      - institution_name
       type: object
     ListDepositAddressesRequestOrderBy:
       description: Query filter order.
@@ -10351,8 +11048,12 @@ components:
                 city: city
                 address1: address1
                 zip_code: zip_code
+            dbs_act:
+              account_number: account_number
             cbit:
               wallet_address: wallet_address
+            cubix:
+              account_id: account_id
           created_at: 2000-01-23T04:56:07.000+00:00
           id: id
           fiat_account_owner:
@@ -10400,8 +11101,12 @@ components:
                 city: city
                 address1: address1
                 zip_code: zip_code
+            dbs_act:
+              account_number: account_number
             cbit:
               wallet_address: wallet_address
+            cubix:
+              account_id: account_id
           created_at: 2000-01-23T04:56:07.000+00:00
           id: id
           fiat_account_owner:
@@ -10462,8 +11167,12 @@ components:
                 city: city
                 address1: address1
                 zip_code: zip_code
+            dbs_act:
+              account_number: account_number
             cbit:
               wallet_address: wallet_address
+            cubix:
+              account_id: account_id
           created_at: 2000-01-23T04:56:07.000+00:00
           id: id
           status: VALID
@@ -10512,8 +11221,12 @@ components:
                 city: city
                 address1: address1
                 zip_code: zip_code
+            dbs_act:
+              account_number: account_number
             cbit:
               wallet_address: wallet_address
+            cubix:
+              account_id: account_id
           created_at: 2000-01-23T04:56:07.000+00:00
           id: id
           status: VALID
@@ -10657,6 +11370,29 @@ components:
       required:
       - country
       type: object
+    RejectCryptoDepositResponse:
+      type: object
+    SecondaryStatus:
+      description: "Secondary status for the transfer, used for more granular explanation\
+        \ of the transfer status."
+      properties:
+        name:
+          $ref: '#/components/schemas/SecondaryStatusName'
+        detail:
+          description: Additional information about the current status of the transfer
+            (e.g. if information is missing).
+          type: string
+      type: object
+    SecondaryStatusName:
+      description: |-
+        Identifier for secondary status.
+
+         - TRAVEL_RULE_INFO_REQUESTED: Travel rule information is required to continue processing the transfer.
+         - TRAVEL_RULE_REJECTED: Transfer has been terminally rejected due to failing travel rule checks.
+      enum:
+      - TRAVEL_RULE_INFO_REQUESTED
+      - TRAVEL_RULE_REJECTED
+      type: string
     Transfer:
       example:
         id: f190b163-208f-4d73-8deb-4fb8b24add00
@@ -10761,12 +11497,14 @@ components:
           $ref: '#/components/schemas/AutoConversion'
         group_id:
           description: Unique identifier linking the debit and credit sides of an
-            internal transfer.
+            internal or Paxos transfer.
           type: string
         fiat_account_id:
           description: "For fiat withdrawals, the Paxos ID of the owner's fiat account\
             \ (UUID)."
           type: string
+        secondary_status:
+          $ref: '#/components/schemas/SecondaryStatus'
       required:
       - amount
       - asset
@@ -10847,13 +11585,11 @@ components:
       - SIGNET_WITHDRAWAL
       - CBIT_WITHDRAWAL
       - CBIT_DEPOSIT
+      - CUBIX_DEPOSIT
+      - CUBIX_WITHDRAWAL
       type: string
-    CapitalGainType:
-      enum:
-      - LONG_TERM
-      - SHORT_TERM
-      - EXEMPT
-      type: string
+    UpdateCryptoDepositResponse:
+      type: object
     ListTaxFormRevisionsResponse:
       example:
         tax_form_urls:
@@ -10903,58 +11639,6 @@ components:
           description: Cursor token required for fetching the next page.
           type: string
       type: object
-    ListTaxLotsResponse:
-      example:
-        next_page_cursor: next_page_cursor
-        items:
-        - transaction_id: transaction_id
-          quantity: quantity
-          closed_at: 2000-01-23T04:56:07.000+00:00
-          capital_gain_type: LONG_TERM
-          percentage_capital_gain: percentage_capital_gain
-          created_at: 2000-01-23T04:56:07.000+00:00
-          fiat_currency: fiat_currency
-          cost_basis_per_coin: cost_basis_per_coin
-          transaction_type: BUY
-          Acquired_at: 2000-01-23T04:56:07.000+00:00
-          cryptocurrency: cryptocurrency
-          cost_basis: cost_basis
-          days_to_long_term: days_to_long_term
-          account_id: account_id
-          profile_id: profile_id
-          id: id
-          current_market_value: current_market_value
-          capital_gain: capital_gain
-          status: OPEN
-        - transaction_id: transaction_id
-          quantity: quantity
-          closed_at: 2000-01-23T04:56:07.000+00:00
-          capital_gain_type: LONG_TERM
-          percentage_capital_gain: percentage_capital_gain
-          created_at: 2000-01-23T04:56:07.000+00:00
-          fiat_currency: fiat_currency
-          cost_basis_per_coin: cost_basis_per_coin
-          transaction_type: BUY
-          Acquired_at: 2000-01-23T04:56:07.000+00:00
-          cryptocurrency: cryptocurrency
-          cost_basis: cost_basis
-          days_to_long_term: days_to_long_term
-          account_id: account_id
-          profile_id: profile_id
-          id: id
-          current_market_value: current_market_value
-          capital_gain: capital_gain
-          status: OPEN
-      properties:
-        next_page_cursor:
-          description: Cursor token required for fetching the next page.
-          type: string
-        items:
-          description: The result list of tax lots.
-          items:
-            $ref: '#/components/schemas/TaxLot'
-          type: array
-      type: object
     TaxFormType:
       enum:
       - FORM_1099_B
@@ -10979,104 +11663,6 @@ components:
         url:
           type: string
       type: object
-    TaxLot:
-      example:
-        transaction_id: transaction_id
-        quantity: quantity
-        closed_at: 2000-01-23T04:56:07.000+00:00
-        capital_gain_type: LONG_TERM
-        percentage_capital_gain: percentage_capital_gain
-        created_at: 2000-01-23T04:56:07.000+00:00
-        fiat_currency: fiat_currency
-        cost_basis_per_coin: cost_basis_per_coin
-        transaction_type: BUY
-        Acquired_at: 2000-01-23T04:56:07.000+00:00
-        cryptocurrency: cryptocurrency
-        cost_basis: cost_basis
-        days_to_long_term: days_to_long_term
-        account_id: account_id
-        profile_id: profile_id
-        id: id
-        current_market_value: current_market_value
-        capital_gain: capital_gain
-        status: OPEN
-      properties:
-        id:
-          description: The tax lot ID.
-          type: string
-        profile_id:
-          description: Profile ID.
-          type: string
-        account_id:
-          description: Account ID.
-          type: string
-        Acquired_at:
-          description: The timestamp at which the asset was acquired.
-          format: date-time
-          type: string
-        cryptocurrency:
-          description: The currency for numeric fields in Crypto.
-          type: string
-        fiat_currency:
-          description: The currency for numeric fields in Fiat.
-          type: string
-        cost_basis:
-          description: The cost basis.
-          type: string
-        cost_basis_per_coin:
-          description: The cost basis per crypto coin.
-          type: string
-        quantity:
-          description: The quantity of total crypto coins.
-          type: string
-        transaction_type:
-          $ref: '#/components/schemas/TransactionType'
-        transaction_id:
-          description: Transaction id.
-          type: string
-        capital_gain:
-          description: "The capital gain for the tax lot, estimated with current crypto\
-            \ price for open tax lots."
-          type: string
-        capital_gain_type:
-          $ref: '#/components/schemas/CapitalGainType'
-        percentage_capital_gain:
-          description: The percentage of capital gain over cost basis.
-          type: string
-        current_market_value:
-          description: The current market value calculated by current Crypto price.
-          type: string
-        days_to_long_term:
-          description: The number of days left until capital gain type is LONG_TERM.
-            Return 999 if acquisition time is unknown.
-          type: string
-        status:
-          $ref: '#/components/schemas/TaxLotStatus'
-        created_at:
-          description: The timestamp at which tax lot is created.
-          format: date-time
-          type: string
-        closed_at:
-          description: The timestamp at which tax lot is closed.
-          format: date-time
-          type: string
-      type: object
-    TaxLotStatus:
-      enum:
-      - OPEN
-      - CLOSED
-      type: string
-    TransactionType:
-      enum:
-      - BUY
-      - SELL
-      - DEPOSIT
-      - WITHDRAWAL
-      type: string
-    taxprotoOrderBy:
-      enum:
-      - CREATED_AT
-      type: string
     CreateStablecoinConversionRequest:
       example:
         ref_id: ref_id
@@ -11094,14 +11680,14 @@ components:
           description: The Profile associated with a conversion.
           type: string
         amount:
-          description: Asset amount to convert. <a href="/stablecoin/conversion/asset">Details</a>.
+          description: Asset amount to convert. <a href="https://docs.paxos.com/developer/convert#assets">Details</a>.
           pattern: "^[0-9]*\\.?[0-9]+$"
           type: string
         source_asset:
-          description: The asset to convert from. <a href="/stablecoin/conversion/asset">Details</a>.
+          description: The asset to convert from. <a href="https://docs.paxos.com/developer/convert#assets">Details</a>.
           type: string
         target_asset:
-          description: The asset to convert to. <a href="/stablecoin/conversion/asset">Details</a>.
+          description: The asset to convert to. <a href="https://docs.paxos.com/developer/convert#assets">Details</a>.
           type: string
         ref_id:
           description: "Client provided, unique Reference ID for lookup and replay\
@@ -11145,6 +11731,7 @@ components:
           target_asset: target_asset
           updated_at: 2000-01-23T04:56:07.000+00:00
           profile_id: profile_id
+          recipient_profile_id: recipient_profile_id
           id: id
           settled_at: 2000-01-23T04:56:07.000+00:00
           source_asset: source_asset
@@ -11160,6 +11747,7 @@ components:
           target_asset: target_asset
           updated_at: 2000-01-23T04:56:07.000+00:00
           profile_id: profile_id
+          recipient_profile_id: recipient_profile_id
           id: id
           settled_at: 2000-01-23T04:56:07.000+00:00
           source_asset: source_asset
@@ -11187,6 +11775,7 @@ components:
         target_asset: target_asset
         updated_at: 2000-01-23T04:56:07.000+00:00
         profile_id: profile_id
+        recipient_profile_id: recipient_profile_id
         id: id
         settled_at: 2000-01-23T04:56:07.000+00:00
         source_asset: source_asset
@@ -11206,16 +11795,16 @@ components:
             <a href="#operation/CreateStablecoinConversion">Create Stablecoin Conversion</a> request.
           type: string
         amount:
-          description: Asset amount to convert. <a href="/stablecoin/conversion/asset">Details</a>.
+          description: Asset amount to convert. <a href="https://docs.paxos.com/developer/convert#assets">Details</a>.
           type: string
         source_asset:
-          description: The asset to convert from. <a href="/stablecoin/conversion/asset">Details</a>.
+          description: The asset to convert from. <a href="https://docs.paxos.com/developer/convert#assets">Details</a>.
           type: string
         target_asset:
-          description: The asset to convert to. <a href="/stablecoin/conversion/asset">Details</a>.
+          description: The asset to convert to. <a href="https://docs.paxos.com/developer/convert#assets">Details</a>.
           type: string
         status:
-          description: The current status of the conversion. <a href="/stablecoin/conversion/status">Details</a>.
+          description: The current status of the conversion. <a href="https://docs.paxos.com/developer/convert#stablecoin-conversion-statuses">Details</a>.
           type: string
         ref_id:
           description: |-
@@ -11247,14 +11836,14 @@ components:
         settled_at:
           description: |-
             The time at which the conversion was settled.
-            <a href="/stablecoin/conversion/status">Details</a>.
+            <a href="https://docs.paxos.com/developer/convert#stablecoin-conversion-statuses">Details</a>.
             RFC3339 format, like `2006-01-02T15:04:05Z`.
           format: date-time
           type: string
         cancelled_at:
           description: |-
             The time at which the conversion has been cancelled.
-            <a href="/stablecoin/conversion/status">Details</a>.
+            <a href="https://docs.paxos.com/developer/convert#stablecoin-conversion-statuses">Details</a>.
             RFC3339 format, like `2006-01-02T15:04:05Z`.
           format: date-time
           type: string
@@ -11263,7 +11852,238 @@ components:
             type: string
           description: Optional client-specified stored metadata.
           type: object
+        recipient_profile_id:
+          description: "For directed settlement, the receiving side `profile_id`."
+          type: string
       type: object
+    CreateObligationRequest:
+      description: Request to create a obligation.
+      example:
+        amount: amount
+        asset: asset
+        direction: DELIVER
+      properties:
+        direction:
+          $ref: '#/components/schemas/ObligationDirection'
+        asset:
+          description: Asset which is obliged.
+          type: string
+        amount:
+          description: Amount of the asset which is obliged.
+          type: string
+      type: object
+    CreateTransactionRequest:
+      description: Request to create a bilateral settlement transaction with one or
+        more legs.
+      example:
+        ref_id: ref_id
+        source_profile_id: source_profile_id
+        settlement_window_start: 2000-01-23T04:56:07.000+00:00
+        settlement_window_end: 2000-01-23T04:56:07.000+00:00
+        legs:
+        - amount: amount
+          asset: asset
+          direction: DELIVER
+        - amount: amount
+          asset: asset
+          direction: DELIVER
+        target_profile_id: target_profile_id
+      properties:
+        ref_id:
+          description: Idempotency key.
+          type: string
+        settlement_window_start:
+          description: |-
+            The start of the window which the transaction is eligible for settlement.
+            If omitted, transactions are immediately eligible for settlement upon success.
+            RFC3339 format, like `2006-01-02T15:04:05Z`.
+          format: date-time
+          type: string
+        settlement_window_end:
+          description: |-
+            The end of the window which the transaction is eligible for settlement.
+            Transactions which are not cancelled or settled by this time will expire.
+            RFC3339 format, like `2006-01-02T15:04:05Z`.
+          format: date-time
+          type: string
+        source_profile_id:
+          description: The `profile_id` of the entity submitting the transaction.
+          type: string
+        target_profile_id:
+          description: The `profile_id` of the entity receiving the transaction.
+          type: string
+        legs:
+          description: The obligations (representing one-way asset movements) to be
+            settled atomically.
+          items:
+            $ref: '#/components/schemas/CreateObligationRequest'
+          type: array
+      type: object
+    ListTransactionsResponse:
+      example:
+        items:
+        - id: d99a03ee-6b88-4362-89da-087c2c8cd4a7
+          ref_id: d840cf31-352f-4190-a476-7522bf3eafda
+          settlement_window_start: 2023-08-25T14:25:41.648486573Z
+          settlement_window_end: 2023-08-25T14:25:41.648486953Z
+          source_profile_id: 4fd025ab-f29f-47e6-a02e-df90a61c7ec9
+          target_profile_id: 47db6271-50d6-4934-8c81-c42d87bfb390
+          legs:
+          - id: ace21517-447e-4764-8733-765cb12a7fab
+            direction: DELIVER
+            asset: BTC
+            amount: "100"
+          status: PENDING
+          created_at: 2023-08-25T14:25:41.648489333Z
+          updated_at: 2023-08-25T14:25:41.648489493Z
+        - id: d99a03ee-6b88-4362-89da-087c2c8cd4a7
+          ref_id: d840cf31-352f-4190-a476-7522bf3eafda
+          settlement_window_start: 2023-08-25T14:25:41.648486573Z
+          settlement_window_end: 2023-08-25T14:25:41.648486953Z
+          source_profile_id: 4fd025ab-f29f-47e6-a02e-df90a61c7ec9
+          target_profile_id: 47db6271-50d6-4934-8c81-c42d87bfb390
+          legs:
+          - id: ace21517-447e-4764-8733-765cb12a7fab
+            direction: DELIVER
+            asset: BTC
+            amount: "100"
+          status: PENDING
+          created_at: 2023-08-25T14:25:41.648489333Z
+          updated_at: 2023-08-25T14:25:41.648489493Z
+        next_page_cursor: next_page_cursor
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/Transaction'
+          type: array
+        next_page_cursor:
+          type: string
+      type: object
+    Obligation:
+      example:
+        id: e7b6892a-00f7-40fb-8871-bdd1eefb6192
+        direction: DELIVER
+        asset: BTC
+        amount: "0.10000000"
+      properties:
+        id:
+          type: string
+        direction:
+          $ref: '#/components/schemas/ObligationDirection'
+        asset:
+          description: Asset which is obliged.
+          type: string
+        amount:
+          description: Amount of the asset which is obliged.
+          pattern: "^[0-9]*\\.?[0-9]+$"
+          type: string
+      required:
+      - amount
+      - asset
+      - direction
+      - id
+      type: object
+    ObligationDirection:
+      description: |-
+        Direction of asset delivery for an obligation.
+
+         - DELIVER: Assets are delivered from the source profile to the target profile.
+         - RECEIVE: Assets are delivered from the target profile to the source profile.
+      enum:
+      - DELIVER
+      - RECEIVE
+      type: string
+    Transaction:
+      description: "Transaction returned on create (Create Transaction), list (List\
+        \ Transactions) and get (Get Transaction) requests."
+      example:
+        id: d99a03ee-6b88-4362-89da-087c2c8cd4a7
+        ref_id: d840cf31-352f-4190-a476-7522bf3eafda
+        settlement_window_start: 2023-08-25T14:25:41.648486573Z
+        settlement_window_end: 2023-08-25T14:25:41.648486953Z
+        source_profile_id: 4fd025ab-f29f-47e6-a02e-df90a61c7ec9
+        target_profile_id: 47db6271-50d6-4934-8c81-c42d87bfb390
+        legs:
+        - id: ace21517-447e-4764-8733-765cb12a7fab
+          direction: DELIVER
+          asset: BTC
+          amount: "100"
+        status: PENDING
+        created_at: 2023-08-25T14:25:41.648489333Z
+        updated_at: 2023-08-25T14:25:41.648489493Z
+      properties:
+        id:
+          description: The transaction identifier used to query or refer to a specific
+            transaction.
+          type: string
+        ref_id:
+          description: Idempotency key.
+          type: string
+        settlement_window_start:
+          description: |-
+            The start of the window which the transaction is eligible for settlement.
+            If omitted, transactions are immediately eligible for settlement upon success.
+            RFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`. ex: `2006-01-02T15:04:05Z`.
+          format: date-time
+          type: string
+        settlement_window_end:
+          description: |-
+            The end of the window which the transaction is eligible for settlement.
+            Transactions which are not cancelled or settled by this time will expire.
+            RFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`. ex: `2006-01-02T15:04:05Z`.
+          format: date-time
+          type: string
+        source_profile_id:
+          description: The Profile ID (profile_id) of the entity submitting the transaction.
+          type: string
+        target_profile_id:
+          description: The Profile ID (profile_id) of the entity receiving the transaction.
+          type: string
+        legs:
+          description: The obligations (representing one-way asset movements) to be
+            settled atomically.
+          items:
+            $ref: '#/components/schemas/Obligation'
+          type: array
+        status:
+          $ref: '#/components/schemas/TransactionStatus'
+        created_at:
+          description: "The timestamp when the transaction was first created, RFC3339\
+            \ format, like `YYYY-MM-DDTHH:MM:SS.sssZ`."
+          format: date-time
+          type: string
+        updated_at:
+          description: "The timestamp when the transaction was last updated, RFC3339\
+            \ format, like `YYYY-MM-DDTHH:MM:SS.sssZ`."
+          format: date-time
+          type: string
+      required:
+      - created_at
+      - id
+      - legs
+      - ref_id
+      - settlement_window_end
+      - settlement_window_start
+      - source_profile_id
+      - status
+      - target_profile_id
+      - updated_at
+      type: object
+    TransactionStatus:
+      description: |-
+        - PENDING: Initial state of a settlement transaction upon creation.
+         - SETTLED: Indicates all obligations belong to the settlement transaction have been enacted.
+         - EXPIRED: Indicates the settlement transaction is no longer eligible for settlement.
+         - CANCELLED: Indicates the settlement transaction was cancelled by the source profile.
+         - AFFIRMED: Indicates the settlement transaction will be eligible for settlement once within the window.
+      enum:
+      - PENDING
+      - SETTLED
+      - EXPIRED
+      - CANCELLED
+      - AFFIRMED
+      title: Status of the transaction
+      type: string
     GetOrderBookResponse:
       example:
         market: ETHEUR
@@ -11336,14 +12156,25 @@ components:
             Additional structured metadata about the error.
           type: object
       type: object
+    UpdateProfile_request:
+      example:
+        profile_id: b7b77d82-e6a7-4ae9-9904-36231aedf985
+        nickname: MyProfileName
+      properties:
+        nickname:
+          type: string
+      required:
+      - nickname
+      type: object
     CreateSandboxDepositRequest:
       example:
         amount: amount
         crypto_network: BITCOIN
-        asset: USD
+        asset: asset
       properties:
         asset:
-          $ref: '#/components/schemas/Asset'
+          description: The kind of asset to deposit.
+          type: string
         amount:
           description: The amount to deposit.
           pattern: "^[0-9]*\\.?[0-9]+$"
@@ -11405,6 +12236,17 @@ components:
         set_tax_details_not_required:
           description: Set to true if tax details are not legally required.
           type: boolean
+        customer_due_diligence:
+          $ref: '#/components/schemas/CustomerDueDiligence'
+        is_merchant:
+          description: Set to true to indicate that this identity is a merchant.
+          type: boolean
+        last_kyc_refresh_date:
+          description: |-
+            Set to the timestamp the identity has last undergone a periodic kyc refresh. If unset, the update is not for
+            periodic kyc refresh.
+          format: date-time
+          type: string
       title: UpdateIdentityRequest
       type: object
     SandboxSetIdentityStatusRequest:
@@ -11559,6 +12401,35 @@ components:
       - quote_id
       title: Create Quote Execution Request
       type: object
+    RejectCryptoDepositRequest:
+      example:
+        identity_id: 54385e67-d7ef-40d1-b488-ceda6dd9b264
+      properties:
+        identity_id:
+          description: The Identity (`identity_id`) of the end user that requests
+            to reject the deposit.
+          type: string
+      required:
+      - identity_id
+      title: RejectCryptoDepositRequest
+      type: object
+    UpdateCryptoDepositRequest:
+      example:
+        identity_id: 54385e67-d7ef-40d1-b488-ceda6dd9b264
+        originator_address_info:
+          first_name: John
+          last_name: Doe
+      properties:
+        identity_id:
+          description: The Identity (`identity_id`) of the end user updating the deposit.
+          type: string
+        originator_address_info:
+          $ref: '#/components/schemas/AddressInfo'
+      required:
+      - identity_id
+      - originator_address_info
+      title: UpdateCryptoDepositRequest
+      type: object
     UpdateFiatAccountRequest:
       example:
         metadata:
@@ -11611,81 +12482,77 @@ components:
           type: object
       title: UpdateFiatAccountRequest
       type: object
-    UpdateTaxLotRequest:
-      example:
-        tax_lot:
-          transaction_id: transaction_id
-          quantity: quantity
-          closed_at: 2000-01-23T04:56:07.000+00:00
-          capital_gain_type: LONG_TERM
-          percentage_capital_gain: percentage_capital_gain
-          created_at: 2000-01-23T04:56:07.000+00:00
-          fiat_currency: fiat_currency
-          cost_basis_per_coin: cost_basis_per_coin
-          transaction_type: BUY
-          Acquired_at: 2000-01-23T04:56:07.000+00:00
-          cryptocurrency: cryptocurrency
-          cost_basis: cost_basis
-          days_to_long_term: days_to_long_term
-          account_id: account_id
-          profile_id: profile_id
-          id: id
-          current_market_value: current_market_value
-          capital_gain: capital_gain
-          status: OPEN
-      properties:
-        tax_lot:
-          $ref: '#/components/schemas/TaxLot'
-      required:
-      - tax_lot
-      title: UpdateTaxLotRequest
-      type: object
   securitySchemes:
     OAuth2:
       description: |
-        The Paxos API uses OAuth2.
+        Paxos APIs use <a href="https://tools.ietf.org/html/rfc6749" target="_blank">OAuth 2</a> with the <a href="https://tools.ietf.org/html/rfc6749#section-4.4" target="_blank">client credentials</a> grant flow.
 
-        All API access is restricted by OAuth2 **scopes**.
-        Credentials are created with a set of granted scopes and can only access endpoints permitted for those scopes.
-
-        Every endpoint that requires a scope must be accompanied by an <b>"Authorization"</b> header with a value that follows the following schema: <b>"Bearer ACCESS_TOKEN"</b>
-
-        We have a <a href="https://developer.paxos.com/docs/Paxos_Sandbox_V2_Oauth_Guide.pdf" target="_blank">guide</a> on how to create API credentials and gain an access token to our sandbox environment.
+        Learn more in the [API credentials guide →](https://docs.paxos.com/developer/credentials)
       flows:
         clientCredentials:
           scopes:
-            funding:read_profile: Read profile and balance data
-            exchange:read_quote: Read quotes and quote history
-            exchange:write_quote_execution: Execute on quoted prices
-            exchange:read_quote_execution: Read quote executions
-            exchange:write_order: Create and Cancel Orders
-            exchange:read_order: Read Orders and Executions
-            exchange:historical_prices: Read Historical Pricing Data
-            transfer:read_transfer: Read deposit and withdrawal transfers
-            transfer:read_deposit_address: Read deposit addresses
-            transfer:write_deposit_address: Create and manage deposit addresses
-            fee:write_crypto_withdrawal_fee: Create crypto withdrawal fees
-            transfer:write_crypto_withdrawal: Create crypto withdrawal transfers
-            conversion:read_conversion_stablecoin: Retrieve requested or completed
-              conversions
-            conversion:write_conversion_stablecoin: Create or cancel a conversion
-              request
-          tokenUrl: https://oauth.paxos.com/oauth2/token
+            conversion:read_conversion_stablecoin: Retrieve stablecoin conversion
+              details
+            conversion:write_conversion_stablecoin: Create or cancel a stablecoin
+              conversion
+            exchange:historical_prices: Retrieve marketnaverage prices at a certain
+              time increment
+            exchange:read_order: Retrieve order or order execution details
+            exchange:read_quote: Retrieve quote details for buying or selling an asset
+            exchange:read_quote_execution: Retrieve quote execution details
+            exchange:write_quote_execution: Create a quote execution for buying or
+              selling an asset
+            exchange:write_order: Create or cancel an order for buying or selling
+              an asset
+            fee:write_crypto_withdrawal_fee: Create a guaranteed fee for crypto withdrawal
+            funding:read_profile: Retrieve Profile details and deposit funds in Sandbox
+            funding:write_profile: Create a Profile
+            identity:read_account: Retrieve Account details
+            identity:read_identity: Retrieve Identity details or documents
+            identity:write_account: Create or update Account and Account Members
+            identity:write_identity: Create or update Identity details and set Sandbox
+              Identify Status
+            identity:write_verifier_credentials: Set credentials for automatic verification
+            settlement:read_transaction: Retrieve settlement transaction details
+            settlement:write_transaction: "Create, affirm or cancel a settlement transaction"
+            tax:read_tax_form: Retrieve tax details
+            tax:read_tax_lot: Retrieve tax lot details
+            tax:write_tax_lot: Update the given tax-lot ID
+            transfer:read_deposit_address: Retrieve deposit address details
+            transfer:read_fiat_account: Retrieve Fiat Account details
+            transfer:read_fiat_deposit_instructions: Retrieve fiat deposit instruction
+              details
+            transfer:read_transfer: Retrieve transfer details
+            transfer:read_transfer_limit: Retrieve limits for the given transaction
+              type
+            transfer:reject_crypto_deposit: Reject a crypto deposit (travel rule)
+            transfer:update_crypto_deposit: Provide required travel-rule details
+            transfer:write_crypto_withdrawal: Withdraw asset to a specified destination
+              address
+            transfer:write_deposit_address: Create an deposit address on a blockchain
+              network
+            transfer:write_fiat_account: "Create, update or delete a Fiat Account"
+            transfer:write_fiat_deposit_instructions: "Create, update or delete fiat\
+              \ deposit instructions"
+            transfer:write_internal_transfer: Transfer assets between two Profiles
+            transfer:write_sandbox_fiat_deposit: Initiate a test fiat deposit in the
+              Sandbox environment
+            transfer:write_fiat_withdrawal: Withdraw fiat to the given destination
+          tokenUrl: (Sandbox) https://oauth.sandbox.paxos.com/oauth2/token (Production)
+            https://oauth.paxos.com/oauth2/token
       type: oauth2
 x-tagGroups:
-- name: Profiles
+- name: Deposits and Withdrawals
   tags:
-  - Profiles
-- name: Trading
-  tags:
-  - Market Data
-  - Orders
-  - Quotes
-  - Quote Executions
-  - Pricing
-- name: Stablecoin Conversion
-  tags:
-  - Stablecoin Conversion
+  - Transfers
+  - Fiat Transfers
+  - Deposit Addresses
+  - Crypto Deposits
+  - Crypto Withdrawals
+  - Fees
+  - Internal Transfers
+  - Paxos Transfers
+  - Limits
 - name: Identity
   tags:
   - Identity
@@ -11694,20 +12561,27 @@ x-tagGroups:
   - Accounts
   - Account Members
   - Identity Documents
+- name: Profiles
+  tags:
+  - Profiles
 - name: Sandbox
   tags:
   - Sandbox Deposits
   - Sandbox Identity
   - Sandbox Fiat Transfers
-- name: Deposits and Withdrawals
+- name: Settlements
   tags:
-  - Transfers
-  - Fiat Transfers
-  - Deposit Addresses
-  - Crypto Withdrawals
-  - Fees
-  - Internal Transfers
-  - Limits
+  - Settlement
+- name: Stablecoin Conversion
+  tags:
+  - Stablecoin Conversion
 - name: Taxes
   tags:
   - Tax Forms
+- name: Trading
+  tags:
+  - Market Data
+  - Orders
+  - Quotes
+  - Quote Executions
+  - Pricing

@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **RefId** | Pointer to **string** | The optional client-specified ID (for idempotence). | [optional] 
 **ProfileId** | **string** | The Profile (&#x60;profile_id&#x60;) to deposit to. | 
-**IdentityId** | **string** | The Identity (&#x60;identity_id&#x60;) of the user making the deposit. | 
+**IdentityId** | Pointer to **string** | The Identity (&#x60;identity_id&#x60;) of the user making the deposit. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) making deposits on behalf of their end users. | [optional] 
 **AccountId** | Pointer to **string** | The Account (&#x60;account_id&#x60;) associated with the Identity of the user making the deposit. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) making deposits on behalf of their end users. | [optional] 
 **FiatNetwork** | [**FiatNetwork**](FiatNetwork.md) |  | 
 **RoutingNumberType** | Pointer to [**FiatWireAccountType**](FiatWireAccountType.md) |  | [optional] 
@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 
 ### NewCreateFiatDepositInstructionsRequest
 
-`func NewCreateFiatDepositInstructionsRequest(profileId string, identityId string, fiatNetwork FiatNetwork, ) *CreateFiatDepositInstructionsRequest`
+`func NewCreateFiatDepositInstructionsRequest(profileId string, fiatNetwork FiatNetwork, ) *CreateFiatDepositInstructionsRequest`
 
 NewCreateFiatDepositInstructionsRequest instantiates a new CreateFiatDepositInstructionsRequest object
 This constructor will assign default values to properties that have it defined,
@@ -95,6 +95,11 @@ and a boolean to check if the value has been set.
 
 SetIdentityId sets IdentityId field to given value.
 
+### HasIdentityId
+
+`func (o *CreateFiatDepositInstructionsRequest) HasIdentityId() bool`
+
+HasIdentityId returns a boolean if a field has been set.
 
 ### GetAccountId
 

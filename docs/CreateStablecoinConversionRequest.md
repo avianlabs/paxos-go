@@ -5,9 +5,9 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **ProfileId** | **string** | The Profile associated with a conversion. | 
-**Amount** | **string** | Asset amount to convert. &lt;a href&#x3D;\&quot;/stablecoin/conversion/asset\&quot;&gt;Details&lt;/a&gt;. | 
-**SourceAsset** | **string** | The asset to convert from. &lt;a href&#x3D;\&quot;/stablecoin/conversion/asset\&quot;&gt;Details&lt;/a&gt;. | 
-**TargetAsset** | **string** | The asset to convert to. &lt;a href&#x3D;\&quot;/stablecoin/conversion/asset\&quot;&gt;Details&lt;/a&gt;. | 
+**Amount** | **string** | Asset amount to convert. &lt;a href&#x3D;\&quot;https://docs.paxos.com/developer/convert#assets\&quot;&gt;Details&lt;/a&gt;. | 
+**SourceAsset** | **string** | The asset to convert from. &lt;a href&#x3D;\&quot;https://docs.paxos.com/developer/convert#assets\&quot;&gt;Details&lt;/a&gt;. | 
+**TargetAsset** | **string** | The asset to convert to. &lt;a href&#x3D;\&quot;https://docs.paxos.com/developer/convert#assets\&quot;&gt;Details&lt;/a&gt;. | 
 **RefId** | Pointer to **string** | Client provided, unique Reference ID for lookup and replay protection. | [optional] 
 **IdentityId** | Pointer to **string** | The Identity ID associated with the user requesting the conversion. Required only for customers with [3rd-Party integrations](/crypto-brokerage/ledger-type#fiat-and-crypto-subledger). | [optional] 
 **AccountId** | Pointer to **string** | The Account ID associated with the user requesting the conversion. Required only for customers with [3rd-Party integrations](/crypto-brokerage/ledger-type#fiat-and-crypto-subledger). | [optional] 

@@ -83,8 +83,6 @@
 
 * `MARKET_MAKER` (value: `"MARKET_MAKER"`)
 
-* `RANSOMWARE` (value: `"RANSOMWARE"`)
-
 * `SHELL_BANK` (value: `"SHELL_BANK"`)
 
 * `TRAVEL_TRANSPORT` (value: `"TRAVEL_TRANSPORT"`)

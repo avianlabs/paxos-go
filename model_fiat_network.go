@@ -21,13 +21,15 @@ type FiatNetwork string
 // List of FiatNetwork
 const (
 	FiatNetwork_WIRE FiatNetwork = "WIRE"
-	FiatNetwork_CBIT FiatNetwork = "CBIT"
+	FiatNetwork_DBS_ACT FiatNetwork = "DBS_ACT"
+	FiatNetwork_CUBIX FiatNetwork = "CUBIX"
 )
 
 // All allowed values of FiatNetwork enum
 var AllowedFiatNetworkEnumValues = []FiatNetwork{
 	"WIRE",
-	"CBIT",
+	"DBS_ACT",
+	"CUBIX",
 }
 
 func (v *FiatNetwork) UnmarshalJSON(src []byte) error {

@@ -21,13 +21,13 @@ var _ MappedNullable = &InstitutionDetails{}
 // InstitutionDetails struct for InstitutionDetails
 type InstitutionDetails struct {
 	SanctionsVerificationStatus *IdentityStatus `json:"sanctions_verification_status,omitempty"`
-	Name *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
 	BusinessAddress *IdentityMailingAddress `json:"business_address,omitempty"`
 	PhoneNumber *string `json:"phone_number,omitempty"`
 	Email *string `json:"email,omitempty"`
 	InstitutionType *InstitutionType `json:"institution_type,omitempty"`
 	InstitutionSubType *InstitutionSubType `json:"institution_sub_type,omitempty"`
-	CipId *string `json:"cip_id,omitempty"`
+	CipId *string `json:"cip_id,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
 	CipIdType *InstitutionCIPIDType `json:"cip_id_type,omitempty"`
 	// Allowed in create and update. Must be an ISO 3166-1 alpha 3 code.
 	CipIdCountry *string `json:"cip_id_country,omitempty"`
@@ -45,6 +45,7 @@ type InstitutionDetails struct {
 	DocumentVerificationStatus *IdentityStatus `json:"document_verification_status,omitempty"`
 	AdditionalScreeningStatus *IdentityStatus `json:"additional_screening_status,omitempty"`
 	DoingBusinessAs *string `json:"doing_business_as,omitempty"`
+	BusinessDescription *string `json:"business_description,omitempty"`
 }
 
 // NewInstitutionDetails instantiates a new InstitutionDetails object
@@ -800,6 +801,38 @@ func (o *InstitutionDetails) SetDoingBusinessAs(v string) {
 	o.DoingBusinessAs = &v
 }
 
+// GetBusinessDescription returns the BusinessDescription field value if set, zero value otherwise.
+func (o *InstitutionDetails) GetBusinessDescription() string {
+	if o == nil || IsNil(o.BusinessDescription) {
+		var ret string
+		return ret
+	}
+	return *o.BusinessDescription
+}
+
+// GetBusinessDescriptionOk returns a tuple with the BusinessDescription field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *InstitutionDetails) GetBusinessDescriptionOk() (*string, bool) {
+	if o == nil || IsNil(o.BusinessDescription) {
+		return nil, false
+	}
+	return o.BusinessDescription, true
+}
+
+// HasBusinessDescription returns a boolean if a field has been set.
+func (o *InstitutionDetails) HasBusinessDescription() bool {
+	if o != nil && !IsNil(o.BusinessDescription) {
+		return true
+	}
+
+	return false
+}
+
+// SetBusinessDescription gets a reference to the given string and assigns it to the BusinessDescription field.
+func (o *InstitutionDetails) SetBusinessDescription(v string) {
+	o.BusinessDescription = &v
+}
+
 func (o InstitutionDetails) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -878,6 +911,9 @@ func (o InstitutionDetails) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.DoingBusinessAs) {
 		toSerialize["doing_business_as"] = o.DoingBusinessAs
+	}
+	if !IsNil(o.BusinessDescription) {
+		toSerialize["business_description"] = o.BusinessDescription
 	}
 	return toSerialize, nil
 }

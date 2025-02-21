@@ -33,11 +33,11 @@ type Transfer struct {
 	// The optional client-specified ID for replay protection and lookup.
 	RefId *string `json:"ref_id,omitempty"`
 	// The amount sent in the transfer.
-	Amount string `json:"amount"`
+	Amount string `json:"amount" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	// The balance change from this transfer: amount - fee for deposits, and amount + fee for withdrawals. Unsigned.
-	Total string `json:"total"`
+	Total string `json:"total" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	// The fee paid for the transfer.
-	Fee string `json:"fee"`
+	Fee string `json:"fee" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	// The asset for this transfer. This profile's balance of this asset will be debited or credited.
 	Asset string `json:"asset"`
 	// The balance_asset represents what asset's balance was affected at Paxos with this transfer. It only differs from Asset when the transfer includes conversion.
@@ -61,10 +61,11 @@ type Transfer struct {
 	// The Paxos ID of the Account associated with the transfer.
 	AccountId *string `json:"account_id,omitempty"`
 	AutoConversion *AutoConversion `json:"auto_conversion,omitempty"`
-	// Unique identifier linking the debit and credit sides of an internal transfer.
+	// Unique identifier linking the debit and credit sides of an internal or Paxos transfer.
 	GroupId *string `json:"group_id,omitempty"`
 	// For fiat withdrawals, the Paxos ID of the owner's fiat account (UUID).
 	FiatAccountId *string `json:"fiat_account_id,omitempty"`
+	SecondaryStatus *SecondaryStatus `json:"secondary_status,omitempty"`
 }
 
 type _Transfer Transfer
@@ -770,6 +771,38 @@ func (o *Transfer) SetFiatAccountId(v string) {
 	o.FiatAccountId = &v
 }
 
+// GetSecondaryStatus returns the SecondaryStatus field value if set, zero value otherwise.
+func (o *Transfer) GetSecondaryStatus() SecondaryStatus {
+	if o == nil || IsNil(o.SecondaryStatus) {
+		var ret SecondaryStatus
+		return ret
+	}
+	return *o.SecondaryStatus
+}
+
+// GetSecondaryStatusOk returns a tuple with the SecondaryStatus field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Transfer) GetSecondaryStatusOk() (*SecondaryStatus, bool) {
+	if o == nil || IsNil(o.SecondaryStatus) {
+		return nil, false
+	}
+	return o.SecondaryStatus, true
+}
+
+// HasSecondaryStatus returns a boolean if a field has been set.
+func (o *Transfer) HasSecondaryStatus() bool {
+	if o != nil && !IsNil(o.SecondaryStatus) {
+		return true
+	}
+
+	return false
+}
+
+// SetSecondaryStatus gets a reference to the given SecondaryStatus and assigns it to the SecondaryStatus field.
+func (o *Transfer) SetSecondaryStatus(v SecondaryStatus) {
+	o.SecondaryStatus = &v
+}
+
 func (o Transfer) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -827,6 +860,9 @@ func (o Transfer) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.FiatAccountId) {
 		toSerialize["fiat_account_id"] = o.FiatAccountId
+	}
+	if !IsNil(o.SecondaryStatus) {
+		toSerialize["secondary_status"] = o.SecondaryStatus
 	}
 	return toSerialize, nil
 }

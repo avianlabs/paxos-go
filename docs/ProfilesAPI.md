@@ -5,10 +5,12 @@ All URIs are relative to *https://api.paxos.com/v2*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateProfile**](ProfilesAPI.md#CreateProfile) | **Post** /profiles | Create Profile
+[**DeactivateProfile**](ProfilesAPI.md#DeactivateProfile) | **Put** /profiles/{profile_id}/deactivate | Deactivate Profile
 [**GetProfile**](ProfilesAPI.md#GetProfile) | **Get** /profiles/{profile_id} | Get Profile
 [**GetProfileBalance**](ProfilesAPI.md#GetProfileBalance) | **Get** /profiles/{profile_id}/balances/{asset} | Get Profile Balance
 [**ListProfileBalances**](ProfilesAPI.md#ListProfileBalances) | **Get** /profiles/{profile_id}/balances | List Profile Balances
 [**ListProfiles**](ProfilesAPI.md#ListProfiles) | **Get** /profiles | List Profiles
+[**UpdateProfile**](ProfilesAPI.md#UpdateProfile) | **Put** /profiles/{profile_id} | Update Profile
 
 
 
@@ -78,9 +80,79 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## DeactivateProfile
+
+> map[string]interface{} DeactivateProfile(ctx, profileId).Execute()
+
+Deactivate Profile
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/avianlabs/paxos-go"
+)
+
+func main() {
+	profileId := "profileId_example" // string | The UUID of the profile. The default profile cannot be deactivated. The profile must have a zero balance to be deactivated.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ProfilesAPI.DeactivateProfile(context.Background(), profileId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ProfilesAPI.DeactivateProfile``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `DeactivateProfile`: map[string]interface{}
+	fmt.Fprintf(os.Stdout, "Response from `ProfilesAPI.DeactivateProfile`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**profileId** | **string** | The UUID of the profile. The default profile cannot be deactivated. The profile must have a zero balance to be deactivated. | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeactivateProfileRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+**map[string]interface{}**
+
+### Authorization
+
+[OAuth2](../README.md#OAuth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetProfile
 
-> Profile GetProfile(ctx, profileId).Execute()
+> Profile GetProfile(ctx, profileId).IncludeDeactivated(includeDeactivated).Execute()
 
 Get Profile
 
@@ -100,10 +172,11 @@ import (
 
 func main() {
 	profileId := "profileId_example" // string | The UUID of the profile, or \"default\" for the default profile.
+	includeDeactivated := true // bool | Used to include deactivated profiles in the response. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ProfilesAPI.GetProfile(context.Background(), profileId).Execute()
+	resp, r, err := apiClient.ProfilesAPI.GetProfile(context.Background(), profileId).IncludeDeactivated(includeDeactivated).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ProfilesAPI.GetProfile``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -129,6 +202,7 @@ Other parameters are passed through a pointer to a apiGetProfileRequest struct v
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
+ **includeDeactivated** | **bool** | Used to include deactivated profiles in the response. | 
 
 ### Return type
 
@@ -243,7 +317,7 @@ import (
 
 func main() {
 	profileId := "profileId_example" // string | 
-	assets := []string{"Assets_example"} // []string |  (optional)
+	assets := []string{"Inner_example"} // []string |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -295,7 +369,7 @@ Name | Type | Description  | Notes
 
 ## ListProfiles
 
-> ListProfilesResponse ListProfiles(ctx).CreatedAtLt(createdAtLt).CreatedAtLte(createdAtLte).CreatedAtEq(createdAtEq).CreatedAtGte(createdAtGte).CreatedAtGt(createdAtGt).Limit(limit).Order(order).OrderBy(orderBy).PageCursor(pageCursor).Execute()
+> ListProfilesResponse ListProfiles(ctx).CreatedAtLt(createdAtLt).CreatedAtLte(createdAtLte).CreatedAtEq(createdAtEq).CreatedAtGte(createdAtGte).CreatedAtGt(createdAtGt).Limit(limit).Order(order).OrderBy(orderBy).PageCursor(pageCursor).Nickname(nickname).Execute()
 
 List Profiles
 
@@ -324,10 +398,11 @@ func main() {
 	order := "order_example" // string | Return items in ascending (ASC) or descending (DESC) order. Defaults to ASC. (optional)
 	orderBy := "orderBy_example" // string | The specific method by which the returned results will be ordered. (optional)
 	pageCursor := "pageCursor_example" // string | Cursor token for fetching the next page. (optional)
+	nickname := "nickname_example" // string | Optionally filter by Profile display name. Retrieves nickname(s) based on the beginning characters of the given display name (prefix matching). Case insensitive. WIldcards and regular expressions not supported. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ProfilesAPI.ListProfiles(context.Background()).CreatedAtLt(createdAtLt).CreatedAtLte(createdAtLte).CreatedAtEq(createdAtEq).CreatedAtGte(createdAtGte).CreatedAtGt(createdAtGt).Limit(limit).Order(order).OrderBy(orderBy).PageCursor(pageCursor).Execute()
+	resp, r, err := apiClient.ProfilesAPI.ListProfiles(context.Background()).CreatedAtLt(createdAtLt).CreatedAtLte(createdAtLte).CreatedAtEq(createdAtEq).CreatedAtGte(createdAtGte).CreatedAtGt(createdAtGt).Limit(limit).Order(order).OrderBy(orderBy).PageCursor(pageCursor).Nickname(nickname).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ProfilesAPI.ListProfiles``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -357,6 +432,7 @@ Name | Type | Description  | Notes
  **order** | **string** | Return items in ascending (ASC) or descending (DESC) order. Defaults to ASC. | 
  **orderBy** | **string** | The specific method by which the returned results will be ordered. | 
  **pageCursor** | **string** | Cursor token for fetching the next page. | 
+ **nickname** | **string** | Optionally filter by Profile display name. Retrieves nickname(s) based on the beginning characters of the given display name (prefix matching). Case insensitive. WIldcards and regular expressions not supported. | 
 
 ### Return type
 
@@ -369,6 +445,78 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpdateProfile
+
+> Profile UpdateProfile(ctx, profileId).UpdateProfileRequest(updateProfileRequest).Execute()
+
+Update Profile
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/avianlabs/paxos-go"
+)
+
+func main() {
+	profileId := "profileId_example" // string | 
+	updateProfileRequest := *openapiclient.NewUpdateProfileRequest("Nickname_example") // UpdateProfileRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ProfilesAPI.UpdateProfile(context.Background(), profileId).UpdateProfileRequest(updateProfileRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ProfilesAPI.UpdateProfile``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UpdateProfile`: Profile
+	fmt.Fprintf(os.Stdout, "Response from `ProfilesAPI.UpdateProfile`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**profileId** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateProfileRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **updateProfileRequest** | [**UpdateProfileRequest**](UpdateProfileRequest.md) |  | 
+
+### Return type
+
+[**Profile**](Profile.md)
+
+### Authorization
+
+[OAuth2](../README.md#OAuth2)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
