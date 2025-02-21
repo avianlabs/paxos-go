@@ -27,11 +27,11 @@ type CreateOrderRequest struct {
 	Market Market `json:"market"`
 	Type OrderType `json:"type"`
 	// The base currency amount for any limit order or the exact amount to sell for a market sell order.
-	BaseAmount *string `json:"base_amount,omitempty"`
+	BaseAmount *string `json:"base_amount,omitempty" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	// The quote price.
 	Price *string `json:"price,omitempty"`
 	// The quote currency amount of purchase for a market buy order.
-	QuoteAmount *string `json:"quote_amount,omitempty"`
+	QuoteAmount *string `json:"quote_amount,omitempty" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	// Metadata to store on the quote and created order. Up to 6 key/value pairs may be stored, with each key and value at most 100 characters.
 	Metadata *map[string]string `json:"metadata,omitempty"`
 	// The amount of time to wait for the order to fill, in milliseconds. When `await_fill_millis` is set to a non-zero value, the Create Order call does not return immediately on order creation. Instead, the call blocks until either:   1. The order has filled completely   2. The time `await_fill_millis` has elapsed The maximum wait timeout is 10 seconds (10000 milliseconds).

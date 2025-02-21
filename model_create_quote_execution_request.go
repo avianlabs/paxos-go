@@ -26,9 +26,9 @@ type CreateQuoteExecutionRequest struct {
 	// A unique identifier for the quote execution (for idempotence).
 	RefId *string `json:"ref_id,omitempty"`
 	// The amount of the base asset (crypto) to buy or sell using the specified quote. The maximum precision is 8 decimals.
-	BaseAmount *string `json:"base_amount,omitempty"`
+	BaseAmount *string `json:"base_amount,omitempty" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	// The amount of the quote asset (fiat) to spend or acquire using the specified quote. The maximum precision is 2 decimals.
-	QuoteAmount *string `json:"quote_amount,omitempty"`
+	QuoteAmount *string `json:"quote_amount,omitempty" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	// Metadata to store on the quote execution. Up to 6 key/value pairs may be stored, with each key and value at most 100 characters.
 	Metadata *map[string]string `json:"metadata,omitempty"`
 	// The end user that requests the quote execution.

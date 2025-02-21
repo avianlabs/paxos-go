@@ -33,10 +33,12 @@ type Execution struct {
 	Price *string `json:"price,omitempty"`
 	// Amount of commission paid.
 	Commission *string `json:"commission,omitempty"`
-	CommissionAsset *Asset `json:"commission_asset,omitempty"`
+	// Currency of Commission payment. Fiat Only (USD, EUR, SGD).
+	CommissionAsset *string `json:"commission_asset,omitempty"`
 	// Amount of rebate applied.
 	Rebate *string `json:"rebate,omitempty"`
-	RebateAsset *Asset `json:"rebate_asset,omitempty"`
+	// Currency of the rebate. Fiat Only (USD, EUR, SGD).
+	RebateAsset *string `json:"rebate_asset,omitempty"`
 	// Account ID associated with the execution.
 	AccountId *string `json:"account_id,omitempty"`
 	// The total asset traded (asset amount multiplied by price paid).
@@ -317,9 +319,9 @@ func (o *Execution) SetCommission(v string) {
 }
 
 // GetCommissionAsset returns the CommissionAsset field value if set, zero value otherwise.
-func (o *Execution) GetCommissionAsset() Asset {
+func (o *Execution) GetCommissionAsset() string {
 	if o == nil || IsNil(o.CommissionAsset) {
-		var ret Asset
+		var ret string
 		return ret
 	}
 	return *o.CommissionAsset
@@ -327,7 +329,7 @@ func (o *Execution) GetCommissionAsset() Asset {
 
 // GetCommissionAssetOk returns a tuple with the CommissionAsset field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Execution) GetCommissionAssetOk() (*Asset, bool) {
+func (o *Execution) GetCommissionAssetOk() (*string, bool) {
 	if o == nil || IsNil(o.CommissionAsset) {
 		return nil, false
 	}
@@ -343,8 +345,8 @@ func (o *Execution) HasCommissionAsset() bool {
 	return false
 }
 
-// SetCommissionAsset gets a reference to the given Asset and assigns it to the CommissionAsset field.
-func (o *Execution) SetCommissionAsset(v Asset) {
+// SetCommissionAsset gets a reference to the given string and assigns it to the CommissionAsset field.
+func (o *Execution) SetCommissionAsset(v string) {
 	o.CommissionAsset = &v
 }
 
@@ -381,9 +383,9 @@ func (o *Execution) SetRebate(v string) {
 }
 
 // GetRebateAsset returns the RebateAsset field value if set, zero value otherwise.
-func (o *Execution) GetRebateAsset() Asset {
+func (o *Execution) GetRebateAsset() string {
 	if o == nil || IsNil(o.RebateAsset) {
-		var ret Asset
+		var ret string
 		return ret
 	}
 	return *o.RebateAsset
@@ -391,7 +393,7 @@ func (o *Execution) GetRebateAsset() Asset {
 
 // GetRebateAssetOk returns a tuple with the RebateAsset field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Execution) GetRebateAssetOk() (*Asset, bool) {
+func (o *Execution) GetRebateAssetOk() (*string, bool) {
 	if o == nil || IsNil(o.RebateAsset) {
 		return nil, false
 	}
@@ -407,8 +409,8 @@ func (o *Execution) HasRebateAsset() bool {
 	return false
 }
 
-// SetRebateAsset gets a reference to the given Asset and assigns it to the RebateAsset field.
-func (o *Execution) SetRebateAsset(v Asset) {
+// SetRebateAsset gets a reference to the given string and assigns it to the RebateAsset field.
+func (o *Execution) SetRebateAsset(v string) {
 	o.RebateAsset = &v
 }
 

@@ -17,6 +17,9 @@ Name | Type | Description | Notes
 **HasUnderlyingTrustStructure** | Pointer to **bool** | Whether or not the institution tied to the Identity has an underlying trust structure. | [optional] 
 **HasNomineeShareholders** | Pointer to **bool** | Whether or not the institution tied to the Identity has nominee shareholders. | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
+**IsPubliclyTraded** | Pointer to **bool** | &#x60;true&#x60; or &#x60;false&#x60; indicating whether or not the company is listed on a public stock exchange. | [optional] 
+**MerchantFundingSource** | Pointer to [**MerchantFundingSourceFundingSource**](MerchantFundingSourceFundingSource.md) |  | [optional] 
+**CustomerRegions** | Pointer to [**[]CustomerRegion**](CustomerRegion.md) | Regions where the customer base is located. | [optional] 
 
 ## Methods
 
@@ -361,6 +364,81 @@ SetCreatedAt sets CreatedAt field to given value.
 `func (o *CustomerDueDiligence) HasCreatedAt() bool`
 
 HasCreatedAt returns a boolean if a field has been set.
+
+### GetIsPubliclyTraded
+
+`func (o *CustomerDueDiligence) GetIsPubliclyTraded() bool`
+
+GetIsPubliclyTraded returns the IsPubliclyTraded field if non-nil, zero value otherwise.
+
+### GetIsPubliclyTradedOk
+
+`func (o *CustomerDueDiligence) GetIsPubliclyTradedOk() (*bool, bool)`
+
+GetIsPubliclyTradedOk returns a tuple with the IsPubliclyTraded field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetIsPubliclyTraded
+
+`func (o *CustomerDueDiligence) SetIsPubliclyTraded(v bool)`
+
+SetIsPubliclyTraded sets IsPubliclyTraded field to given value.
+
+### HasIsPubliclyTraded
+
+`func (o *CustomerDueDiligence) HasIsPubliclyTraded() bool`
+
+HasIsPubliclyTraded returns a boolean if a field has been set.
+
+### GetMerchantFundingSource
+
+`func (o *CustomerDueDiligence) GetMerchantFundingSource() MerchantFundingSourceFundingSource`
+
+GetMerchantFundingSource returns the MerchantFundingSource field if non-nil, zero value otherwise.
+
+### GetMerchantFundingSourceOk
+
+`func (o *CustomerDueDiligence) GetMerchantFundingSourceOk() (*MerchantFundingSourceFundingSource, bool)`
+
+GetMerchantFundingSourceOk returns a tuple with the MerchantFundingSource field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMerchantFundingSource
+
+`func (o *CustomerDueDiligence) SetMerchantFundingSource(v MerchantFundingSourceFundingSource)`
+
+SetMerchantFundingSource sets MerchantFundingSource field to given value.
+
+### HasMerchantFundingSource
+
+`func (o *CustomerDueDiligence) HasMerchantFundingSource() bool`
+
+HasMerchantFundingSource returns a boolean if a field has been set.
+
+### GetCustomerRegions
+
+`func (o *CustomerDueDiligence) GetCustomerRegions() []CustomerRegion`
+
+GetCustomerRegions returns the CustomerRegions field if non-nil, zero value otherwise.
+
+### GetCustomerRegionsOk
+
+`func (o *CustomerDueDiligence) GetCustomerRegionsOk() (*[]CustomerRegion, bool)`
+
+GetCustomerRegionsOk returns a tuple with the CustomerRegions field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCustomerRegions
+
+`func (o *CustomerDueDiligence) SetCustomerRegions(v []CustomerRegion)`
+
+SetCustomerRegions sets CustomerRegions field to given value.
+
+### HasCustomerRegions
+
+`func (o *CustomerDueDiligence) HasCustomerRegions() bool`
+
+HasCustomerRegions returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

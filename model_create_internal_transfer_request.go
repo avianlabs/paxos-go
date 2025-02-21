@@ -28,7 +28,7 @@ type CreateInternalTransferRequest struct {
 	// The destination profile.
 	ToProfileId string `json:"to_profile_id"`
 	// The amount to transfer.
-	Amount string `json:"amount"`
+	Amount string `json:"amount" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	// The asset to transfer, e.g. \"USD\", \"BTC\", \"ETH\".
 	Asset string `json:"asset"`
 	// Optional client-specified metadata. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters.

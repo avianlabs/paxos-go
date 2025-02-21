@@ -21,7 +21,8 @@ var _ MappedNullable = &ProfileBalance{}
 
 // ProfileBalance A ProfileBalance represents the holdings of a particular asset within a profile.
 type ProfileBalance struct {
-	Asset Asset `json:"asset"`
+	// The asset held by the profile.
+	Asset string `json:"asset"`
 	// The available asset balance for new debit requests.
 	Available string `json:"available"`
 	// The asset amount committed to pending orders.
@@ -34,7 +35,7 @@ type _ProfileBalance ProfileBalance
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewProfileBalance(asset Asset, available string, trading string) *ProfileBalance {
+func NewProfileBalance(asset string, available string, trading string) *ProfileBalance {
 	this := ProfileBalance{}
 	this.Asset = asset
 	this.Available = available
@@ -51,9 +52,9 @@ func NewProfileBalanceWithDefaults() *ProfileBalance {
 }
 
 // GetAsset returns the Asset field value
-func (o *ProfileBalance) GetAsset() Asset {
+func (o *ProfileBalance) GetAsset() string {
 	if o == nil {
-		var ret Asset
+		var ret string
 		return ret
 	}
 
@@ -62,7 +63,7 @@ func (o *ProfileBalance) GetAsset() Asset {
 
 // GetAssetOk returns a tuple with the Asset field value
 // and a boolean to check if the value has been set.
-func (o *ProfileBalance) GetAssetOk() (*Asset, bool) {
+func (o *ProfileBalance) GetAssetOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -70,7 +71,7 @@ func (o *ProfileBalance) GetAssetOk() (*Asset, bool) {
 }
 
 // SetAsset sets field value
-func (o *ProfileBalance) SetAsset(v Asset) {
+func (o *ProfileBalance) SetAsset(v string) {
 	o.Asset = v
 }
 

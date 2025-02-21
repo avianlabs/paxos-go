@@ -22,22 +22,22 @@ var _ MappedNullable = &PersonDetails{}
 type PersonDetails struct {
 	IdVerificationStatus *IdentityStatus `json:"id_verification_status,omitempty"`
 	SanctionsVerificationStatus *IdentityStatus `json:"sanctions_verification_status,omitempty"`
-	FirstName *string `json:"first_name,omitempty"`
-	LastName *string `json:"last_name,omitempty"`
-	DateOfBirth *string `json:"date_of_birth,omitempty"`
-	GovtId *string `json:"govt_id,omitempty"`
+	FirstName *string `json:"first_name,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
+	LastName *string `json:"last_name,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
+	DateOfBirth *string `json:"date_of_birth,omitempty" validate:"regexp=^[0-9]{4}-[0-9]{2}-[0-9]{2}$"`
+	GovtId *string `json:"govt_id,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
 	Address *IdentityMailingAddress `json:"address,omitempty"`
 	PhoneNumber *string `json:"phone_number,omitempty"`
 	Email *string `json:"email,omitempty"`
 	// Allowed in create and update. Must be an ISO 3166-1 alpha 3 code.
-	Nationality *string `json:"nationality,omitempty"`
+	Nationality *string `json:"nationality,omitempty" validate:"regexp=^[A-Z]{3}$"`
 	VerifierId *string `json:"verifier_id,omitempty"`
 	VerifierType *IdentityprotoVerifierType `json:"verifier_type,omitempty"`
 	IdVerificationUrl *string `json:"id_verification_url,omitempty"`
 	PassthroughVerifierType *PassthroughVerifierType `json:"passthrough_verifier_type,omitempty"`
 	PassthroughVerifiedAt *time.Time `json:"passthrough_verified_at,omitempty"`
 	GovtIdType *PersonDetailsCIPIDType `json:"govt_id_type,omitempty"`
-	CipId *string `json:"cip_id,omitempty"`
+	CipId *string `json:"cip_id,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
 	CipIdType *PersonDetailsCIPIDType `json:"cip_id_type,omitempty"`
 	// Allowed in create and update. Must be an ISO 3166-1 alpha 3 code.
 	CipIdCountry *string `json:"cip_id_country,omitempty"`

@@ -26,6 +26,7 @@ const (
 	CryptoNetwork_LITECOIN CryptoNetwork = "LITECOIN"
 	CryptoNetwork_SOLANA CryptoNetwork = "SOLANA"
 	CryptoNetwork_POLYGON_POS CryptoNetwork = "POLYGON_POS"
+	CryptoNetwork_ARBITRUM_ONE CryptoNetwork = "ARBITRUM_ONE"
 )
 
 // All allowed values of CryptoNetwork enum
@@ -36,6 +37,7 @@ var AllowedCryptoNetworkEnumValues = []CryptoNetwork{
 	"LITECOIN",
 	"SOLANA",
 	"POLYGON_POS",
+	"ARBITRUM_ONE",
 }
 
 func (v *CryptoNetwork) UnmarshalJSON(src []byte) error {

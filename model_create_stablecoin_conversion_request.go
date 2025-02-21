@@ -23,11 +23,11 @@ var _ MappedNullable = &CreateStablecoinConversionRequest{}
 type CreateStablecoinConversionRequest struct {
 	// The Profile associated with a conversion.
 	ProfileId string `json:"profile_id"`
-	// Asset amount to convert. <a href=\"/stablecoin/conversion/asset\">Details</a>.
-	Amount string `json:"amount"`
-	// The asset to convert from. <a href=\"/stablecoin/conversion/asset\">Details</a>.
+	// Asset amount to convert. <a href=\"https://docs.paxos.com/developer/convert#assets\">Details</a>.
+	Amount string `json:"amount" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
+	// The asset to convert from. <a href=\"https://docs.paxos.com/developer/convert#assets\">Details</a>.
 	SourceAsset string `json:"source_asset"`
-	// The asset to convert to. <a href=\"/stablecoin/conversion/asset\">Details</a>.
+	// The asset to convert to. <a href=\"https://docs.paxos.com/developer/convert#assets\">Details</a>.
 	TargetAsset string `json:"target_asset"`
 	// Client provided, unique Reference ID for lookup and replay protection.
 	RefId *string `json:"ref_id,omitempty"`

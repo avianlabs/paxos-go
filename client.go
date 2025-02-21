@@ -54,6 +54,8 @@ type APIClient struct {
 
 	AccountsAPI *AccountsAPIService
 
+	CryptoDepositsAPI *CryptoDepositsAPIService
+
 	CryptoWithdrawalsAPI *CryptoWithdrawalsAPIService
 
 	DepositAddressesAPI *DepositAddressesAPIService
@@ -80,6 +82,8 @@ type APIClient struct {
 
 	OrdersAPI *OrdersAPIService
 
+	PaxosTransfersAPI *PaxosTransfersAPIService
+
 	PricingAPI *PricingAPIService
 
 	ProfilesAPI *ProfilesAPIService
@@ -94,11 +98,11 @@ type APIClient struct {
 
 	SandboxIdentityAPI *SandboxIdentityAPIService
 
+	SettlementAPI *SettlementAPIService
+
 	StablecoinConversionAPI *StablecoinConversionAPIService
 
 	TaxFormsAPI *TaxFormsAPIService
-
-	TaxLotAPI *TaxLotAPIService
 
 	TransfersAPI *TransfersAPIService
 }
@@ -121,6 +125,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	// API Services
 	c.AccountMembersAPI = (*AccountMembersAPIService)(&c.common)
 	c.AccountsAPI = (*AccountsAPIService)(&c.common)
+	c.CryptoDepositsAPI = (*CryptoDepositsAPIService)(&c.common)
 	c.CryptoWithdrawalsAPI = (*CryptoWithdrawalsAPIService)(&c.common)
 	c.DepositAddressesAPI = (*DepositAddressesAPIService)(&c.common)
 	c.ExchangePublicAPI = (*ExchangePublicAPIService)(&c.common)
@@ -134,6 +139,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.LimitsAPI = (*LimitsAPIService)(&c.common)
 	c.MarketDataAPI = (*MarketDataAPIService)(&c.common)
 	c.OrdersAPI = (*OrdersAPIService)(&c.common)
+	c.PaxosTransfersAPI = (*PaxosTransfersAPIService)(&c.common)
 	c.PricingAPI = (*PricingAPIService)(&c.common)
 	c.ProfilesAPI = (*ProfilesAPIService)(&c.common)
 	c.QuoteExecutionsAPI = (*QuoteExecutionsAPIService)(&c.common)
@@ -141,9 +147,9 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.SandboxDepositsAPI = (*SandboxDepositsAPIService)(&c.common)
 	c.SandboxFiatTransfersAPI = (*SandboxFiatTransfersAPIService)(&c.common)
 	c.SandboxIdentityAPI = (*SandboxIdentityAPIService)(&c.common)
+	c.SettlementAPI = (*SettlementAPIService)(&c.common)
 	c.StablecoinConversionAPI = (*StablecoinConversionAPIService)(&c.common)
 	c.TaxFormsAPI = (*TaxFormsAPIService)(&c.common)
-	c.TaxLotAPI = (*TaxLotAPIService)(&c.common)
 	c.TransfersAPI = (*TransfersAPIService)(&c.common)
 
 	return c

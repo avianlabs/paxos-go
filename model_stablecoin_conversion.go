@@ -24,13 +24,13 @@ type StablecoinConversion struct {
 	Id *string `json:"id,omitempty"`
 	// The Profile associated with a conversion. Required in the <a href=\"#operation/CreateStablecoinConversion\">Create Stablecoin Conversion</a> request.
 	ProfileId *string `json:"profile_id,omitempty"`
-	// Asset amount to convert. <a href=\"/stablecoin/conversion/asset\">Details</a>.
+	// Asset amount to convert. <a href=\"https://docs.paxos.com/developer/convert#assets\">Details</a>.
 	Amount *string `json:"amount,omitempty"`
-	// The asset to convert from. <a href=\"/stablecoin/conversion/asset\">Details</a>.
+	// The asset to convert from. <a href=\"https://docs.paxos.com/developer/convert#assets\">Details</a>.
 	SourceAsset *string `json:"source_asset,omitempty"`
-	// The asset to convert to. <a href=\"/stablecoin/conversion/asset\">Details</a>.
+	// The asset to convert to. <a href=\"https://docs.paxos.com/developer/convert#assets\">Details</a>.
 	TargetAsset *string `json:"target_asset,omitempty"`
-	// The current status of the conversion. <a href=\"/stablecoin/conversion/status\">Details</a>.
+	// The current status of the conversion. <a href=\"https://docs.paxos.com/developer/convert#stablecoin-conversion-statuses\">Details</a>.
 	Status *string `json:"status,omitempty"`
 	// Client provided, unique Reference ID included the <a href=\"#operation/CreateStablecoinConversion\">Create Stablecoin Conversion</a> request.
 	RefId *string `json:"ref_id,omitempty"`
@@ -42,12 +42,14 @@ type StablecoinConversion struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	// The time at which the conversion was last updated. RFC3339 format, like `2006-01-02T15:04:05Z`.
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
-	// The time at which the conversion was settled. <a href=\"/stablecoin/conversion/status\">Details</a>. RFC3339 format, like `2006-01-02T15:04:05Z`.
+	// The time at which the conversion was settled. <a href=\"https://docs.paxos.com/developer/convert#stablecoin-conversion-statuses\">Details</a>. RFC3339 format, like `2006-01-02T15:04:05Z`.
 	SettledAt *time.Time `json:"settled_at,omitempty"`
-	// The time at which the conversion has been cancelled. <a href=\"/stablecoin/conversion/status\">Details</a>. RFC3339 format, like `2006-01-02T15:04:05Z`.
+	// The time at which the conversion has been cancelled. <a href=\"https://docs.paxos.com/developer/convert#stablecoin-conversion-statuses\">Details</a>. RFC3339 format, like `2006-01-02T15:04:05Z`.
 	CancelledAt *time.Time `json:"cancelled_at,omitempty"`
 	// Optional client-specified stored metadata.
 	Metadata *map[string]string `json:"metadata,omitempty"`
+	// For directed settlement, the receiving side `profile_id`.
+	RecipientProfileId *string `json:"recipient_profile_id,omitempty"`
 }
 
 // NewStablecoinConversion instantiates a new StablecoinConversion object
@@ -515,6 +517,38 @@ func (o *StablecoinConversion) SetMetadata(v map[string]string) {
 	o.Metadata = &v
 }
 
+// GetRecipientProfileId returns the RecipientProfileId field value if set, zero value otherwise.
+func (o *StablecoinConversion) GetRecipientProfileId() string {
+	if o == nil || IsNil(o.RecipientProfileId) {
+		var ret string
+		return ret
+	}
+	return *o.RecipientProfileId
+}
+
+// GetRecipientProfileIdOk returns a tuple with the RecipientProfileId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *StablecoinConversion) GetRecipientProfileIdOk() (*string, bool) {
+	if o == nil || IsNil(o.RecipientProfileId) {
+		return nil, false
+	}
+	return o.RecipientProfileId, true
+}
+
+// HasRecipientProfileId returns a boolean if a field has been set.
+func (o *StablecoinConversion) HasRecipientProfileId() bool {
+	if o != nil && !IsNil(o.RecipientProfileId) {
+		return true
+	}
+
+	return false
+}
+
+// SetRecipientProfileId gets a reference to the given string and assigns it to the RecipientProfileId field.
+func (o *StablecoinConversion) SetRecipientProfileId(v string) {
+	o.RecipientProfileId = &v
+}
+
 func (o StablecoinConversion) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -566,6 +600,9 @@ func (o StablecoinConversion) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Metadata) {
 		toSerialize["metadata"] = o.Metadata
+	}
+	if !IsNil(o.RecipientProfileId) {
+		toSerialize["recipient_profile_id"] = o.RecipientProfileId
 	}
 	return toSerialize, nil
 }

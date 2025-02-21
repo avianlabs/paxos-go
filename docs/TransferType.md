@@ -35,6 +35,10 @@
 
 * `CBIT_DEPOSIT` (value: `"CBIT_DEPOSIT"`)
 
+* `CUBIX_DEPOSIT` (value: `"CUBIX_DEPOSIT"`)
+
+* `CUBIX_WITHDRAWAL` (value: `"CUBIX_WITHDRAWAL"`)
+
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

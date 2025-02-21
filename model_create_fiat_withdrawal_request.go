@@ -23,22 +23,24 @@ var _ MappedNullable = &CreateFiatWithdrawalRequest{}
 type CreateFiatWithdrawalRequest struct {
 	// The optional client-specified ID (for idempotence).
 	RefId *string `json:"ref_id,omitempty"`
-	// The amount to withdraw.
-	Amount string `json:"amount"`
+	// Amount to withdraw, excluding fees. Specify exactly one of `amount` or `total`. When `amount` is specified, Paxos initiates the withdrawal for `amount` and then charges fees.
+	Amount *string `json:"amount,omitempty" validate:"regexp=^[0-9]*\\\\.?[0-9]{1,2}$"`
 	// The asset to withdraw. Current supported asset: \"USD\".
 	Asset string `json:"asset"`
 	// The fiat account (`fiat_account_id`) destination.
 	FiatAccountId string `json:"fiat_account_id"`
 	// The Profile (`profile_id`) to withdraw from.
 	ProfileId string `json:"profile_id"`
-	// The Identity (`identity_id`) of the user making the withdrawal.
-	IdentityId string `json:"identity_id"`
+	// The Identity (`identity_id`) of the user making the withdrawal. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users.
+	IdentityId *string `json:"identity_id,omitempty"`
 	// The Account (`account_id`) associated with the Identity of the user making the withdrawal. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users.
 	AccountId *string `json:"account_id,omitempty"`
 	// Optional client-specified metadata. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters.
 	Metadata *map[string]string `json:"metadata,omitempty"`
 	// Optional additional memo to be set on the outgoing wire. Only used for wire withdrawals.
-	Memo *string `json:"memo,omitempty"`
+	Memo *string `json:"memo,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]*$"`
+	// Total to withdraw, including fees. Specify exactly one of `amount` or `total`. When `total` is specified, Paxos initiates the withdrawal for `total` minus the fee.
+	Total *string `json:"total,omitempty"`
 }
 
 type _CreateFiatWithdrawalRequest CreateFiatWithdrawalRequest
@@ -47,13 +49,11 @@ type _CreateFiatWithdrawalRequest CreateFiatWithdrawalRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateFiatWithdrawalRequest(amount string, asset string, fiatAccountId string, profileId string, identityId string) *CreateFiatWithdrawalRequest {
+func NewCreateFiatWithdrawalRequest(asset string, fiatAccountId string, profileId string) *CreateFiatWithdrawalRequest {
 	this := CreateFiatWithdrawalRequest{}
-	this.Amount = amount
 	this.Asset = asset
 	this.FiatAccountId = fiatAccountId
 	this.ProfileId = profileId
-	this.IdentityId = identityId
 	return &this
 }
 
@@ -97,28 +97,36 @@ func (o *CreateFiatWithdrawalRequest) SetRefId(v string) {
 	o.RefId = &v
 }
 
-// GetAmount returns the Amount field value
+// GetAmount returns the Amount field value if set, zero value otherwise.
 func (o *CreateFiatWithdrawalRequest) GetAmount() string {
-	if o == nil {
+	if o == nil || IsNil(o.Amount) {
 		var ret string
 		return ret
 	}
-
-	return o.Amount
+	return *o.Amount
 }
 
-// GetAmountOk returns a tuple with the Amount field value
+// GetAmountOk returns a tuple with the Amount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateFiatWithdrawalRequest) GetAmountOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Amount) {
 		return nil, false
 	}
-	return &o.Amount, true
+	return o.Amount, true
 }
 
-// SetAmount sets field value
+// HasAmount returns a boolean if a field has been set.
+func (o *CreateFiatWithdrawalRequest) HasAmount() bool {
+	if o != nil && !IsNil(o.Amount) {
+		return true
+	}
+
+	return false
+}
+
+// SetAmount gets a reference to the given string and assigns it to the Amount field.
 func (o *CreateFiatWithdrawalRequest) SetAmount(v string) {
-	o.Amount = v
+	o.Amount = &v
 }
 
 // GetAsset returns the Asset field value
@@ -193,28 +201,36 @@ func (o *CreateFiatWithdrawalRequest) SetProfileId(v string) {
 	o.ProfileId = v
 }
 
-// GetIdentityId returns the IdentityId field value
+// GetIdentityId returns the IdentityId field value if set, zero value otherwise.
 func (o *CreateFiatWithdrawalRequest) GetIdentityId() string {
-	if o == nil {
+	if o == nil || IsNil(o.IdentityId) {
 		var ret string
 		return ret
 	}
-
-	return o.IdentityId
+	return *o.IdentityId
 }
 
-// GetIdentityIdOk returns a tuple with the IdentityId field value
+// GetIdentityIdOk returns a tuple with the IdentityId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CreateFiatWithdrawalRequest) GetIdentityIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.IdentityId) {
 		return nil, false
 	}
-	return &o.IdentityId, true
+	return o.IdentityId, true
 }
 
-// SetIdentityId sets field value
+// HasIdentityId returns a boolean if a field has been set.
+func (o *CreateFiatWithdrawalRequest) HasIdentityId() bool {
+	if o != nil && !IsNil(o.IdentityId) {
+		return true
+	}
+
+	return false
+}
+
+// SetIdentityId gets a reference to the given string and assigns it to the IdentityId field.
 func (o *CreateFiatWithdrawalRequest) SetIdentityId(v string) {
-	o.IdentityId = v
+	o.IdentityId = &v
 }
 
 // GetAccountId returns the AccountId field value if set, zero value otherwise.
@@ -313,6 +329,38 @@ func (o *CreateFiatWithdrawalRequest) SetMemo(v string) {
 	o.Memo = &v
 }
 
+// GetTotal returns the Total field value if set, zero value otherwise.
+func (o *CreateFiatWithdrawalRequest) GetTotal() string {
+	if o == nil || IsNil(o.Total) {
+		var ret string
+		return ret
+	}
+	return *o.Total
+}
+
+// GetTotalOk returns a tuple with the Total field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateFiatWithdrawalRequest) GetTotalOk() (*string, bool) {
+	if o == nil || IsNil(o.Total) {
+		return nil, false
+	}
+	return o.Total, true
+}
+
+// HasTotal returns a boolean if a field has been set.
+func (o *CreateFiatWithdrawalRequest) HasTotal() bool {
+	if o != nil && !IsNil(o.Total) {
+		return true
+	}
+
+	return false
+}
+
+// SetTotal gets a reference to the given string and assigns it to the Total field.
+func (o *CreateFiatWithdrawalRequest) SetTotal(v string) {
+	o.Total = &v
+}
+
 func (o CreateFiatWithdrawalRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -326,11 +374,15 @@ func (o CreateFiatWithdrawalRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.RefId) {
 		toSerialize["ref_id"] = o.RefId
 	}
-	toSerialize["amount"] = o.Amount
+	if !IsNil(o.Amount) {
+		toSerialize["amount"] = o.Amount
+	}
 	toSerialize["asset"] = o.Asset
 	toSerialize["fiat_account_id"] = o.FiatAccountId
 	toSerialize["profile_id"] = o.ProfileId
-	toSerialize["identity_id"] = o.IdentityId
+	if !IsNil(o.IdentityId) {
+		toSerialize["identity_id"] = o.IdentityId
+	}
 	if !IsNil(o.AccountId) {
 		toSerialize["account_id"] = o.AccountId
 	}
@@ -340,6 +392,9 @@ func (o CreateFiatWithdrawalRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Memo) {
 		toSerialize["memo"] = o.Memo
 	}
+	if !IsNil(o.Total) {
+		toSerialize["total"] = o.Total
+	}
 	return toSerialize, nil
 }
 
@@ -348,11 +403,9 @@ func (o *CreateFiatWithdrawalRequest) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"amount",
 		"asset",
 		"fiat_account_id",
 		"profile_id",
-		"identity_id",
 	}
 
 	allProperties := make(map[string]interface{})

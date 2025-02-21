@@ -5,20 +5,21 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **RefId** | Pointer to **string** | The optional client-specified ID (for idempotence). | [optional] 
-**Amount** | **string** | The amount to withdraw. | 
+**Amount** | Pointer to **string** | Amount to withdraw, excluding fees. Specify exactly one of &#x60;amount&#x60; or &#x60;total&#x60;. When &#x60;amount&#x60; is specified, Paxos initiates the withdrawal for &#x60;amount&#x60; and then charges fees. | [optional] 
 **Asset** | **string** | The asset to withdraw. Current supported asset: \&quot;USD\&quot;. | 
 **FiatAccountId** | **string** | The fiat account (&#x60;fiat_account_id&#x60;) destination. | 
 **ProfileId** | **string** | The Profile (&#x60;profile_id&#x60;) to withdraw from. | 
-**IdentityId** | **string** | The Identity (&#x60;identity_id&#x60;) of the user making the withdrawal. | 
+**IdentityId** | Pointer to **string** | The Identity (&#x60;identity_id&#x60;) of the user making the withdrawal. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users. | [optional] 
 **AccountId** | Pointer to **string** | The Account (&#x60;account_id&#x60;) associated with the Identity of the user making the withdrawal. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users. | [optional] 
 **Metadata** | Pointer to **map[string]string** | Optional client-specified metadata. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters. | [optional] 
 **Memo** | Pointer to **string** | Optional additional memo to be set on the outgoing wire. Only used for wire withdrawals. | [optional] 
+**Total** | Pointer to **string** | Total to withdraw, including fees. Specify exactly one of &#x60;amount&#x60; or &#x60;total&#x60;. When &#x60;total&#x60; is specified, Paxos initiates the withdrawal for &#x60;total&#x60; minus the fee. | [optional] 
 
 ## Methods
 
 ### NewCreateFiatWithdrawalRequest
 
-`func NewCreateFiatWithdrawalRequest(amount string, asset string, fiatAccountId string, profileId string, identityId string, ) *CreateFiatWithdrawalRequest`
+`func NewCreateFiatWithdrawalRequest(asset string, fiatAccountId string, profileId string, ) *CreateFiatWithdrawalRequest`
 
 NewCreateFiatWithdrawalRequest instantiates a new CreateFiatWithdrawalRequest object
 This constructor will assign default values to properties that have it defined,
@@ -77,6 +78,11 @@ and a boolean to check if the value has been set.
 
 SetAmount sets Amount field to given value.
 
+### HasAmount
+
+`func (o *CreateFiatWithdrawalRequest) HasAmount() bool`
+
+HasAmount returns a boolean if a field has been set.
 
 ### GetAsset
 
@@ -157,6 +163,11 @@ and a boolean to check if the value has been set.
 
 SetIdentityId sets IdentityId field to given value.
 
+### HasIdentityId
+
+`func (o *CreateFiatWithdrawalRequest) HasIdentityId() bool`
+
+HasIdentityId returns a boolean if a field has been set.
 
 ### GetAccountId
 
@@ -232,6 +243,31 @@ SetMemo sets Memo field to given value.
 `func (o *CreateFiatWithdrawalRequest) HasMemo() bool`
 
 HasMemo returns a boolean if a field has been set.
+
+### GetTotal
+
+`func (o *CreateFiatWithdrawalRequest) GetTotal() string`
+
+GetTotal returns the Total field if non-nil, zero value otherwise.
+
+### GetTotalOk
+
+`func (o *CreateFiatWithdrawalRequest) GetTotalOk() (*string, bool)`
+
+GetTotalOk returns a tuple with the Total field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTotal
+
+`func (o *CreateFiatWithdrawalRequest) SetTotal(v string)`
+
+SetTotal sets Total field to given value.
+
+### HasTotal
+
+`func (o *CreateFiatWithdrawalRequest) HasTotal() bool`
+
+HasTotal returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

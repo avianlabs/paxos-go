@@ -60,7 +60,6 @@ const (
 	InstitutionSubType_GAMBLING InstitutionSubType = "GAMBLING"
 	InstitutionSubType_INSURANCE InstitutionSubType = "INSURANCE"
 	InstitutionSubType_MARKET_MAKER InstitutionSubType = "MARKET_MAKER"
-	InstitutionSubType_RANSOMWARE InstitutionSubType = "RANSOMWARE"
 	InstitutionSubType_SHELL_BANK InstitutionSubType = "SHELL_BANK"
 	InstitutionSubType_TRAVEL_TRANSPORT InstitutionSubType = "TRAVEL_TRANSPORT"
 	InstitutionSubType_WEAPONS InstitutionSubType = "WEAPONS"
@@ -108,7 +107,6 @@ var AllowedInstitutionSubTypeEnumValues = []InstitutionSubType{
 	"GAMBLING",
 	"INSURANCE",
 	"MARKET_MAKER",
-	"RANSOMWARE",
 	"SHELL_BANK",
 	"TRAVEL_TRANSPORT",
 	"WEAPONS",

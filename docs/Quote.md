@@ -8,8 +8,8 @@ Name | Type | Description | Notes
 **Market** | [**Market**](Market.md) |  | 
 **Side** | [**OrderSide**](OrderSide.md) |  | 
 **Price** | **string** | The guaranteed price, held until expires_at. | 
-**BaseAsset** | [**Asset**](Asset.md) |  | 
-**QuoteAsset** | [**Asset**](Asset.md) |  | 
+**BaseAsset** | **string** | The \&quot;base\&quot; side of the trading pair (crypto - like BTC, ETH, PAXG). | 
+**QuoteAsset** | **string** | The \&quot;quote\&quot; side of the trading pair (fiat - like USD, EUR, SGD). | 
 **CreatedAt** | **time.Time** | The time at which the quote was first offered. | 
 **ExpiresAt** | **time.Time** | The time at which the quote expires. | 
 
@@ -17,7 +17,7 @@ Name | Type | Description | Notes
 
 ### NewQuote
 
-`func NewQuote(id string, market Market, side OrderSide, price string, baseAsset Asset, quoteAsset Asset, createdAt time.Time, expiresAt time.Time, ) *Quote`
+`func NewQuote(id string, market Market, side OrderSide, price string, baseAsset string, quoteAsset string, createdAt time.Time, expiresAt time.Time, ) *Quote`
 
 NewQuote instantiates a new Quote object
 This constructor will assign default values to properties that have it defined,
@@ -114,40 +114,40 @@ SetPrice sets Price field to given value.
 
 ### GetBaseAsset
 
-`func (o *Quote) GetBaseAsset() Asset`
+`func (o *Quote) GetBaseAsset() string`
 
 GetBaseAsset returns the BaseAsset field if non-nil, zero value otherwise.
 
 ### GetBaseAssetOk
 
-`func (o *Quote) GetBaseAssetOk() (*Asset, bool)`
+`func (o *Quote) GetBaseAssetOk() (*string, bool)`
 
 GetBaseAssetOk returns a tuple with the BaseAsset field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetBaseAsset
 
-`func (o *Quote) SetBaseAsset(v Asset)`
+`func (o *Quote) SetBaseAsset(v string)`
 
 SetBaseAsset sets BaseAsset field to given value.
 
 
 ### GetQuoteAsset
 
-`func (o *Quote) GetQuoteAsset() Asset`
+`func (o *Quote) GetQuoteAsset() string`
 
 GetQuoteAsset returns the QuoteAsset field if non-nil, zero value otherwise.
 
 ### GetQuoteAssetOk
 
-`func (o *Quote) GetQuoteAssetOk() (*Asset, bool)`
+`func (o *Quote) GetQuoteAssetOk() (*string, bool)`
 
 GetQuoteAssetOk returns a tuple with the QuoteAsset field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetQuoteAsset
 
-`func (o *Quote) SetQuoteAsset(v Asset)`
+`func (o *Quote) SetQuoteAsset(v string)`
 
 SetQuoteAsset sets QuoteAsset field to given value.
 

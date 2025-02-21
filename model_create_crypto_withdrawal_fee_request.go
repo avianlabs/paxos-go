@@ -27,9 +27,9 @@ type CreateCryptoWithdrawalFeeRequest struct {
 	DestinationAddress string `json:"destination_address"`
 	CryptoNetwork CryptoNetwork `json:"crypto_network"`
 	// The amount to withdraw. Must be greater than `0`. Specify exactly one of `amount` or `total`, otherwise an error is returned.
-	Amount *string `json:"amount,omitempty"`
+	Amount *string `json:"amount,omitempty" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	// Total amount to withdraw, including fees. Must be greater than `0`. Specify exactly one of `total ` or `amount`, otherwise an error is returned.
-	Total *string `json:"total,omitempty"`
+	Total *string `json:"total,omitempty" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 }
 
 type _CreateCryptoWithdrawalFeeRequest CreateCryptoWithdrawalFeeRequest

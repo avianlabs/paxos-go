@@ -21,12 +21,12 @@ var _ MappedNullable = &MailingAddress{}
 
 // MailingAddress A mailing address.
 type MailingAddress struct {
-	Country string `json:"country"`
-	Address1 *string `json:"address1,omitempty"`
-	Address2 *string `json:"address2,omitempty"`
-	City *string `json:"city,omitempty"`
-	Province *string `json:"province,omitempty"`
-	ZipCode *string `json:"zip_code,omitempty"`
+	Country string `json:"country" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
+	Address1 *string `json:"address1,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
+	Address2 *string `json:"address2,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
+	City *string `json:"city,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
+	Province *string `json:"province,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
+	ZipCode *string `json:"zip_code,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
 }
 
 type _MailingAddress MailingAddress

@@ -5,8 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Market** | Pointer to [**Market**](Market.md) |  | [optional] 
-**BaseAsset** | Pointer to [**Asset**](Asset.md) |  | [optional] 
-**QuoteAsset** | Pointer to [**Asset**](Asset.md) |  | [optional] 
+**BaseAsset** | Pointer to **string** |  | [optional] 
+**QuoteAsset** | Pointer to **string** | Quote asset. Fiat Only (USD, EUR, SGD). | [optional] 
 **TickRate** | Pointer to **string** |  | [optional] 
 
 ## Methods
@@ -55,20 +55,20 @@ HasMarket returns a boolean if a field has been set.
 
 ### GetBaseAsset
 
-`func (o *MarketDetails) GetBaseAsset() Asset`
+`func (o *MarketDetails) GetBaseAsset() string`
 
 GetBaseAsset returns the BaseAsset field if non-nil, zero value otherwise.
 
 ### GetBaseAssetOk
 
-`func (o *MarketDetails) GetBaseAssetOk() (*Asset, bool)`
+`func (o *MarketDetails) GetBaseAssetOk() (*string, bool)`
 
 GetBaseAssetOk returns a tuple with the BaseAsset field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetBaseAsset
 
-`func (o *MarketDetails) SetBaseAsset(v Asset)`
+`func (o *MarketDetails) SetBaseAsset(v string)`
 
 SetBaseAsset sets BaseAsset field to given value.
 
@@ -80,20 +80,20 @@ HasBaseAsset returns a boolean if a field has been set.
 
 ### GetQuoteAsset
 
-`func (o *MarketDetails) GetQuoteAsset() Asset`
+`func (o *MarketDetails) GetQuoteAsset() string`
 
 GetQuoteAsset returns the QuoteAsset field if non-nil, zero value otherwise.
 
 ### GetQuoteAssetOk
 
-`func (o *MarketDetails) GetQuoteAssetOk() (*Asset, bool)`
+`func (o *MarketDetails) GetQuoteAssetOk() (*string, bool)`
 
 GetQuoteAssetOk returns a tuple with the QuoteAsset field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetQuoteAsset
 
-`func (o *MarketDetails) SetQuoteAsset(v Asset)`
+`func (o *MarketDetails) SetQuoteAsset(v string)`
 
 SetQuoteAsset sets QuoteAsset field to given value.
 

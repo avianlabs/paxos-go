@@ -26,8 +26,9 @@ Name | Type | Description | Notes
 **CryptoTxIndex** | Pointer to **string** | For crypto transactions, the output index or output address. | [optional] 
 **AccountId** | Pointer to **string** | The Paxos ID of the Account associated with the transfer. | [optional] 
 **AutoConversion** | Pointer to [**AutoConversion**](AutoConversion.md) |  | [optional] 
-**GroupId** | Pointer to **string** | Unique identifier linking the debit and credit sides of an internal transfer. | [optional] 
+**GroupId** | Pointer to **string** | Unique identifier linking the debit and credit sides of an internal or Paxos transfer. | [optional] 
 **FiatAccountId** | Pointer to **string** | For fiat withdrawals, the Paxos ID of the owner&#39;s fiat account (UUID). | [optional] 
+**SecondaryStatus** | Pointer to [**SecondaryStatus**](SecondaryStatus.md) |  | [optional] 
 
 ## Methods
 
@@ -587,6 +588,31 @@ SetFiatAccountId sets FiatAccountId field to given value.
 `func (o *Transfer) HasFiatAccountId() bool`
 
 HasFiatAccountId returns a boolean if a field has been set.
+
+### GetSecondaryStatus
+
+`func (o *Transfer) GetSecondaryStatus() SecondaryStatus`
+
+GetSecondaryStatus returns the SecondaryStatus field if non-nil, zero value otherwise.
+
+### GetSecondaryStatusOk
+
+`func (o *Transfer) GetSecondaryStatusOk() (*SecondaryStatus, bool)`
+
+GetSecondaryStatusOk returns a tuple with the SecondaryStatus field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSecondaryStatus
+
+`func (o *Transfer) SetSecondaryStatus(v SecondaryStatus)`
+
+SetSecondaryStatus sets SecondaryStatus field to given value.
+
+### HasSecondaryStatus
+
+`func (o *Transfer) HasSecondaryStatus() bool`
+
+HasSecondaryStatus returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

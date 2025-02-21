@@ -27,6 +27,7 @@ const (
 	FundsSource_PROPERTY_SALE FundsSource = "PROPERTY_SALE"
 	FundsSource_LOAN_DISBURSEMENT FundsSource = "LOAN_DISBURSEMENT"
 	FundsSource_SAVINGS_ACCOUNT_WITHDRAWAL FundsSource = "SAVINGS_ACCOUNT_WITHDRAWAL"
+	FundsSource_GOVERNMENT_BENEFITS FundsSource = "GOVERNMENT_BENEFITS"
 )
 
 // All allowed values of FundsSource enum
@@ -38,6 +39,7 @@ var AllowedFundsSourceEnumValues = []FundsSource{
 	"PROPERTY_SALE",
 	"LOAN_DISBURSEMENT",
 	"SAVINGS_ACCOUNT_WITHDRAWAL",
+	"GOVERNMENT_BENEFITS",
 }
 
 func (v *FundsSource) UnmarshalJSON(src []byte) error {

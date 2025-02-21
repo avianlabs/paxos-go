@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **RefId** | Pointer to **string** | The optional client-specified ID (for idempotence). | [optional] 
-**IdentityId** | **string** | The Paxos Identity (&#x60;identity_id&#x60;) of the user&#39;s FiatAccount. | 
+**IdentityId** | Pointer to **string** | The Paxos Identity (&#x60;identity_id&#x60;) of the user&#39;s FiatAccount. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users. | [optional] 
 **AccountId** | Pointer to **string** | The Paxos Account (&#x60;account_id&#x60;) of the user&#39;s FiatAccount. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users. | [optional] 
 **FiatAccountOwner** | [**FiatAccountOwner**](FiatAccountOwner.md) |  | 
 **FiatNetworkInstructions** | [**FiatNetworkInstructions**](FiatNetworkInstructions.md) |  | 
@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 
 ### NewCreateFiatAccountRequest
 
-`func NewCreateFiatAccountRequest(identityId string, fiatAccountOwner FiatAccountOwner, fiatNetworkInstructions FiatNetworkInstructions, ) *CreateFiatAccountRequest`
+`func NewCreateFiatAccountRequest(fiatAccountOwner FiatAccountOwner, fiatNetworkInstructions FiatNetworkInstructions, ) *CreateFiatAccountRequest`
 
 NewCreateFiatAccountRequest instantiates a new CreateFiatAccountRequest object
 This constructor will assign default values to properties that have it defined,
@@ -74,6 +74,11 @@ and a boolean to check if the value has been set.
 
 SetIdentityId sets IdentityId field to given value.
 
+### HasIdentityId
+
+`func (o *CreateFiatAccountRequest) HasIdentityId() bool`
+
+HasIdentityId returns a boolean if a field has been set.
 
 ### GetAccountId
 

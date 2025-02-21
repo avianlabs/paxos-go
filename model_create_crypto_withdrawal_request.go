@@ -41,9 +41,9 @@ type CreateCryptoWithdrawalRequest struct {
 	FeeId *string `json:"fee_id,omitempty"`
 	CryptoNetwork CryptoNetwork `json:"crypto_network"`
 	// The amount to withdraw. Specify exactly one of `amount` or `total`, otherwise an error is returned.
-	Amount *string `json:"amount,omitempty"`
+	Amount *string `json:"amount,omitempty" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	// Total amount to withdraw, including fees. Specify exactly one of `amount` or `total`, otherwise an error is returned.
-	Total *string `json:"total,omitempty"`
+	Total *string `json:"total,omitempty" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	Beneficiary *Beneficiary `json:"beneficiary,omitempty"`
 }
 
