@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -23,6 +22,7 @@ var _ MappedNullable = &FiatNetworkInstructionsCbit{}
 type FiatNetworkInstructionsCbit struct {
 	// The wallet address of the CBIT account.
 	WalletAddress string `json:"wallet_address"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _FiatNetworkInstructionsCbit FiatNetworkInstructionsCbit
@@ -80,6 +80,11 @@ func (o FiatNetworkInstructionsCbit) MarshalJSON() ([]byte, error) {
 func (o FiatNetworkInstructionsCbit) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["wallet_address"] = o.WalletAddress
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *FiatNetworkInstructionsCbit) UnmarshalJSON(data []byte) (err error) {
 
 	varFiatNetworkInstructionsCbit := _FiatNetworkInstructionsCbit{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varFiatNetworkInstructionsCbit)
+	err = json.Unmarshal(data, &varFiatNetworkInstructionsCbit)
 
 	if err != nil {
 		return err
 	}
 
 	*o = FiatNetworkInstructionsCbit(varFiatNetworkInstructionsCbit)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "wallet_address")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

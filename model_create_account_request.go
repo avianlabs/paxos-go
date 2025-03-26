@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -24,6 +23,7 @@ type CreateAccountRequest struct {
 	Account Account `json:"account"`
 	// Create a new profile for this account. Set to `true` to track user balances at the Profile level for this account. See also [Profiles](#tag/Profiles).
 	CreateProfile *bool `json:"create_profile,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateAccountRequest CreateAccountRequest
@@ -116,6 +116,11 @@ func (o CreateAccountRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CreateProfile) {
 		toSerialize["create_profile"] = o.CreateProfile
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -143,15 +148,21 @@ func (o *CreateAccountRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateAccountRequest := _CreateAccountRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateAccountRequest)
+	err = json.Unmarshal(data, &varCreateAccountRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateAccountRequest(varCreateAccountRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "account")
+		delete(additionalProperties, "create_profile")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -21,7 +21,10 @@ var _ MappedNullable = &BeneficiaryPerson{}
 type BeneficiaryPerson struct {
 	FirstName *string `json:"first_name,omitempty"`
 	LastName *string `json:"last_name,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _BeneficiaryPerson BeneficiaryPerson
 
 // NewBeneficiaryPerson instantiates a new BeneficiaryPerson object
 // This constructor will assign default values to properties that have it defined,
@@ -120,7 +123,34 @@ func (o BeneficiaryPerson) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.LastName) {
 		toSerialize["last_name"] = o.LastName
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *BeneficiaryPerson) UnmarshalJSON(data []byte) (err error) {
+	varBeneficiaryPerson := _BeneficiaryPerson{}
+
+	err = json.Unmarshal(data, &varBeneficiaryPerson)
+
+	if err != nil {
+		return err
+	}
+
+	*o = BeneficiaryPerson(varBeneficiaryPerson)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "first_name")
+		delete(additionalProperties, "last_name")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableBeneficiaryPerson struct {

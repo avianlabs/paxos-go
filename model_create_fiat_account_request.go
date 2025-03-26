@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -31,6 +30,7 @@ type CreateFiatAccountRequest struct {
 	FiatNetworkInstructions FiatNetworkInstructions `json:"fiat_network_instructions"`
 	// Optional client-specified metadata. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters.
 	Metadata *map[string]string `json:"metadata,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateFiatAccountRequest CreateFiatAccountRequest
@@ -254,6 +254,11 @@ func (o CreateFiatAccountRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Metadata) {
 		toSerialize["metadata"] = o.Metadata
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -282,15 +287,25 @@ func (o *CreateFiatAccountRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateFiatAccountRequest := _CreateFiatAccountRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateFiatAccountRequest)
+	err = json.Unmarshal(data, &varCreateFiatAccountRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateFiatAccountRequest(varCreateFiatAccountRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "account_id")
+		delete(additionalProperties, "fiat_account_owner")
+		delete(additionalProperties, "fiat_network_instructions")
+		delete(additionalProperties, "metadata")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

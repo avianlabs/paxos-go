@@ -25,7 +25,10 @@ type DocumentDescription struct {
 	DocumentTypes []DocumentType `json:"document_types,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	ArchivedAt *time.Time `json:"archived_at,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _DocumentDescription DocumentDescription
 
 // NewDocumentDescription instantiates a new DocumentDescription object
 // This constructor will assign default values to properties that have it defined,
@@ -229,7 +232,37 @@ func (o DocumentDescription) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ArchivedAt) {
 		toSerialize["archived_at"] = o.ArchivedAt
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *DocumentDescription) UnmarshalJSON(data []byte) (err error) {
+	varDocumentDescription := _DocumentDescription{}
+
+	err = json.Unmarshal(data, &varDocumentDescription)
+
+	if err != nil {
+		return err
+	}
+
+	*o = DocumentDescription(varDocumentDescription)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "file_id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "document_types")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "archived_at")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableDocumentDescription struct {

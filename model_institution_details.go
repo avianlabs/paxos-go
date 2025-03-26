@@ -46,7 +46,10 @@ type InstitutionDetails struct {
 	AdditionalScreeningStatus *IdentityStatus `json:"additional_screening_status,omitempty"`
 	DoingBusinessAs *string `json:"doing_business_as,omitempty"`
 	BusinessDescription *string `json:"business_description,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _InstitutionDetails InstitutionDetails
 
 // NewInstitutionDetails instantiates a new InstitutionDetails object
 // This constructor will assign default values to properties that have it defined,
@@ -915,7 +918,56 @@ func (o InstitutionDetails) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.BusinessDescription) {
 		toSerialize["business_description"] = o.BusinessDescription
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *InstitutionDetails) UnmarshalJSON(data []byte) (err error) {
+	varInstitutionDetails := _InstitutionDetails{}
+
+	err = json.Unmarshal(data, &varInstitutionDetails)
+
+	if err != nil {
+		return err
+	}
+
+	*o = InstitutionDetails(varInstitutionDetails)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "sanctions_verification_status")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "business_address")
+		delete(additionalProperties, "phone_number")
+		delete(additionalProperties, "email")
+		delete(additionalProperties, "institution_type")
+		delete(additionalProperties, "institution_sub_type")
+		delete(additionalProperties, "cip_id")
+		delete(additionalProperties, "cip_id_type")
+		delete(additionalProperties, "cip_id_country")
+		delete(additionalProperties, "govt_registration_date")
+		delete(additionalProperties, "incorporation_address")
+		delete(additionalProperties, "regulation_status")
+		delete(additionalProperties, "trading_type")
+		delete(additionalProperties, "listed_exchange")
+		delete(additionalProperties, "ticker_symbol")
+		delete(additionalProperties, "parent_institution_name")
+		delete(additionalProperties, "regulator_name")
+		delete(additionalProperties, "regulator_jurisdiction")
+		delete(additionalProperties, "regulator_register_number")
+		delete(additionalProperties, "document_verification_status")
+		delete(additionalProperties, "additional_screening_status")
+		delete(additionalProperties, "doing_business_as")
+		delete(additionalProperties, "business_description")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableInstitutionDetails struct {

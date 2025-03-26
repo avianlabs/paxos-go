@@ -25,7 +25,10 @@ type SandboxSetIdentityStatusRequest struct {
 	AdminDisabled *SetDisable `json:"admin_disabled,omitempty"`
 	DocumentVerificationStatus *IdentityStatus `json:"document_verification_status,omitempty"`
 	AdditionalScreeningStatus *IdentityStatus `json:"additional_screening_status,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _SandboxSetIdentityStatusRequest SandboxSetIdentityStatusRequest
 
 // NewSandboxSetIdentityStatusRequest instantiates a new SandboxSetIdentityStatusRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -264,7 +267,38 @@ func (o SandboxSetIdentityStatusRequest) ToMap() (map[string]interface{}, error)
 	if !IsNil(o.AdditionalScreeningStatus) {
 		toSerialize["additional_screening_status"] = o.AdditionalScreeningStatus
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *SandboxSetIdentityStatusRequest) UnmarshalJSON(data []byte) (err error) {
+	varSandboxSetIdentityStatusRequest := _SandboxSetIdentityStatusRequest{}
+
+	err = json.Unmarshal(data, &varSandboxSetIdentityStatusRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SandboxSetIdentityStatusRequest(varSandboxSetIdentityStatusRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id_verification_status")
+		delete(additionalProperties, "sanctions_verification_status")
+		delete(additionalProperties, "user_disabled")
+		delete(additionalProperties, "admin_disabled")
+		delete(additionalProperties, "document_verification_status")
+		delete(additionalProperties, "additional_screening_status")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableSandboxSetIdentityStatusRequest struct {

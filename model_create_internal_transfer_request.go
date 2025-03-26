@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -33,6 +32,7 @@ type CreateInternalTransferRequest struct {
 	Asset string `json:"asset"`
 	// Optional client-specified metadata. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters.
 	Metadata *map[string]string `json:"metadata,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateInternalTransferRequest CreateInternalTransferRequest
@@ -238,6 +238,11 @@ func (o CreateInternalTransferRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Metadata) {
 		toSerialize["metadata"] = o.Metadata
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -268,15 +273,25 @@ func (o *CreateInternalTransferRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateInternalTransferRequest := _CreateInternalTransferRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateInternalTransferRequest)
+	err = json.Unmarshal(data, &varCreateInternalTransferRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateInternalTransferRequest(varCreateInternalTransferRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "from_profile_id")
+		delete(additionalProperties, "to_profile_id")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "asset")
+		delete(additionalProperties, "metadata")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -44,7 +44,10 @@ type Account struct {
 	// The ID of the profile created for the account when `create_profile=true`. The [Profile](#tag/Profiles) type is `NORMAL`. The field is omitted when the account has no associated [Profile](#tag/Profiles).
 	ProfileId *string `json:"profile_id,omitempty"`
 	Type *AccountAccountType `json:"type,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Account Account
 
 // NewAccount instantiates a new Account object
 // This constructor will assign default values to properties that have it defined,
@@ -528,7 +531,45 @@ func (o Account) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Type) {
 		toSerialize["type"] = o.Type
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Account) UnmarshalJSON(data []byte) (err error) {
+	varAccount := _Account{}
+
+	err = json.Unmarshal(data, &varAccount)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Account(varAccount)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "admin_disabled")
+		delete(additionalProperties, "user_disabled")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "members")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "summary_status")
+		delete(additionalProperties, "updated_at")
+		delete(additionalProperties, "profile_id")
+		delete(additionalProperties, "type")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAccount struct {

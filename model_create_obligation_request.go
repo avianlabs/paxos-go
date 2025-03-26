@@ -24,7 +24,10 @@ type CreateObligationRequest struct {
 	Asset *string `json:"asset,omitempty"`
 	// Amount of the asset which is obliged.
 	Amount *string `json:"amount,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CreateObligationRequest CreateObligationRequest
 
 // NewCreateObligationRequest instantiates a new CreateObligationRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -158,7 +161,35 @@ func (o CreateObligationRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Amount) {
 		toSerialize["amount"] = o.Amount
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CreateObligationRequest) UnmarshalJSON(data []byte) (err error) {
+	varCreateObligationRequest := _CreateObligationRequest{}
+
+	err = json.Unmarshal(data, &varCreateObligationRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CreateObligationRequest(varCreateObligationRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "direction")
+		delete(additionalProperties, "asset")
+		delete(additionalProperties, "amount")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCreateObligationRequest struct {

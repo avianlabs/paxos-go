@@ -13,7 +13,6 @@ package paxos
 import (
 	"encoding/json"
 	"time"
-	"bytes"
 	"fmt"
 )
 
@@ -43,6 +42,7 @@ type Identity struct {
 	CustomerDueDiligence *CustomerDueDiligence `json:"customer_due_diligence,omitempty"`
 	// True if the identity is a merchant.
 	IsMerchant *bool `json:"is_merchant,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Identity Identity
@@ -660,6 +660,11 @@ func (o Identity) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.IsMerchant) {
 		toSerialize["is_merchant"] = o.IsMerchant
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -687,15 +692,36 @@ func (o *Identity) UnmarshalJSON(data []byte) (err error) {
 
 	varIdentity := _Identity{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIdentity)
+	err = json.Unmarshal(data, &varIdentity)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Identity(varIdentity)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "summary_status")
+		delete(additionalProperties, "user_disabled")
+		delete(additionalProperties, "admin_disabled")
+		delete(additionalProperties, "person_details")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "institution_details")
+		delete(additionalProperties, "institution_members")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "updated_at")
+		delete(additionalProperties, "tax_details")
+		delete(additionalProperties, "tax_details_not_required")
+		delete(additionalProperties, "summary_tin_verification_status")
+		delete(additionalProperties, "customer_due_diligence")
+		delete(additionalProperties, "is_merchant")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -20,7 +20,10 @@ var _ MappedNullable = &SetDisable{}
 // SetDisable struct for SetDisable
 type SetDisable struct {
 	Disabled *bool `json:"disabled,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _SetDisable SetDisable
 
 // NewSetDisable instantiates a new SetDisable object
 // This constructor will assign default values to properties that have it defined,
@@ -84,7 +87,33 @@ func (o SetDisable) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Disabled) {
 		toSerialize["disabled"] = o.Disabled
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *SetDisable) UnmarshalJSON(data []byte) (err error) {
+	varSetDisable := _SetDisable{}
+
+	err = json.Unmarshal(data, &varSetDisable)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SetDisable(varSetDisable)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "disabled")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableSetDisable struct {

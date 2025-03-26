@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -23,6 +22,7 @@ var _ MappedNullable = &RejectCryptoDepositRequest{}
 type RejectCryptoDepositRequest struct {
 	// The Identity (`identity_id`) of the end user that requests to reject the deposit.
 	IdentityId string `json:"identity_id"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _RejectCryptoDepositRequest RejectCryptoDepositRequest
@@ -80,6 +80,11 @@ func (o RejectCryptoDepositRequest) MarshalJSON() ([]byte, error) {
 func (o RejectCryptoDepositRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["identity_id"] = o.IdentityId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *RejectCryptoDepositRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varRejectCryptoDepositRequest := _RejectCryptoDepositRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varRejectCryptoDepositRequest)
+	err = json.Unmarshal(data, &varRejectCryptoDepositRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = RejectCryptoDepositRequest(varRejectCryptoDepositRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "identity_id")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

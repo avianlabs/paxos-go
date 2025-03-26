@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -27,6 +26,7 @@ type ProfileBalance struct {
 	Available string `json:"available"`
 	// The asset amount committed to pending orders.
 	Trading string `json:"trading"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ProfileBalance ProfileBalance
@@ -136,6 +136,11 @@ func (o ProfileBalance) ToMap() (map[string]interface{}, error) {
 	toSerialize["asset"] = o.Asset
 	toSerialize["available"] = o.Available
 	toSerialize["trading"] = o.Trading
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -165,15 +170,22 @@ func (o *ProfileBalance) UnmarshalJSON(data []byte) (err error) {
 
 	varProfileBalance := _ProfileBalance{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varProfileBalance)
+	err = json.Unmarshal(data, &varProfileBalance)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ProfileBalance(varProfileBalance)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "asset")
+		delete(additionalProperties, "available")
+		delete(additionalProperties, "trading")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

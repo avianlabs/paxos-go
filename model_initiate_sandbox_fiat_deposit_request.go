@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -29,6 +28,7 @@ type InitiateSandboxFiatDepositRequest struct {
 	MemoId string `json:"memo_id"`
 	FiatNetworkInstructions FiatNetworkInstructions `json:"fiat_network_instructions"`
 	FiatAccountOwner *FiatAccountOwner `json:"fiat_account_owner,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _InitiateSandboxFiatDepositRequest InitiateSandboxFiatDepositRequest
@@ -199,6 +199,11 @@ func (o InitiateSandboxFiatDepositRequest) ToMap() (map[string]interface{}, erro
 	if !IsNil(o.FiatAccountOwner) {
 		toSerialize["fiat_account_owner"] = o.FiatAccountOwner
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -229,15 +234,24 @@ func (o *InitiateSandboxFiatDepositRequest) UnmarshalJSON(data []byte) (err erro
 
 	varInitiateSandboxFiatDepositRequest := _InitiateSandboxFiatDepositRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varInitiateSandboxFiatDepositRequest)
+	err = json.Unmarshal(data, &varInitiateSandboxFiatDepositRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = InitiateSandboxFiatDepositRequest(varInitiateSandboxFiatDepositRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "asset")
+		delete(additionalProperties, "memo_id")
+		delete(additionalProperties, "fiat_network_instructions")
+		delete(additionalProperties, "fiat_account_owner")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

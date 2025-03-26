@@ -22,7 +22,10 @@ type SecondaryStatus struct {
 	Name *SecondaryStatusName `json:"name,omitempty"`
 	// Additional information about the current status of the transfer (e.g. if information is missing).
 	Detail *string `json:"detail,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _SecondaryStatus SecondaryStatus
 
 // NewSecondaryStatus instantiates a new SecondaryStatus object
 // This constructor will assign default values to properties that have it defined,
@@ -121,7 +124,34 @@ func (o SecondaryStatus) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Detail) {
 		toSerialize["detail"] = o.Detail
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *SecondaryStatus) UnmarshalJSON(data []byte) (err error) {
+	varSecondaryStatus := _SecondaryStatus{}
+
+	err = json.Unmarshal(data, &varSecondaryStatus)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SecondaryStatus(varSecondaryStatus)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "detail")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableSecondaryStatus struct {

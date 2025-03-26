@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -27,6 +26,7 @@ type WireRoutingDetails struct {
 	// The name of the bank.
 	BankName string `json:"bank_name"`
 	BankAddress MailingAddress `json:"bank_address"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _WireRoutingDetails WireRoutingDetails
@@ -162,6 +162,11 @@ func (o WireRoutingDetails) ToMap() (map[string]interface{}, error) {
 	toSerialize["routing_number"] = o.RoutingNumber
 	toSerialize["bank_name"] = o.BankName
 	toSerialize["bank_address"] = o.BankAddress
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -192,15 +197,23 @@ func (o *WireRoutingDetails) UnmarshalJSON(data []byte) (err error) {
 
 	varWireRoutingDetails := _WireRoutingDetails{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varWireRoutingDetails)
+	err = json.Unmarshal(data, &varWireRoutingDetails)
 
 	if err != nil {
 		return err
 	}
 
 	*o = WireRoutingDetails(varWireRoutingDetails)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "routing_number_type")
+		delete(additionalProperties, "routing_number")
+		delete(additionalProperties, "bank_name")
+		delete(additionalProperties, "bank_address")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

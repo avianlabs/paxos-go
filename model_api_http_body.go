@@ -25,7 +25,10 @@ type ApiHttpBody struct {
 	Data *string `json:"data,omitempty"`
 	// Application specific response metadata. Must be set in the first response for streaming APIs.
 	Extensions []BufAny `json:"extensions,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ApiHttpBody ApiHttpBody
 
 // NewApiHttpBody instantiates a new ApiHttpBody object
 // This constructor will assign default values to properties that have it defined,
@@ -159,7 +162,35 @@ func (o ApiHttpBody) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Extensions) {
 		toSerialize["extensions"] = o.Extensions
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ApiHttpBody) UnmarshalJSON(data []byte) (err error) {
+	varApiHttpBody := _ApiHttpBody{}
+
+	err = json.Unmarshal(data, &varApiHttpBody)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ApiHttpBody(varApiHttpBody)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "content_type")
+		delete(additionalProperties, "data")
+		delete(additionalProperties, "extensions")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableApiHttpBody struct {

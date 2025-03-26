@@ -23,7 +23,10 @@ type AddInstitutionMembersResponse struct {
 	InstitutionId *string `json:"institution_id,omitempty"`
 	// List of institution members that were added to the institution.
 	Members []InstitutionMember `json:"members,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _AddInstitutionMembersResponse AddInstitutionMembersResponse
 
 // NewAddInstitutionMembersResponse instantiates a new AddInstitutionMembersResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o AddInstitutionMembersResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Members) {
 		toSerialize["members"] = o.Members
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *AddInstitutionMembersResponse) UnmarshalJSON(data []byte) (err error) {
+	varAddInstitutionMembersResponse := _AddInstitutionMembersResponse{}
+
+	err = json.Unmarshal(data, &varAddInstitutionMembersResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AddInstitutionMembersResponse(varAddInstitutionMembersResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "institution_id")
+		delete(additionalProperties, "members")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAddInstitutionMembersResponse struct {

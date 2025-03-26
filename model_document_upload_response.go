@@ -25,7 +25,10 @@ type DocumentUploadResponse struct {
 	Name *string `json:"name,omitempty"`
 	// The URI where we expect the file to be uploaded into.
 	UploadUrl *string `json:"upload_url,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _DocumentUploadResponse DocumentUploadResponse
 
 // NewDocumentUploadResponse instantiates a new DocumentUploadResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -159,7 +162,35 @@ func (o DocumentUploadResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.UploadUrl) {
 		toSerialize["upload_url"] = o.UploadUrl
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *DocumentUploadResponse) UnmarshalJSON(data []byte) (err error) {
+	varDocumentUploadResponse := _DocumentUploadResponse{}
+
+	err = json.Unmarshal(data, &varDocumentUploadResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = DocumentUploadResponse(varDocumentUploadResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "file_id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "upload_url")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableDocumentUploadResponse struct {

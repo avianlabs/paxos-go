@@ -22,7 +22,10 @@ type ListHistoricalPricesResponse struct {
 	TotalCount *int32 `json:"total_count,omitempty"`
 	// List of historical prices.
 	Items []HistoricalPrice `json:"items,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ListHistoricalPricesResponse ListHistoricalPricesResponse
 
 // NewListHistoricalPricesResponse instantiates a new ListHistoricalPricesResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -121,7 +124,34 @@ func (o ListHistoricalPricesResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Items) {
 		toSerialize["items"] = o.Items
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ListHistoricalPricesResponse) UnmarshalJSON(data []byte) (err error) {
+	varListHistoricalPricesResponse := _ListHistoricalPricesResponse{}
+
+	err = json.Unmarshal(data, &varListHistoricalPricesResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ListHistoricalPricesResponse(varListHistoricalPricesResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "total_count")
+		delete(additionalProperties, "items")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableListHistoricalPricesResponse struct {

@@ -23,7 +23,10 @@ type AddAccountMembersResponse struct {
 	AccountId *string `json:"account_id,omitempty"`
 	// List of account members that were added to the account.
 	Members []AccountMember `json:"members,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _AddAccountMembersResponse AddAccountMembersResponse
 
 // NewAddAccountMembersResponse instantiates a new AddAccountMembersResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o AddAccountMembersResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Members) {
 		toSerialize["members"] = o.Members
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *AddAccountMembersResponse) UnmarshalJSON(data []byte) (err error) {
+	varAddAccountMembersResponse := _AddAccountMembersResponse{}
+
+	err = json.Unmarshal(data, &varAddAccountMembersResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AddAccountMembersResponse(varAddAccountMembersResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "account_id")
+		delete(additionalProperties, "members")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAddAccountMembersResponse struct {

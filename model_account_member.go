@@ -24,7 +24,10 @@ type AccountMember struct {
 	Roles []AccountMemberAccountRoleType `json:"roles,omitempty"`
 	// Account member ID. Note: This field is auto-generated. Specifying an ID when creating an account member is a client error.
 	Id *string `json:"id,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _AccountMember AccountMember
 
 // NewAccountMember instantiates a new AccountMember object
 // This constructor will assign default values to properties that have it defined,
@@ -193,7 +196,36 @@ func (o AccountMember) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Id) {
 		toSerialize["id"] = o.Id
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *AccountMember) UnmarshalJSON(data []byte) (err error) {
+	varAccountMember := _AccountMember{}
+
+	err = json.Unmarshal(data, &varAccountMember)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AccountMember(varAccountMember)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "roles")
+		delete(additionalProperties, "id")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAccountMember struct {

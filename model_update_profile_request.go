@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -22,6 +21,7 @@ var _ MappedNullable = &UpdateProfileRequest{}
 // UpdateProfileRequest struct for UpdateProfileRequest
 type UpdateProfileRequest struct {
 	Nickname string `json:"nickname"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _UpdateProfileRequest UpdateProfileRequest
@@ -79,6 +79,11 @@ func (o UpdateProfileRequest) MarshalJSON() ([]byte, error) {
 func (o UpdateProfileRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["nickname"] = o.Nickname
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *UpdateProfileRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varUpdateProfileRequest := _UpdateProfileRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUpdateProfileRequest)
+	err = json.Unmarshal(data, &varUpdateProfileRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UpdateProfileRequest(varUpdateProfileRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "nickname")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

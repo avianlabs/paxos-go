@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -45,6 +44,7 @@ type CreateCryptoWithdrawalRequest struct {
 	// Total amount to withdraw, including fees. Specify exactly one of `amount` or `total`, otherwise an error is returned.
 	Total *string `json:"total,omitempty" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	Beneficiary *Beneficiary `json:"beneficiary,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateCryptoWithdrawalRequest CreateCryptoWithdrawalRequest
@@ -495,6 +495,11 @@ func (o CreateCryptoWithdrawalRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Beneficiary) {
 		toSerialize["beneficiary"] = o.Beneficiary
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -525,15 +530,32 @@ func (o *CreateCryptoWithdrawalRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateCryptoWithdrawalRequest := _CreateCryptoWithdrawalRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateCryptoWithdrawalRequest)
+	err = json.Unmarshal(data, &varCreateCryptoWithdrawalRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateCryptoWithdrawalRequest(varCreateCryptoWithdrawalRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "profile_id")
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "destination_address")
+		delete(additionalProperties, "asset")
+		delete(additionalProperties, "balance_asset")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "account_id")
+		delete(additionalProperties, "fee_id")
+		delete(additionalProperties, "crypto_network")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "total")
+		delete(additionalProperties, "beneficiary")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

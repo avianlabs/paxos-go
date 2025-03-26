@@ -24,7 +24,10 @@ type TimestampRange struct {
 	Begin *time.Time `json:"begin,omitempty"`
 	// Only return records before this timestamp, inclusive. RFC3339 format, like `2006-01-02T15:04:05Z`.
 	End *time.Time `json:"end,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _TimestampRange TimestampRange
 
 // NewTimestampRange instantiates a new TimestampRange object
 // This constructor will assign default values to properties that have it defined,
@@ -123,7 +126,34 @@ func (o TimestampRange) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.End) {
 		toSerialize["end"] = o.End
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *TimestampRange) UnmarshalJSON(data []byte) (err error) {
+	varTimestampRange := _TimestampRange{}
+
+	err = json.Unmarshal(data, &varTimestampRange)
+
+	if err != nil {
+		return err
+	}
+
+	*o = TimestampRange(varTimestampRange)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "begin")
+		delete(additionalProperties, "end")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableTimestampRange struct {

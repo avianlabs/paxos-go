@@ -22,7 +22,10 @@ type UpdateFiatNetworkInstructionsUpdateWire struct {
 	FiatAccountOwnerAddress *MailingAddress `json:"fiat_account_owner_address,omitempty"`
 	RoutingDetails *UpdateWireUpdateRoutingDetails `json:"routing_details,omitempty"`
 	IntermediaryRoutingDetails *UpdateWireUpdateRoutingDetails `json:"intermediary_routing_details,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _UpdateFiatNetworkInstructionsUpdateWire UpdateFiatNetworkInstructionsUpdateWire
 
 // NewUpdateFiatNetworkInstructionsUpdateWire instantiates a new UpdateFiatNetworkInstructionsUpdateWire object
 // This constructor will assign default values to properties that have it defined,
@@ -156,7 +159,35 @@ func (o UpdateFiatNetworkInstructionsUpdateWire) ToMap() (map[string]interface{}
 	if !IsNil(o.IntermediaryRoutingDetails) {
 		toSerialize["intermediary_routing_details"] = o.IntermediaryRoutingDetails
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateFiatNetworkInstructionsUpdateWire) UnmarshalJSON(data []byte) (err error) {
+	varUpdateFiatNetworkInstructionsUpdateWire := _UpdateFiatNetworkInstructionsUpdateWire{}
+
+	err = json.Unmarshal(data, &varUpdateFiatNetworkInstructionsUpdateWire)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateFiatNetworkInstructionsUpdateWire(varUpdateFiatNetworkInstructionsUpdateWire)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "fiat_account_owner_address")
+		delete(additionalProperties, "routing_details")
+		delete(additionalProperties, "intermediary_routing_details")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateFiatNetworkInstructionsUpdateWire struct {

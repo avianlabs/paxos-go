@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -24,6 +23,7 @@ type UpdateAccountRequest struct {
 	Account Account `json:"account"`
 	// true if the account is required to be disabled by the API user.
 	SetUserDisabled *bool `json:"set_user_disabled,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _UpdateAccountRequest UpdateAccountRequest
@@ -116,6 +116,11 @@ func (o UpdateAccountRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.SetUserDisabled) {
 		toSerialize["set_user_disabled"] = o.SetUserDisabled
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -143,15 +148,21 @@ func (o *UpdateAccountRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varUpdateAccountRequest := _UpdateAccountRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUpdateAccountRequest)
+	err = json.Unmarshal(data, &varUpdateAccountRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UpdateAccountRequest(varUpdateAccountRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "account")
+		delete(additionalProperties, "set_user_disabled")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

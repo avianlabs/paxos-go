@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -22,6 +21,7 @@ var _ MappedNullable = &InstitutionInfo{}
 // InstitutionInfo struct for InstitutionInfo
 type InstitutionInfo struct {
 	InstitutionName string `json:"institution_name"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _InstitutionInfo InstitutionInfo
@@ -79,6 +79,11 @@ func (o InstitutionInfo) MarshalJSON() ([]byte, error) {
 func (o InstitutionInfo) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["institution_name"] = o.InstitutionName
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *InstitutionInfo) UnmarshalJSON(data []byte) (err error) {
 
 	varInstitutionInfo := _InstitutionInfo{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varInstitutionInfo)
+	err = json.Unmarshal(data, &varInstitutionInfo)
 
 	if err != nil {
 		return err
 	}
 
 	*o = InstitutionInfo(varInstitutionInfo)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "institution_name")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

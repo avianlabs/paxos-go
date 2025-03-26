@@ -33,7 +33,10 @@ type TransferLimit struct {
 	Remaining *string `json:"remaining,omitempty"`
 	// The asset that limit and remaining are given in, e.g. \"USD\", \"BTC\", \"ETH\".
 	LimitAsset *string `json:"limit_asset,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _TransferLimit TransferLimit
 
 // NewTransferLimit instantiates a new TransferLimit object
 // This constructor will assign default values to properties that have it defined,
@@ -307,7 +310,39 @@ func (o TransferLimit) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.LimitAsset) {
 		toSerialize["limit_asset"] = o.LimitAsset
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *TransferLimit) UnmarshalJSON(data []byte) (err error) {
+	varTransferLimit := _TransferLimit{}
+
+	err = json.Unmarshal(data, &varTransferLimit)
+
+	if err != nil {
+		return err
+	}
+
+	*o = TransferLimit(varTransferLimit)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "rule_id")
+		delete(additionalProperties, "transfer_types")
+		delete(additionalProperties, "period_seconds")
+		delete(additionalProperties, "limit")
+		delete(additionalProperties, "remaining")
+		delete(additionalProperties, "limit_asset")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableTransferLimit struct {

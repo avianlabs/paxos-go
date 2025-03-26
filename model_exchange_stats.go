@@ -29,7 +29,10 @@ type ExchangeStats struct {
 	// Volume-Weighted Average Price over Time Period.
 	VolumeWeightedAveragePrice *string `json:"volume_weighted_average_price,omitempty"`
 	Range *TimestampRange `json:"range,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ExchangeStats ExchangeStats
 
 // NewExchangeStats instantiates a new ExchangeStats object
 // This constructor will assign default values to properties that have it defined,
@@ -268,7 +271,38 @@ func (o ExchangeStats) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Range) {
 		toSerialize["range"] = o.Range
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ExchangeStats) UnmarshalJSON(data []byte) (err error) {
+	varExchangeStats := _ExchangeStats{}
+
+	err = json.Unmarshal(data, &varExchangeStats)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ExchangeStats(varExchangeStats)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "high")
+		delete(additionalProperties, "low")
+		delete(additionalProperties, "open")
+		delete(additionalProperties, "volume")
+		delete(additionalProperties, "volume_weighted_average_price")
+		delete(additionalProperties, "range")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableExchangeStats struct {

@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -48,6 +47,7 @@ type CreateOrderRequest struct {
 	RecipientProfileId *string `json:"recipient_profile_id,omitempty"`
 	// The string field used to prevent matching against an opposite side order submitted by the same Crypto Brokerage customer. If this field is not submitted, an order that matches against another order submitted by the same customer will cancel the original resting order. Up to 36 characters are supported. This field requires additional permissions only available to certain accounts. Reach out to your Paxos Representative for more information.
 	SelfMatchPreventionId *string `json:"self_match_prevention_id,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateOrderRequest CreateOrderRequest
@@ -612,6 +612,11 @@ func (o CreateOrderRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.SelfMatchPreventionId) {
 		toSerialize["self_match_prevention_id"] = o.SelfMatchPreventionId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -641,15 +646,35 @@ func (o *CreateOrderRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateOrderRequest := _CreateOrderRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateOrderRequest)
+	err = json.Unmarshal(data, &varCreateOrderRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateOrderRequest(varCreateOrderRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "side")
+		delete(additionalProperties, "market")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "base_amount")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "quote_amount")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "await_fill_millis")
+		delete(additionalProperties, "time_in_force")
+		delete(additionalProperties, "expiration_date")
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "identity_account_id")
+		delete(additionalProperties, "stop_price")
+		delete(additionalProperties, "recipient_profile_id")
+		delete(additionalProperties, "self_match_prevention_id")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

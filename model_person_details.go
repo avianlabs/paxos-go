@@ -52,7 +52,10 @@ type PersonDetails struct {
 	PassthroughVerificationStatus *IdentityStatus `json:"passthrough_verification_status,omitempty"`
 	// List of verification fields used by the external verifier to validate the individual's identity.
 	PassthroughVerificationFields []PassthroughVerificationField `json:"passthrough_verification_fields,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _PersonDetails PersonDetails
 
 // NewPersonDetails instantiates a new PersonDetails object
 // This constructor will assign default values to properties that have it defined,
@@ -991,7 +994,58 @@ func (o PersonDetails) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.PassthroughVerificationFields) {
 		toSerialize["passthrough_verification_fields"] = o.PassthroughVerificationFields
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *PersonDetails) UnmarshalJSON(data []byte) (err error) {
+	varPersonDetails := _PersonDetails{}
+
+	err = json.Unmarshal(data, &varPersonDetails)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PersonDetails(varPersonDetails)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id_verification_status")
+		delete(additionalProperties, "sanctions_verification_status")
+		delete(additionalProperties, "first_name")
+		delete(additionalProperties, "last_name")
+		delete(additionalProperties, "date_of_birth")
+		delete(additionalProperties, "govt_id")
+		delete(additionalProperties, "address")
+		delete(additionalProperties, "phone_number")
+		delete(additionalProperties, "email")
+		delete(additionalProperties, "nationality")
+		delete(additionalProperties, "verifier_id")
+		delete(additionalProperties, "verifier_type")
+		delete(additionalProperties, "id_verification_url")
+		delete(additionalProperties, "passthrough_verifier_type")
+		delete(additionalProperties, "passthrough_verified_at")
+		delete(additionalProperties, "govt_id_type")
+		delete(additionalProperties, "cip_id")
+		delete(additionalProperties, "cip_id_type")
+		delete(additionalProperties, "cip_id_country")
+		delete(additionalProperties, "additional_screening_status")
+		delete(additionalProperties, "profession")
+		delete(additionalProperties, "middle_name")
+		delete(additionalProperties, "country_of_birth")
+		delete(additionalProperties, "passthrough_verification_id")
+		delete(additionalProperties, "passthrough_verification_status")
+		delete(additionalProperties, "passthrough_verification_fields")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullablePersonDetails struct {

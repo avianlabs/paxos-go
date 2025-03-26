@@ -21,7 +21,10 @@ var _ MappedNullable = &ListTransferLimitsResponse{}
 type ListTransferLimitsResponse struct {
 	Items []TransferLimit `json:"items,omitempty"`
 	NextPageCursor *string `json:"next_page_cursor,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ListTransferLimitsResponse ListTransferLimitsResponse
 
 // NewListTransferLimitsResponse instantiates a new ListTransferLimitsResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -120,7 +123,34 @@ func (o ListTransferLimitsResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.NextPageCursor) {
 		toSerialize["next_page_cursor"] = o.NextPageCursor
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ListTransferLimitsResponse) UnmarshalJSON(data []byte) (err error) {
+	varListTransferLimitsResponse := _ListTransferLimitsResponse{}
+
+	err = json.Unmarshal(data, &varListTransferLimitsResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ListTransferLimitsResponse(varListTransferLimitsResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "items")
+		delete(additionalProperties, "next_page_cursor")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableListTransferLimitsResponse struct {

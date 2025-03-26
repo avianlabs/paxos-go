@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -23,6 +22,7 @@ var _ MappedNullable = &FiatNetworkInstructionsCubix{}
 type FiatNetworkInstructionsCubix struct {
 	// The uuid account id of the CUBIX account.
 	AccountId string `json:"account_id"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _FiatNetworkInstructionsCubix FiatNetworkInstructionsCubix
@@ -80,6 +80,11 @@ func (o FiatNetworkInstructionsCubix) MarshalJSON() ([]byte, error) {
 func (o FiatNetworkInstructionsCubix) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["account_id"] = o.AccountId
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *FiatNetworkInstructionsCubix) UnmarshalJSON(data []byte) (err error) {
 
 	varFiatNetworkInstructionsCubix := _FiatNetworkInstructionsCubix{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varFiatNetworkInstructionsCubix)
+	err = json.Unmarshal(data, &varFiatNetworkInstructionsCubix)
 
 	if err != nil {
 		return err
 	}
 
 	*o = FiatNetworkInstructionsCubix(varFiatNetworkInstructionsCubix)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "account_id")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

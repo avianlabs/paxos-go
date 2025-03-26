@@ -23,7 +23,10 @@ type ListTaxFormsResponse struct {
 	TaxFormUrls []TaxFormURL `json:"tax_form_urls,omitempty"`
 	// Cursor token required for fetching the next page.
 	NextPageCursor *string `json:"next_page_cursor,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ListTaxFormsResponse ListTaxFormsResponse
 
 // NewListTaxFormsResponse instantiates a new ListTaxFormsResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o ListTaxFormsResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.NextPageCursor) {
 		toSerialize["next_page_cursor"] = o.NextPageCursor
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ListTaxFormsResponse) UnmarshalJSON(data []byte) (err error) {
+	varListTaxFormsResponse := _ListTaxFormsResponse{}
+
+	err = json.Unmarshal(data, &varListTaxFormsResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ListTaxFormsResponse(varListTaxFormsResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "tax_form_urls")
+		delete(additionalProperties, "next_page_cursor")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableListTaxFormsResponse struct {

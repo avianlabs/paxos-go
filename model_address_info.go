@@ -21,7 +21,10 @@ var _ MappedNullable = &AddressInfo{}
 type AddressInfo struct {
 	IndividualInfo *IndividualInfo `json:"individual_info,omitempty"`
 	InstitutionInfo *InstitutionInfo `json:"institution_info,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _AddressInfo AddressInfo
 
 // NewAddressInfo instantiates a new AddressInfo object
 // This constructor will assign default values to properties that have it defined,
@@ -120,7 +123,34 @@ func (o AddressInfo) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.InstitutionInfo) {
 		toSerialize["institution_info"] = o.InstitutionInfo
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *AddressInfo) UnmarshalJSON(data []byte) (err error) {
+	varAddressInfo := _AddressInfo{}
+
+	err = json.Unmarshal(data, &varAddressInfo)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AddressInfo(varAddressInfo)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "individual_info")
+		delete(additionalProperties, "institution_info")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAddressInfo struct {

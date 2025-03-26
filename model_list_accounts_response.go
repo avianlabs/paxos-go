@@ -23,7 +23,10 @@ type ListAccountsResponse struct {
 	NextPageCursor *string `json:"next_page_cursor,omitempty"`
 	// The result list of accounts.
 	Items []Account `json:"items,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ListAccountsResponse ListAccountsResponse
 
 // NewListAccountsResponse instantiates a new ListAccountsResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o ListAccountsResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Items) {
 		toSerialize["items"] = o.Items
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ListAccountsResponse) UnmarshalJSON(data []byte) (err error) {
+	varListAccountsResponse := _ListAccountsResponse{}
+
+	err = json.Unmarshal(data, &varListAccountsResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ListAccountsResponse(varListAccountsResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "next_page_cursor")
+		delete(additionalProperties, "items")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableListAccountsResponse struct {

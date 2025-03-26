@@ -22,7 +22,10 @@ type TaxDetail struct {
 	TaxPayerId *string `json:"tax_payer_id,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
 	TaxPayerCountry *string `json:"tax_payer_country,omitempty"`
 	TinVerificationStatus *TINVerificationStatus `json:"tin_verification_status,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _TaxDetail TaxDetail
 
 // NewTaxDetail instantiates a new TaxDetail object
 // This constructor will assign default values to properties that have it defined,
@@ -156,7 +159,35 @@ func (o TaxDetail) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.TinVerificationStatus) {
 		toSerialize["tin_verification_status"] = o.TinVerificationStatus
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *TaxDetail) UnmarshalJSON(data []byte) (err error) {
+	varTaxDetail := _TaxDetail{}
+
+	err = json.Unmarshal(data, &varTaxDetail)
+
+	if err != nil {
+		return err
+	}
+
+	*o = TaxDetail(varTaxDetail)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "tax_payer_id")
+		delete(additionalProperties, "tax_payer_country")
+		delete(additionalProperties, "tin_verification_status")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableTaxDetail struct {

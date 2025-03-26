@@ -21,7 +21,10 @@ var _ MappedNullable = &ListRecentExecutionsResponse{}
 type ListRecentExecutionsResponse struct {
 	// Recent Executions.
 	Items []RecentExecution `json:"items,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ListRecentExecutionsResponse ListRecentExecutionsResponse
 
 // NewListRecentExecutionsResponse instantiates a new ListRecentExecutionsResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o ListRecentExecutionsResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Items) {
 		toSerialize["items"] = o.Items
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ListRecentExecutionsResponse) UnmarshalJSON(data []byte) (err error) {
+	varListRecentExecutionsResponse := _ListRecentExecutionsResponse{}
+
+	err = json.Unmarshal(data, &varListRecentExecutionsResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ListRecentExecutionsResponse(varListRecentExecutionsResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "items")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableListRecentExecutionsResponse struct {

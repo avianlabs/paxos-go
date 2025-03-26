@@ -21,7 +21,10 @@ var _ MappedNullable = &AutoConversion{}
 type AutoConversion struct {
 	FromTransferId *string `json:"from_transfer_id,omitempty"`
 	ToTransferId *string `json:"to_transfer_id,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _AutoConversion AutoConversion
 
 // NewAutoConversion instantiates a new AutoConversion object
 // This constructor will assign default values to properties that have it defined,
@@ -120,7 +123,34 @@ func (o AutoConversion) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ToTransferId) {
 		toSerialize["to_transfer_id"] = o.ToTransferId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *AutoConversion) UnmarshalJSON(data []byte) (err error) {
+	varAutoConversion := _AutoConversion{}
+
+	err = json.Unmarshal(data, &varAutoConversion)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AutoConversion(varAutoConversion)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "from_transfer_id")
+		delete(additionalProperties, "to_transfer_id")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableAutoConversion struct {

@@ -28,7 +28,10 @@ type TickerRecord struct {
 	Today *ExchangeStats `json:"today,omitempty"`
 	// The time at which this data was retrieved.
 	SnapshotAt *time.Time `json:"snapshot_at,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _TickerRecord TickerRecord
 
 // NewTickerRecord instantiates a new TickerRecord object
 // This constructor will assign default values to properties that have it defined,
@@ -302,7 +305,39 @@ func (o TickerRecord) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.SnapshotAt) {
 		toSerialize["snapshot_at"] = o.SnapshotAt
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *TickerRecord) UnmarshalJSON(data []byte) (err error) {
+	varTickerRecord := _TickerRecord{}
+
+	err = json.Unmarshal(data, &varTickerRecord)
+
+	if err != nil {
+		return err
+	}
+
+	*o = TickerRecord(varTickerRecord)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "market")
+		delete(additionalProperties, "best_bid")
+		delete(additionalProperties, "best_ask")
+		delete(additionalProperties, "last_execution")
+		delete(additionalProperties, "last_day")
+		delete(additionalProperties, "today")
+		delete(additionalProperties, "snapshot_at")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableTickerRecord struct {
