@@ -7,7 +7,7 @@ This SDK is generated from the OpenAPI spec found [here](https://docs.paxos.com/
 
 The CLI command to generate it was:
 ```sh
-openapi-generator generate -i paxos-v2.openapi.json -g go --package-name paxos --git-user-id avianlabs --git-repo-id paxos-go -t ./templates
+openapi-generator generate -i paxos-v2.openapi.json -g go --package-name paxos --git-user-id avianlabs --git-repo-id paxos-go --additional-properties=disallowAdditionalPropertiesIfNotPresent=false -t ./templates
 ```
 
 ### Templates
