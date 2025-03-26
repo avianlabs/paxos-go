@@ -32,7 +32,10 @@ type CreateTransactionRequest struct {
 	TargetProfileId *string `json:"target_profile_id,omitempty"`
 	// The obligations (representing one-way asset movements) to be settled atomically.
 	Legs []CreateObligationRequest `json:"legs,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CreateTransactionRequest CreateTransactionRequest
 
 // NewCreateTransactionRequest instantiates a new CreateTransactionRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -271,7 +274,38 @@ func (o CreateTransactionRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Legs) {
 		toSerialize["legs"] = o.Legs
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CreateTransactionRequest) UnmarshalJSON(data []byte) (err error) {
+	varCreateTransactionRequest := _CreateTransactionRequest{}
+
+	err = json.Unmarshal(data, &varCreateTransactionRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CreateTransactionRequest(varCreateTransactionRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "settlement_window_start")
+		delete(additionalProperties, "settlement_window_end")
+		delete(additionalProperties, "source_profile_id")
+		delete(additionalProperties, "target_profile_id")
+		delete(additionalProperties, "legs")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCreateTransactionRequest struct {

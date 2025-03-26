@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -33,6 +32,7 @@ type CreateDepositAddressRequest struct {
 	// The Account associated to the identity of the user that will be linked to the created address.
 	AccountId *string `json:"account_id,omitempty"`
 	ConversionTargetAsset *DepositAddressConversionTargetAsset `json:"conversion_target_asset,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateDepositAddressRequest CreateDepositAddressRequest
@@ -291,6 +291,11 @@ func (o CreateDepositAddressRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ConversionTargetAsset) {
 		toSerialize["conversion_target_asset"] = o.ConversionTargetAsset
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -319,15 +324,26 @@ func (o *CreateDepositAddressRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateDepositAddressRequest := _CreateDepositAddressRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateDepositAddressRequest)
+	err = json.Unmarshal(data, &varCreateDepositAddressRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateDepositAddressRequest(varCreateDepositAddressRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "profile_id")
+		delete(additionalProperties, "crypto_network")
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "account_id")
+		delete(additionalProperties, "conversion_target_asset")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

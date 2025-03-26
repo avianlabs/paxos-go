@@ -414,7 +414,4 @@ model_update_wire_update_routing_details.go
 model_wealth_source.go
 model_wire_routing_details.go
 response.go
-test/api_crypto_deposits_test.go
-test/api_paxos_transfers_test.go
-test/api_settlement_test.go
 utils.go

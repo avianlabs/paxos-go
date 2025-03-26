@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -35,6 +34,7 @@ type CreatePaxosTransferRequest struct {
 	Metadata *map[string]string `json:"metadata,omitempty"`
 	// Optional client-specified metadata for the recipient side of the transaction. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters.
 	RecipientMetadata *map[string]string `json:"recipient_metadata,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreatePaxosTransferRequest CreatePaxosTransferRequest
@@ -275,6 +275,11 @@ func (o CreatePaxosTransferRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.RecipientMetadata) {
 		toSerialize["recipient_metadata"] = o.RecipientMetadata
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -305,15 +310,26 @@ func (o *CreatePaxosTransferRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varCreatePaxosTransferRequest := _CreatePaxosTransferRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreatePaxosTransferRequest)
+	err = json.Unmarshal(data, &varCreatePaxosTransferRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreatePaxosTransferRequest(varCreatePaxosTransferRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "from_profile_id")
+		delete(additionalProperties, "to_profile_id")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "asset")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "recipient_metadata")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

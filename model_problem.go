@@ -29,7 +29,10 @@ type Problem struct {
 	Detail *string `json:"detail,omitempty"`
 	// Additional structured metadata about the error. 
 	Meta map[string]interface{} `json:"meta,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Problem Problem
 
 // NewProblem instantiates a new Problem object
 // This constructor will assign default values to properties that have it defined,
@@ -237,7 +240,37 @@ func (o Problem) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Meta) {
 		toSerialize["meta"] = o.Meta
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Problem) UnmarshalJSON(data []byte) (err error) {
+	varProblem := _Problem{}
+
+	err = json.Unmarshal(data, &varProblem)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Problem(varProblem)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "title")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "detail")
+		delete(additionalProperties, "meta")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableProblem struct {

@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -41,6 +40,7 @@ type CreateFiatWithdrawalRequest struct {
 	Memo *string `json:"memo,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]*$"`
 	// Total to withdraw, including fees. Specify exactly one of `amount` or `total`. When `total` is specified, Paxos initiates the withdrawal for `total` minus the fee.
 	Total *string `json:"total,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateFiatWithdrawalRequest CreateFiatWithdrawalRequest
@@ -395,6 +395,11 @@ func (o CreateFiatWithdrawalRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Total) {
 		toSerialize["total"] = o.Total
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -424,15 +429,29 @@ func (o *CreateFiatWithdrawalRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateFiatWithdrawalRequest := _CreateFiatWithdrawalRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateFiatWithdrawalRequest)
+	err = json.Unmarshal(data, &varCreateFiatWithdrawalRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateFiatWithdrawalRequest(varCreateFiatWithdrawalRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "asset")
+		delete(additionalProperties, "fiat_account_id")
+		delete(additionalProperties, "profile_id")
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "account_id")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "memo")
+		delete(additionalProperties, "total")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

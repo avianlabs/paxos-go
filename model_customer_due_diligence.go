@@ -41,7 +41,10 @@ type CustomerDueDiligence struct {
 	MerchantFundingSource *MerchantFundingSourceFundingSource `json:"merchant_funding_source,omitempty"`
 	// Regions where the customer base is located.
 	CustomerRegions []CustomerRegion `json:"customer_regions,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CustomerDueDiligence CustomerDueDiligence
 
 // NewCustomerDueDiligence instantiates a new CustomerDueDiligence object
 // This constructor will assign default values to properties that have it defined,
@@ -630,7 +633,48 @@ func (o CustomerDueDiligence) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CustomerRegions) {
 		toSerialize["customer_regions"] = o.CustomerRegions
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CustomerDueDiligence) UnmarshalJSON(data []byte) (err error) {
+	varCustomerDueDiligence := _CustomerDueDiligence{}
+
+	err = json.Unmarshal(data, &varCustomerDueDiligence)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CustomerDueDiligence(varCustomerDueDiligence)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "aliases")
+		delete(additionalProperties, "estimated_net_worth")
+		delete(additionalProperties, "estimated_yearly_income")
+		delete(additionalProperties, "expected_transfer_value")
+		delete(additionalProperties, "source_of_wealth")
+		delete(additionalProperties, "source_of_funds")
+		delete(additionalProperties, "purpose_of_account")
+		delete(additionalProperties, "employment_status")
+		delete(additionalProperties, "employment_industry_sector")
+		delete(additionalProperties, "industry_sector")
+		delete(additionalProperties, "has_underlying_trust_structure")
+		delete(additionalProperties, "has_nominee_shareholders")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "is_publicly_traded")
+		delete(additionalProperties, "merchant_funding_source")
+		delete(additionalProperties, "customer_regions")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCustomerDueDiligence struct {

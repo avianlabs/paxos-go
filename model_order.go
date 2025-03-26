@@ -58,7 +58,10 @@ type Order struct {
 	RecipientProfileId *string `json:"recipient_profile_id,omitempty"`
 	// Returns `true` when a stop order has been triggered.
 	IsTriggered *bool `json:"is_triggered,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Order Order
 
 // NewOrder instantiates a new Order object
 // This constructor will assign default values to properties that have it defined,
@@ -857,7 +860,54 @@ func (o Order) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.IsTriggered) {
 		toSerialize["is_triggered"] = o.IsTriggered
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Order) UnmarshalJSON(data []byte) (err error) {
+	varOrder := _Order{}
+
+	err = json.Unmarshal(data, &varOrder)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Order(varOrder)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "profile_id")
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "side")
+		delete(additionalProperties, "market")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "base_amount")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "quote_amount")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "modified_at")
+		delete(additionalProperties, "amount_filled")
+		delete(additionalProperties, "volume_weighted_average_price")
+		delete(additionalProperties, "time_in_force")
+		delete(additionalProperties, "expiration_date")
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "identity_account_id")
+		delete(additionalProperties, "stop_price")
+		delete(additionalProperties, "recipient_profile_id")
+		delete(additionalProperties, "is_triggered")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableOrder struct {

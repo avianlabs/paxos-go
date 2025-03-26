@@ -21,7 +21,10 @@ var _ MappedNullable = &ListTransfersResponse{}
 type ListTransfersResponse struct {
 	Items []Transfer `json:"items,omitempty"`
 	NextPageCursor *string `json:"next_page_cursor,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ListTransfersResponse ListTransfersResponse
 
 // NewListTransfersResponse instantiates a new ListTransfersResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -120,7 +123,34 @@ func (o ListTransfersResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.NextPageCursor) {
 		toSerialize["next_page_cursor"] = o.NextPageCursor
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ListTransfersResponse) UnmarshalJSON(data []byte) (err error) {
+	varListTransfersResponse := _ListTransfersResponse{}
+
+	err = json.Unmarshal(data, &varListTransfersResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ListTransfersResponse(varListTransfersResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "items")
+		delete(additionalProperties, "next_page_cursor")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableListTransfersResponse struct {

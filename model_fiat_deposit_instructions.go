@@ -13,7 +13,6 @@ package paxos
 import (
 	"encoding/json"
 	"time"
-	"bytes"
 	"fmt"
 )
 
@@ -41,6 +40,7 @@ type FiatDepositInstructions struct {
 	Metadata *map[string]string `json:"metadata,omitempty"`
 	// The time at which these instructions were created.
 	CreatedAt time.Time `json:"created_at"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _FiatDepositInstructions FiatDepositInstructions
@@ -394,6 +394,11 @@ func (o FiatDepositInstructions) ToMap() (map[string]interface{}, error) {
 		toSerialize["metadata"] = o.Metadata
 	}
 	toSerialize["created_at"] = o.CreatedAt
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -427,15 +432,30 @@ func (o *FiatDepositInstructions) UnmarshalJSON(data []byte) (err error) {
 
 	varFiatDepositInstructions := _FiatDepositInstructions{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varFiatDepositInstructions)
+	err = json.Unmarshal(data, &varFiatDepositInstructions)
 
 	if err != nil {
 		return err
 	}
 
 	*o = FiatDepositInstructions(varFiatDepositInstructions)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "profile_id")
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "account_id")
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "memo_id")
+		delete(additionalProperties, "fiat_network_instructions")
+		delete(additionalProperties, "fiat_account_owner")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "created_at")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

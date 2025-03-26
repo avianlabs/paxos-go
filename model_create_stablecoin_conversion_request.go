@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -39,6 +38,7 @@ type CreateStablecoinConversionRequest struct {
 	Metadata *map[string]string `json:"metadata,omitempty"`
 	// For directed settlement, the receiving side `profile_id`.
 	RecipientProfileId *string `json:"recipient_profile_id,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateStablecoinConversionRequest CreateStablecoinConversionRequest
@@ -349,6 +349,11 @@ func (o CreateStablecoinConversionRequest) ToMap() (map[string]interface{}, erro
 	if !IsNil(o.RecipientProfileId) {
 		toSerialize["recipient_profile_id"] = o.RecipientProfileId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -379,15 +384,28 @@ func (o *CreateStablecoinConversionRequest) UnmarshalJSON(data []byte) (err erro
 
 	varCreateStablecoinConversionRequest := _CreateStablecoinConversionRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateStablecoinConversionRequest)
+	err = json.Unmarshal(data, &varCreateStablecoinConversionRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateStablecoinConversionRequest(varCreateStablecoinConversionRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "profile_id")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "source_asset")
+		delete(additionalProperties, "target_asset")
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "account_id")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "recipient_profile_id")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

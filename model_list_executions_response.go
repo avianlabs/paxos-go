@@ -22,7 +22,10 @@ type ListExecutionsResponse struct {
 	Items []Execution `json:"items,omitempty"`
 	// Cursor token required for fetching the next page.
 	NextPageCursor *string `json:"next_page_cursor,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ListExecutionsResponse ListExecutionsResponse
 
 // NewListExecutionsResponse instantiates a new ListExecutionsResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -121,7 +124,34 @@ func (o ListExecutionsResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.NextPageCursor) {
 		toSerialize["next_page_cursor"] = o.NextPageCursor
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ListExecutionsResponse) UnmarshalJSON(data []byte) (err error) {
+	varListExecutionsResponse := _ListExecutionsResponse{}
+
+	err = json.Unmarshal(data, &varListExecutionsResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ListExecutionsResponse(varListExecutionsResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "items")
+		delete(additionalProperties, "next_page_cursor")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableListExecutionsResponse struct {

@@ -28,7 +28,10 @@ type InstitutionMember struct {
 	SummaryStatus *IdentityStatus `json:"summary_status,omitempty"`
 	// Institution member ID. Note: This field is auto-generated. Specifying an ID when creating an institution member is a client error.
 	Id *string `json:"id,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _InstitutionMember InstitutionMember
 
 // NewInstitutionMember instantiates a new InstitutionMember object
 // This constructor will assign default values to properties that have it defined,
@@ -302,7 +305,39 @@ func (o InstitutionMember) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Id) {
 		toSerialize["id"] = o.Id
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *InstitutionMember) UnmarshalJSON(data []byte) (err error) {
+	varInstitutionMember := _InstitutionMember{}
+
+	err = json.Unmarshal(data, &varInstitutionMember)
+
+	if err != nil {
+		return err
+	}
+
+	*o = InstitutionMember(varInstitutionMember)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "roles")
+		delete(additionalProperties, "ownership")
+		delete(additionalProperties, "position")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "summary_status")
+		delete(additionalProperties, "id")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableInstitutionMember struct {

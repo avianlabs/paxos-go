@@ -24,7 +24,10 @@ type TaxFormURL struct {
 	TaxYear *string `json:"tax_year,omitempty"`
 	Revision *string `json:"revision,omitempty"`
 	Url *string `json:"url,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _TaxFormURL TaxFormURL
 
 // NewTaxFormURL instantiates a new TaxFormURL object
 // This constructor will assign default values to properties that have it defined,
@@ -228,7 +231,37 @@ func (o TaxFormURL) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Url) {
 		toSerialize["url"] = o.Url
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *TaxFormURL) UnmarshalJSON(data []byte) (err error) {
+	varTaxFormURL := _TaxFormURL{}
+
+	err = json.Unmarshal(data, &varTaxFormURL)
+
+	if err != nil {
+		return err
+	}
+
+	*o = TaxFormURL(varTaxFormURL)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "account_id")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "tax_year")
+		delete(additionalProperties, "revision")
+		delete(additionalProperties, "url")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableTaxFormURL struct {

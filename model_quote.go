@@ -13,7 +13,6 @@ package paxos
 import (
 	"encoding/json"
 	"time"
-	"bytes"
 	"fmt"
 )
 
@@ -36,6 +35,7 @@ type Quote struct {
 	CreatedAt time.Time `json:"created_at"`
 	// The time at which the quote expires.
 	ExpiresAt time.Time `json:"expires_at"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Quote Quote
@@ -275,6 +275,11 @@ func (o Quote) ToMap() (map[string]interface{}, error) {
 	toSerialize["quote_asset"] = o.QuoteAsset
 	toSerialize["created_at"] = o.CreatedAt
 	toSerialize["expires_at"] = o.ExpiresAt
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -309,15 +314,27 @@ func (o *Quote) UnmarshalJSON(data []byte) (err error) {
 
 	varQuote := _Quote{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varQuote)
+	err = json.Unmarshal(data, &varQuote)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Quote(varQuote)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "market")
+		delete(additionalProperties, "side")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "base_asset")
+		delete(additionalProperties, "quote_asset")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "expires_at")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

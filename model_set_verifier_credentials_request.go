@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -24,6 +23,7 @@ type SetVerifierCredentialsRequest struct {
 	VerifierType IdentityprotoVerifierType `json:"verifier_type"`
 	AuthToken *string `json:"auth_token,omitempty"`
 	AuthSecret *string `json:"auth_secret,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _SetVerifierCredentialsRequest SetVerifierCredentialsRequest
@@ -151,6 +151,11 @@ func (o SetVerifierCredentialsRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.AuthSecret) {
 		toSerialize["auth_secret"] = o.AuthSecret
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -178,15 +183,22 @@ func (o *SetVerifierCredentialsRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varSetVerifierCredentialsRequest := _SetVerifierCredentialsRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSetVerifierCredentialsRequest)
+	err = json.Unmarshal(data, &varSetVerifierCredentialsRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = SetVerifierCredentialsRequest(varSetVerifierCredentialsRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "verifier_type")
+		delete(additionalProperties, "auth_token")
+		delete(additionalProperties, "auth_secret")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -25,6 +24,7 @@ type DocumentUploadRequest struct {
 	Name string `json:"name"`
 	// A list of document types contained within the uploaded file.
 	DocumentTypes []DocumentType `json:"document_types,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _DocumentUploadRequest DocumentUploadRequest
@@ -117,6 +117,11 @@ func (o DocumentUploadRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.DocumentTypes) {
 		toSerialize["document_types"] = o.DocumentTypes
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *DocumentUploadRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varDocumentUploadRequest := _DocumentUploadRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varDocumentUploadRequest)
+	err = json.Unmarshal(data, &varDocumentUploadRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = DocumentUploadRequest(varDocumentUploadRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "document_types")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

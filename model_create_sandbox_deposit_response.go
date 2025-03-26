@@ -21,7 +21,10 @@ var _ MappedNullable = &CreateSandboxDepositResponse{}
 type CreateSandboxDepositResponse struct {
 	// The UUID of the customer activity created for the deposit.
 	ActivityId *string `json:"activity_id,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CreateSandboxDepositResponse CreateSandboxDepositResponse
 
 // NewCreateSandboxDepositResponse instantiates a new CreateSandboxDepositResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o CreateSandboxDepositResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ActivityId) {
 		toSerialize["activity_id"] = o.ActivityId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CreateSandboxDepositResponse) UnmarshalJSON(data []byte) (err error) {
+	varCreateSandboxDepositResponse := _CreateSandboxDepositResponse{}
+
+	err = json.Unmarshal(data, &varCreateSandboxDepositResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CreateSandboxDepositResponse(varCreateSandboxDepositResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "activity_id")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCreateSandboxDepositResponse struct {

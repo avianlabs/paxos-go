@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -37,6 +36,7 @@ type CreateQuoteExecutionRequest struct {
 	AccountId *string `json:"account_id,omitempty"`
 	// The ID of the profile under which to deposit the funds.
 	RecipientProfileId *string `json:"recipient_profile_id,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateQuoteExecutionRequest CreateQuoteExecutionRequest
@@ -339,6 +339,11 @@ func (o CreateQuoteExecutionRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.RecipientProfileId) {
 		toSerialize["recipient_profile_id"] = o.RecipientProfileId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -366,15 +371,27 @@ func (o *CreateQuoteExecutionRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateQuoteExecutionRequest := _CreateQuoteExecutionRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateQuoteExecutionRequest)
+	err = json.Unmarshal(data, &varCreateQuoteExecutionRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateQuoteExecutionRequest(varCreateQuoteExecutionRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "quote_id")
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "base_amount")
+		delete(additionalProperties, "quote_amount")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "account_id")
+		delete(additionalProperties, "recipient_profile_id")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

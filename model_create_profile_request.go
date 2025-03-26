@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -25,6 +24,7 @@ type CreateProfileRequest struct {
 	Nickname string `json:"nickname"`
 	// The description of the created profile.
 	Description *string `json:"description,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateProfileRequest CreateProfileRequest
@@ -117,6 +117,11 @@ func (o CreateProfileRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -144,15 +149,21 @@ func (o *CreateProfileRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateProfileRequest := _CreateProfileRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateProfileRequest)
+	err = json.Unmarshal(data, &varCreateProfileRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateProfileRequest(varCreateProfileRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "nickname")
+		delete(additionalProperties, "description")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

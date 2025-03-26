@@ -13,7 +13,6 @@ package paxos
 import (
 	"encoding/json"
 	"time"
-	"bytes"
 	"fmt"
 )
 
@@ -41,6 +40,7 @@ type Transaction struct {
 	CreatedAt time.Time `json:"created_at"`
 	// The timestamp when the transaction was last updated, RFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`.
 	UpdatedAt time.Time `json:"updated_at"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Transaction Transaction
@@ -332,6 +332,11 @@ func (o Transaction) ToMap() (map[string]interface{}, error) {
 	toSerialize["status"] = o.Status
 	toSerialize["created_at"] = o.CreatedAt
 	toSerialize["updated_at"] = o.UpdatedAt
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -368,15 +373,29 @@ func (o *Transaction) UnmarshalJSON(data []byte) (err error) {
 
 	varTransaction := _Transaction{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varTransaction)
+	err = json.Unmarshal(data, &varTransaction)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Transaction(varTransaction)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "settlement_window_start")
+		delete(additionalProperties, "settlement_window_end")
+		delete(additionalProperties, "source_profile_id")
+		delete(additionalProperties, "target_profile_id")
+		delete(additionalProperties, "legs")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "updated_at")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

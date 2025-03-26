@@ -24,7 +24,10 @@ type HistoricalPrice struct {
 	AveragePrice *string `json:"average_price,omitempty"`
 	// Timestamp at the beginning of an increment.
 	Timestamp *time.Time `json:"timestamp,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _HistoricalPrice HistoricalPrice
 
 // NewHistoricalPrice instantiates a new HistoricalPrice object
 // This constructor will assign default values to properties that have it defined,
@@ -123,7 +126,34 @@ func (o HistoricalPrice) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Timestamp) {
 		toSerialize["timestamp"] = o.Timestamp
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *HistoricalPrice) UnmarshalJSON(data []byte) (err error) {
+	varHistoricalPrice := _HistoricalPrice{}
+
+	err = json.Unmarshal(data, &varHistoricalPrice)
+
+	if err != nil {
+		return err
+	}
+
+	*o = HistoricalPrice(varHistoricalPrice)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "average_price")
+		delete(additionalProperties, "timestamp")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableHistoricalPrice struct {

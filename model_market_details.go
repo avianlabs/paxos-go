@@ -24,7 +24,10 @@ type MarketDetails struct {
 	// Quote asset. Fiat Only (USD, EUR, SGD).
 	QuoteAsset *string `json:"quote_asset,omitempty"`
 	TickRate *string `json:"tick_rate,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _MarketDetails MarketDetails
 
 // NewMarketDetails instantiates a new MarketDetails object
 // This constructor will assign default values to properties that have it defined,
@@ -193,7 +196,36 @@ func (o MarketDetails) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.TickRate) {
 		toSerialize["tick_rate"] = o.TickRate
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *MarketDetails) UnmarshalJSON(data []byte) (err error) {
+	varMarketDetails := _MarketDetails{}
+
+	err = json.Unmarshal(data, &varMarketDetails)
+
+	if err != nil {
+		return err
+	}
+
+	*o = MarketDetails(varMarketDetails)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "market")
+		delete(additionalProperties, "base_asset")
+		delete(additionalProperties, "quote_asset")
+		delete(additionalProperties, "tick_rate")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableMarketDetails struct {

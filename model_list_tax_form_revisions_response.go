@@ -20,7 +20,10 @@ var _ MappedNullable = &ListTaxFormRevisionsResponse{}
 // ListTaxFormRevisionsResponse struct for ListTaxFormRevisionsResponse
 type ListTaxFormRevisionsResponse struct {
 	TaxFormUrls []TaxFormURL `json:"tax_form_urls,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ListTaxFormRevisionsResponse ListTaxFormRevisionsResponse
 
 // NewListTaxFormRevisionsResponse instantiates a new ListTaxFormRevisionsResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -84,7 +87,33 @@ func (o ListTaxFormRevisionsResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.TaxFormUrls) {
 		toSerialize["tax_form_urls"] = o.TaxFormUrls
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ListTaxFormRevisionsResponse) UnmarshalJSON(data []byte) (err error) {
+	varListTaxFormRevisionsResponse := _ListTaxFormRevisionsResponse{}
+
+	err = json.Unmarshal(data, &varListTaxFormRevisionsResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ListTaxFormRevisionsResponse(varListTaxFormRevisionsResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "tax_form_urls")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableListTaxFormRevisionsResponse struct {

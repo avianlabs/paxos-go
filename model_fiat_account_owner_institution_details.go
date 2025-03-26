@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -22,6 +21,7 @@ var _ MappedNullable = &FiatAccountOwnerInstitutionDetails{}
 // FiatAccountOwnerInstitutionDetails struct for FiatAccountOwnerInstitutionDetails
 type FiatAccountOwnerInstitutionDetails struct {
 	Name string `json:"name"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _FiatAccountOwnerInstitutionDetails FiatAccountOwnerInstitutionDetails
@@ -79,6 +79,11 @@ func (o FiatAccountOwnerInstitutionDetails) MarshalJSON() ([]byte, error) {
 func (o FiatAccountOwnerInstitutionDetails) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -106,15 +111,20 @@ func (o *FiatAccountOwnerInstitutionDetails) UnmarshalJSON(data []byte) (err err
 
 	varFiatAccountOwnerInstitutionDetails := _FiatAccountOwnerInstitutionDetails{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varFiatAccountOwnerInstitutionDetails)
+	err = json.Unmarshal(data, &varFiatAccountOwnerInstitutionDetails)
 
 	if err != nil {
 		return err
 	}
 
 	*o = FiatAccountOwnerInstitutionDetails(varFiatAccountOwnerInstitutionDetails)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

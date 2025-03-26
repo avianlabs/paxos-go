@@ -37,7 +37,10 @@ type FiatAccount struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	// The time at which this FiatAccount record was most recently updated.
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _FiatAccount FiatAccount
 
 // NewFiatAccount instantiates a new FiatAccount object
 // This constructor will assign default values to properties that have it defined,
@@ -416,7 +419,42 @@ func (o FiatAccount) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.UpdatedAt) {
 		toSerialize["updated_at"] = o.UpdatedAt
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *FiatAccount) UnmarshalJSON(data []byte) (err error) {
+	varFiatAccount := _FiatAccount{}
+
+	err = json.Unmarshal(data, &varFiatAccount)
+
+	if err != nil {
+		return err
+	}
+
+	*o = FiatAccount(varFiatAccount)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "account_id")
+		delete(additionalProperties, "fiat_account_owner")
+		delete(additionalProperties, "fiat_network_instructions")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "updated_at")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableFiatAccount struct {

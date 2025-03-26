@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -25,6 +24,7 @@ type AddAccountMembersRequest struct {
 	AccountId string `json:"account_id"`
 	// A non-empty array of account members to be added.
 	Members []AccountMember `json:"members"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _AddAccountMembersRequest AddAccountMembersRequest
@@ -108,6 +108,11 @@ func (o AddAccountMembersRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["account_id"] = o.AccountId
 	toSerialize["members"] = o.Members
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -136,15 +141,21 @@ func (o *AddAccountMembersRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varAddAccountMembersRequest := _AddAccountMembersRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varAddAccountMembersRequest)
+	err = json.Unmarshal(data, &varAddAccountMembersRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = AddAccountMembersRequest(varAddAccountMembersRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "account_id")
+		delete(additionalProperties, "members")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

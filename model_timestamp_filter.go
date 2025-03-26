@@ -30,7 +30,10 @@ type TimestampFilter struct {
 	Gte *time.Time `json:"gte,omitempty"`
 	// Include timestamps strictly greater than gt. RFC3339 format, like `2006-01-02T15:04:05Z`.
 	Gt *time.Time `json:"gt,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _TimestampFilter TimestampFilter
 
 // NewTimestampFilter instantiates a new TimestampFilter object
 // This constructor will assign default values to properties that have it defined,
@@ -234,7 +237,37 @@ func (o TimestampFilter) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Gt) {
 		toSerialize["gt"] = o.Gt
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *TimestampFilter) UnmarshalJSON(data []byte) (err error) {
+	varTimestampFilter := _TimestampFilter{}
+
+	err = json.Unmarshal(data, &varTimestampFilter)
+
+	if err != nil {
+		return err
+	}
+
+	*o = TimestampFilter(varTimestampFilter)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "lt")
+		delete(additionalProperties, "lte")
+		delete(additionalProperties, "eq")
+		delete(additionalProperties, "gte")
+		delete(additionalProperties, "gt")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableTimestampFilter struct {

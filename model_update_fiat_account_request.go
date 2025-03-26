@@ -23,7 +23,10 @@ type UpdateFiatAccountRequest struct {
 	FiatNetworkInstructions *UpdateFiatAccountRequestUpdateFiatNetworkInstructions `json:"fiat_network_instructions,omitempty"`
 	// Optional client-specified metadata. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters.
 	Metadata *map[string]string `json:"metadata,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _UpdateFiatAccountRequest UpdateFiatAccountRequest
 
 // NewUpdateFiatAccountRequest instantiates a new UpdateFiatAccountRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -157,7 +160,35 @@ func (o UpdateFiatAccountRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Metadata) {
 		toSerialize["metadata"] = o.Metadata
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateFiatAccountRequest) UnmarshalJSON(data []byte) (err error) {
+	varUpdateFiatAccountRequest := _UpdateFiatAccountRequest{}
+
+	err = json.Unmarshal(data, &varUpdateFiatAccountRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateFiatAccountRequest(varUpdateFiatAccountRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "fiat_account_owner")
+		delete(additionalProperties, "fiat_network_instructions")
+		delete(additionalProperties, "metadata")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateFiatAccountRequest struct {

@@ -27,7 +27,10 @@ type Pricing struct {
 	YesterdayPrice *string `json:"yesterday_price,omitempty"`
 	// The time when the price was generated. RFC3339 format, like `2023-01-03T18:27:40.294528Z`.
 	SnapshotAt *time.Time `json:"snapshot_at,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Pricing Pricing
 
 // NewPricing instantiates a new Pricing object
 // This constructor will assign default values to properties that have it defined,
@@ -196,7 +199,36 @@ func (o Pricing) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.SnapshotAt) {
 		toSerialize["snapshot_at"] = o.SnapshotAt
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Pricing) UnmarshalJSON(data []byte) (err error) {
+	varPricing := _Pricing{}
+
+	err = json.Unmarshal(data, &varPricing)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Pricing(varPricing)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "market")
+		delete(additionalProperties, "current_price")
+		delete(additionalProperties, "yesterday_price")
+		delete(additionalProperties, "snapshot_at")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullablePricing struct {

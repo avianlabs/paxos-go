@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -23,6 +22,7 @@ var _ MappedNullable = &FiatNetworkInstructionsDbsAct{}
 type FiatNetworkInstructionsDbsAct struct {
 	// The account number of the DBS account.
 	AccountNumber string `json:"account_number"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _FiatNetworkInstructionsDbsAct FiatNetworkInstructionsDbsAct
@@ -80,6 +80,11 @@ func (o FiatNetworkInstructionsDbsAct) MarshalJSON() ([]byte, error) {
 func (o FiatNetworkInstructionsDbsAct) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["account_number"] = o.AccountNumber
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -107,15 +112,20 @@ func (o *FiatNetworkInstructionsDbsAct) UnmarshalJSON(data []byte) (err error) {
 
 	varFiatNetworkInstructionsDbsAct := _FiatNetworkInstructionsDbsAct{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varFiatNetworkInstructionsDbsAct)
+	err = json.Unmarshal(data, &varFiatNetworkInstructionsDbsAct)
 
 	if err != nil {
 		return err
 	}
 
 	*o = FiatNetworkInstructionsDbsAct(varFiatNetworkInstructionsDbsAct)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "account_number")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

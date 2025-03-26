@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -41,6 +40,7 @@ type DepositAddress struct {
 	ConversionTargetAsset DepositAddressConversionTargetAsset `json:"conversion_target_asset"`
 	// List of networks compatible with the created address. Any of these networks can be used to deposit to the address.
 	CompatibleCryptoNetworks []CryptoNetwork `json:"compatible_crypto_networks,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _DepositAddress DepositAddress
@@ -403,6 +403,11 @@ func (o DepositAddress) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CompatibleCryptoNetworks) {
 		toSerialize["compatible_crypto_networks"] = o.CompatibleCryptoNetworks
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -435,15 +440,30 @@ func (o *DepositAddress) UnmarshalJSON(data []byte) (err error) {
 
 	varDepositAddress := _DepositAddress{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varDepositAddress)
+	err = json.Unmarshal(data, &varDepositAddress)
 
 	if err != nil {
 		return err
 	}
 
 	*o = DepositAddress(varDepositAddress)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "profile_id")
+		delete(additionalProperties, "customer_id")
+		delete(additionalProperties, "crypto_network")
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "address")
+		delete(additionalProperties, "account_id")
+		delete(additionalProperties, "conversion_target_asset")
+		delete(additionalProperties, "compatible_crypto_networks")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

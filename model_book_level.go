@@ -23,7 +23,10 @@ type BookLevel struct {
 	Price *string `json:"price,omitempty"`
 	// Amount of orders at pricing level.
 	Amount *string `json:"amount,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _BookLevel BookLevel
 
 // NewBookLevel instantiates a new BookLevel object
 // This constructor will assign default values to properties that have it defined,
@@ -122,7 +125,34 @@ func (o BookLevel) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Amount) {
 		toSerialize["amount"] = o.Amount
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *BookLevel) UnmarshalJSON(data []byte) (err error) {
+	varBookLevel := _BookLevel{}
+
+	err = json.Unmarshal(data, &varBookLevel)
+
+	if err != nil {
+		return err
+	}
+
+	*o = BookLevel(varBookLevel)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "amount")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableBookLevel struct {

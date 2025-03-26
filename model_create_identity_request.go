@@ -32,7 +32,10 @@ type CreateIdentityRequest struct {
 	CustomerDueDiligence *CustomerDueDiligence `json:"customer_due_diligence,omitempty"`
 	// Set to true to indicate that this identity is a merchant.
 	IsMerchant *bool `json:"is_merchant,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CreateIdentityRequest CreateIdentityRequest
 
 // NewCreateIdentityRequest instantiates a new CreateIdentityRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -376,7 +379,41 @@ func (o CreateIdentityRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.IsMerchant) {
 		toSerialize["is_merchant"] = o.IsMerchant
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CreateIdentityRequest) UnmarshalJSON(data []byte) (err error) {
+	varCreateIdentityRequest := _CreateIdentityRequest{}
+
+	err = json.Unmarshal(data, &varCreateIdentityRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CreateIdentityRequest(varCreateIdentityRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "person_details")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "institution_details")
+		delete(additionalProperties, "institution_members")
+		delete(additionalProperties, "tax_details")
+		delete(additionalProperties, "tax_details_not_required")
+		delete(additionalProperties, "customer_due_diligence")
+		delete(additionalProperties, "is_merchant")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCreateIdentityRequest struct {

@@ -24,7 +24,10 @@ type GetOrderBookResponse struct {
 	// All Bids.
 	Bids []BookLevel `json:"bids,omitempty"`
 	Market *Market `json:"market,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _GetOrderBookResponse GetOrderBookResponse
 
 // NewGetOrderBookResponse instantiates a new GetOrderBookResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -158,7 +161,35 @@ func (o GetOrderBookResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Market) {
 		toSerialize["market"] = o.Market
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *GetOrderBookResponse) UnmarshalJSON(data []byte) (err error) {
+	varGetOrderBookResponse := _GetOrderBookResponse{}
+
+	err = json.Unmarshal(data, &varGetOrderBookResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = GetOrderBookResponse(varGetOrderBookResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "asks")
+		delete(additionalProperties, "bids")
+		delete(additionalProperties, "market")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableGetOrderBookResponse struct {

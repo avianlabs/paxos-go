@@ -23,7 +23,10 @@ type FiatNetworkInstructions struct {
 	Cbit *FiatNetworkInstructionsCbit `json:"cbit,omitempty"`
 	DbsAct *FiatNetworkInstructionsDbsAct `json:"dbs_act,omitempty"`
 	Cubix *FiatNetworkInstructionsCubix `json:"cubix,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _FiatNetworkInstructions FiatNetworkInstructions
 
 // NewFiatNetworkInstructions instantiates a new FiatNetworkInstructions object
 // This constructor will assign default values to properties that have it defined,
@@ -192,7 +195,36 @@ func (o FiatNetworkInstructions) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Cubix) {
 		toSerialize["cubix"] = o.Cubix
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *FiatNetworkInstructions) UnmarshalJSON(data []byte) (err error) {
+	varFiatNetworkInstructions := _FiatNetworkInstructions{}
+
+	err = json.Unmarshal(data, &varFiatNetworkInstructions)
+
+	if err != nil {
+		return err
+	}
+
+	*o = FiatNetworkInstructions(varFiatNetworkInstructions)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "wire")
+		delete(additionalProperties, "cbit")
+		delete(additionalProperties, "dbs_act")
+		delete(additionalProperties, "cubix")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableFiatNetworkInstructions struct {

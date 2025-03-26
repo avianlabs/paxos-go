@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -26,6 +25,7 @@ type FiatNetworkInstructionsWire struct {
 	FiatAccountOwnerAddress MailingAddress `json:"fiat_account_owner_address"`
 	RoutingDetails WireRoutingDetails `json:"routing_details"`
 	IntermediaryRoutingDetails *WireRoutingDetails `json:"intermediary_routing_details,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _FiatNetworkInstructionsWire FiatNetworkInstructionsWire
@@ -170,6 +170,11 @@ func (o FiatNetworkInstructionsWire) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.IntermediaryRoutingDetails) {
 		toSerialize["intermediary_routing_details"] = o.IntermediaryRoutingDetails
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -199,15 +204,23 @@ func (o *FiatNetworkInstructionsWire) UnmarshalJSON(data []byte) (err error) {
 
 	varFiatNetworkInstructionsWire := _FiatNetworkInstructionsWire{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varFiatNetworkInstructionsWire)
+	err = json.Unmarshal(data, &varFiatNetworkInstructionsWire)
 
 	if err != nil {
 		return err
 	}
 
 	*o = FiatNetworkInstructionsWire(varFiatNetworkInstructionsWire)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "account_number")
+		delete(additionalProperties, "fiat_account_owner_address")
+		delete(additionalProperties, "routing_details")
+		delete(additionalProperties, "intermediary_routing_details")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

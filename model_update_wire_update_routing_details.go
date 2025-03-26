@@ -22,7 +22,10 @@ type UpdateWireUpdateRoutingDetails struct {
 	// The name of the bank.
 	BankName *string `json:"bank_name,omitempty"`
 	BankAddress *MailingAddress `json:"bank_address,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _UpdateWireUpdateRoutingDetails UpdateWireUpdateRoutingDetails
 
 // NewUpdateWireUpdateRoutingDetails instantiates a new UpdateWireUpdateRoutingDetails object
 // This constructor will assign default values to properties that have it defined,
@@ -121,7 +124,34 @@ func (o UpdateWireUpdateRoutingDetails) ToMap() (map[string]interface{}, error) 
 	if !IsNil(o.BankAddress) {
 		toSerialize["bank_address"] = o.BankAddress
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateWireUpdateRoutingDetails) UnmarshalJSON(data []byte) (err error) {
+	varUpdateWireUpdateRoutingDetails := _UpdateWireUpdateRoutingDetails{}
+
+	err = json.Unmarshal(data, &varUpdateWireUpdateRoutingDetails)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateWireUpdateRoutingDetails(varUpdateWireUpdateRoutingDetails)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "bank_name")
+		delete(additionalProperties, "bank_address")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateWireUpdateRoutingDetails struct {

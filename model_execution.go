@@ -43,7 +43,10 @@ type Execution struct {
 	AccountId *string `json:"account_id,omitempty"`
 	// The total asset traded (asset amount multiplied by price paid).
 	GrossTradeAmount *string `json:"gross_trade_amount,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _Execution Execution
 
 // NewExecution instantiates a new Execution object
 // This constructor will assign default values to properties that have it defined,
@@ -527,7 +530,45 @@ func (o Execution) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.GrossTradeAmount) {
 		toSerialize["gross_trade_amount"] = o.GrossTradeAmount
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *Execution) UnmarshalJSON(data []byte) (err error) {
+	varExecution := _Execution{}
+
+	err = json.Unmarshal(data, &varExecution)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Execution(varExecution)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "execution_id")
+		delete(additionalProperties, "order_id")
+		delete(additionalProperties, "executed_at")
+		delete(additionalProperties, "market")
+		delete(additionalProperties, "side")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "commission")
+		delete(additionalProperties, "commission_asset")
+		delete(additionalProperties, "rebate")
+		delete(additionalProperties, "rebate_asset")
+		delete(additionalProperties, "account_id")
+		delete(additionalProperties, "gross_trade_amount")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableExecution struct {

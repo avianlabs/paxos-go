@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -28,6 +27,7 @@ type IdentityMailingAddress struct {
 	City string `json:"city" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
 	Province string `json:"province" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
 	ZipCode *string `json:"zip_code,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]+$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _IdentityMailingAddress IdentityMailingAddress
@@ -233,6 +233,11 @@ func (o IdentityMailingAddress) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ZipCode) {
 		toSerialize["zip_code"] = o.ZipCode
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -263,15 +268,25 @@ func (o *IdentityMailingAddress) UnmarshalJSON(data []byte) (err error) {
 
 	varIdentityMailingAddress := _IdentityMailingAddress{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varIdentityMailingAddress)
+	err = json.Unmarshal(data, &varIdentityMailingAddress)
 
 	if err != nil {
 		return err
 	}
 
 	*o = IdentityMailingAddress(varIdentityMailingAddress)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "country")
+		delete(additionalProperties, "address1")
+		delete(additionalProperties, "address2")
+		delete(additionalProperties, "city")
+		delete(additionalProperties, "province")
+		delete(additionalProperties, "zip_code")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

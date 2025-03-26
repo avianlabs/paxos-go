@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -27,6 +26,7 @@ type Obligation struct {
 	Asset string `json:"asset"`
 	// Amount of the asset which is obliged.
 	Amount string `json:"amount" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Obligation Obligation
@@ -162,6 +162,11 @@ func (o Obligation) ToMap() (map[string]interface{}, error) {
 	toSerialize["direction"] = o.Direction
 	toSerialize["asset"] = o.Asset
 	toSerialize["amount"] = o.Amount
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -192,15 +197,23 @@ func (o *Obligation) UnmarshalJSON(data []byte) (err error) {
 
 	varObligation := _Obligation{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varObligation)
+	err = json.Unmarshal(data, &varObligation)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Obligation(varObligation)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "direction")
+		delete(additionalProperties, "asset")
+		delete(additionalProperties, "amount")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

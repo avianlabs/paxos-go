@@ -27,7 +27,10 @@ type RecentExecution struct {
 	Amount *string `json:"amount,omitempty"`
 	// Execution timestamp.
 	ExecutedAt *string `json:"executed_at,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _RecentExecution RecentExecution
 
 // NewRecentExecution instantiates a new RecentExecution object
 // This constructor will assign default values to properties that have it defined,
@@ -196,7 +199,36 @@ func (o RecentExecution) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ExecutedAt) {
 		toSerialize["executed_at"] = o.ExecutedAt
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *RecentExecution) UnmarshalJSON(data []byte) (err error) {
+	varRecentExecution := _RecentExecution{}
+
+	err = json.Unmarshal(data, &varRecentExecution)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RecentExecution(varRecentExecution)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "match_number")
+		delete(additionalProperties, "price")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "executed_at")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableRecentExecution struct {

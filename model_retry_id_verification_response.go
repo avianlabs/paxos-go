@@ -21,7 +21,10 @@ var _ MappedNullable = &RetryIdVerificationResponse{}
 type RetryIdVerificationResponse struct {
 	// The id verification URL assigned to the retried identity.
 	Url *string `json:"url,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _RetryIdVerificationResponse RetryIdVerificationResponse
 
 // NewRetryIdVerificationResponse instantiates a new RetryIdVerificationResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o RetryIdVerificationResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Url) {
 		toSerialize["url"] = o.Url
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *RetryIdVerificationResponse) UnmarshalJSON(data []byte) (err error) {
+	varRetryIdVerificationResponse := _RetryIdVerificationResponse{}
+
+	err = json.Unmarshal(data, &varRetryIdVerificationResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RetryIdVerificationResponse(varRetryIdVerificationResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "url")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableRetryIdVerificationResponse struct {

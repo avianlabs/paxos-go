@@ -13,7 +13,6 @@ package paxos
 import (
 	"encoding/json"
 	"time"
-	"bytes"
 	"fmt"
 )
 
@@ -66,6 +65,7 @@ type Transfer struct {
 	// For fiat withdrawals, the Paxos ID of the owner's fiat account (UUID).
 	FiatAccountId *string `json:"fiat_account_id,omitempty"`
 	SecondaryStatus *SecondaryStatus `json:"secondary_status,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Transfer Transfer
@@ -864,6 +864,11 @@ func (o Transfer) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.SecondaryStatus) {
 		toSerialize["secondary_status"] = o.SecondaryStatus
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -902,15 +907,44 @@ func (o *Transfer) UnmarshalJSON(data []byte) (err error) {
 
 	varTransfer := _Transfer{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varTransfer)
+	err = json.Unmarshal(data, &varTransfer)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Transfer(varTransfer)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "customer_id")
+		delete(additionalProperties, "profile_id")
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "total")
+		delete(additionalProperties, "fee")
+		delete(additionalProperties, "asset")
+		delete(additionalProperties, "balance_asset")
+		delete(additionalProperties, "direction")
+		delete(additionalProperties, "type")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "updated_at")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "destination_address")
+		delete(additionalProperties, "crypto_network")
+		delete(additionalProperties, "crypto_tx_hash")
+		delete(additionalProperties, "crypto_tx_index")
+		delete(additionalProperties, "account_id")
+		delete(additionalProperties, "auto_conversion")
+		delete(additionalProperties, "group_id")
+		delete(additionalProperties, "fiat_account_id")
+		delete(additionalProperties, "secondary_status")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

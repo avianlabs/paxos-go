@@ -21,7 +21,10 @@ var _ MappedNullable = &ListIdentityDocumentsResponse{}
 type ListIdentityDocumentsResponse struct {
 	Documents []DocumentDescription `json:"documents,omitempty"`
 	PendingDocuments []DocumentType `json:"pending_documents,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ListIdentityDocumentsResponse ListIdentityDocumentsResponse
 
 // NewListIdentityDocumentsResponse instantiates a new ListIdentityDocumentsResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -120,7 +123,34 @@ func (o ListIdentityDocumentsResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.PendingDocuments) {
 		toSerialize["pending_documents"] = o.PendingDocuments
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ListIdentityDocumentsResponse) UnmarshalJSON(data []byte) (err error) {
+	varListIdentityDocumentsResponse := _ListIdentityDocumentsResponse{}
+
+	err = json.Unmarshal(data, &varListIdentityDocumentsResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ListIdentityDocumentsResponse(varListIdentityDocumentsResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "documents")
+		delete(additionalProperties, "pending_documents")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableListIdentityDocumentsResponse struct {

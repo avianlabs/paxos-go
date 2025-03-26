@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -26,6 +25,7 @@ type CreateSandboxDepositRequest struct {
 	// The amount to deposit.
 	Amount string `json:"amount" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	CryptoNetwork *CryptoNetwork `json:"crypto_network,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateSandboxDepositRequest CreateSandboxDepositRequest
@@ -144,6 +144,11 @@ func (o CreateSandboxDepositRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CryptoNetwork) {
 		toSerialize["crypto_network"] = o.CryptoNetwork
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -172,15 +177,22 @@ func (o *CreateSandboxDepositRequest) UnmarshalJSON(data []byte) (err error) {
 
 	varCreateSandboxDepositRequest := _CreateSandboxDepositRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateSandboxDepositRequest)
+	err = json.Unmarshal(data, &varCreateSandboxDepositRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateSandboxDepositRequest(varCreateSandboxDepositRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "asset")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "crypto_network")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

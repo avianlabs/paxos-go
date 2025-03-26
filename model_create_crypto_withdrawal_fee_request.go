@@ -12,7 +12,6 @@ package paxos
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -30,6 +29,7 @@ type CreateCryptoWithdrawalFeeRequest struct {
 	Amount *string `json:"amount,omitempty" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	// Total amount to withdraw, including fees. Must be greater than `0`. Specify exactly one of `total ` or `amount`, otherwise an error is returned.
 	Total *string `json:"total,omitempty" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CreateCryptoWithdrawalFeeRequest CreateCryptoWithdrawalFeeRequest
@@ -209,6 +209,11 @@ func (o CreateCryptoWithdrawalFeeRequest) ToMap() (map[string]interface{}, error
 	if !IsNil(o.Total) {
 		toSerialize["total"] = o.Total
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -238,15 +243,24 @@ func (o *CreateCryptoWithdrawalFeeRequest) UnmarshalJSON(data []byte) (err error
 
 	varCreateCryptoWithdrawalFeeRequest := _CreateCryptoWithdrawalFeeRequest{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCreateCryptoWithdrawalFeeRequest)
+	err = json.Unmarshal(data, &varCreateCryptoWithdrawalFeeRequest)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CreateCryptoWithdrawalFeeRequest(varCreateCryptoWithdrawalFeeRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "asset")
+		delete(additionalProperties, "destination_address")
+		delete(additionalProperties, "crypto_network")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "total")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

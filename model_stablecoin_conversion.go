@@ -50,7 +50,10 @@ type StablecoinConversion struct {
 	Metadata *map[string]string `json:"metadata,omitempty"`
 	// For directed settlement, the receiving side `profile_id`.
 	RecipientProfileId *string `json:"recipient_profile_id,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _StablecoinConversion StablecoinConversion
 
 // NewStablecoinConversion instantiates a new StablecoinConversion object
 // This constructor will assign default values to properties that have it defined,
@@ -604,7 +607,47 @@ func (o StablecoinConversion) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.RecipientProfileId) {
 		toSerialize["recipient_profile_id"] = o.RecipientProfileId
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *StablecoinConversion) UnmarshalJSON(data []byte) (err error) {
+	varStablecoinConversion := _StablecoinConversion{}
+
+	err = json.Unmarshal(data, &varStablecoinConversion)
+
+	if err != nil {
+		return err
+	}
+
+	*o = StablecoinConversion(varStablecoinConversion)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "profile_id")
+		delete(additionalProperties, "amount")
+		delete(additionalProperties, "source_asset")
+		delete(additionalProperties, "target_asset")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "identity_id")
+		delete(additionalProperties, "account_id")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "updated_at")
+		delete(additionalProperties, "settled_at")
+		delete(additionalProperties, "cancelled_at")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "recipient_profile_id")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableStablecoinConversion struct {

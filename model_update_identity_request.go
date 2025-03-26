@@ -35,7 +35,10 @@ type UpdateIdentityRequest struct {
 	IsMerchant *bool `json:"is_merchant,omitempty"`
 	// Set to the timestamp the identity has last undergone a periodic kyc refresh. If unset, the update is not for periodic kyc refresh.
 	LastKycRefreshDate *time.Time `json:"last_kyc_refresh_date,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _UpdateIdentityRequest UpdateIdentityRequest
 
 // NewUpdateIdentityRequest instantiates a new UpdateIdentityRequest object
 // This constructor will assign default values to properties that have it defined,
@@ -414,7 +417,42 @@ func (o UpdateIdentityRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.LastKycRefreshDate) {
 		toSerialize["last_kyc_refresh_date"] = o.LastKycRefreshDate
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateIdentityRequest) UnmarshalJSON(data []byte) (err error) {
+	varUpdateIdentityRequest := _UpdateIdentityRequest{}
+
+	err = json.Unmarshal(data, &varUpdateIdentityRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateIdentityRequest(varUpdateIdentityRequest)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "person_details")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "set_user_disabled")
+		delete(additionalProperties, "institution_details")
+		delete(additionalProperties, "ref_id")
+		delete(additionalProperties, "tax_details")
+		delete(additionalProperties, "set_tax_details_not_required")
+		delete(additionalProperties, "customer_due_diligence")
+		delete(additionalProperties, "is_merchant")
+		delete(additionalProperties, "last_kyc_refresh_date")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateIdentityRequest struct {

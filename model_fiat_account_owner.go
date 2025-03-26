@@ -21,7 +21,10 @@ var _ MappedNullable = &FiatAccountOwner{}
 type FiatAccountOwner struct {
 	PersonDetails *FiatAccountOwnerPersonDetails `json:"person_details,omitempty"`
 	InstitutionDetails *FiatAccountOwnerInstitutionDetails `json:"institution_details,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _FiatAccountOwner FiatAccountOwner
 
 // NewFiatAccountOwner instantiates a new FiatAccountOwner object
 // This constructor will assign default values to properties that have it defined,
@@ -120,7 +123,34 @@ func (o FiatAccountOwner) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.InstitutionDetails) {
 		toSerialize["institution_details"] = o.InstitutionDetails
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *FiatAccountOwner) UnmarshalJSON(data []byte) (err error) {
+	varFiatAccountOwner := _FiatAccountOwner{}
+
+	err = json.Unmarshal(data, &varFiatAccountOwner)
+
+	if err != nil {
+		return err
+	}
+
+	*o = FiatAccountOwner(varFiatAccountOwner)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "person_details")
+		delete(additionalProperties, "institution_details")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableFiatAccountOwner struct {

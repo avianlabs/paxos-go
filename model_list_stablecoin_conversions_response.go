@@ -22,7 +22,10 @@ type ListStablecoinConversionsResponse struct {
 	Items []StablecoinConversion `json:"items,omitempty"`
 	// Cursor token required for fetching the next page.
 	NextPageCursor *string `json:"next_page_cursor,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ListStablecoinConversionsResponse ListStablecoinConversionsResponse
 
 // NewListStablecoinConversionsResponse instantiates a new ListStablecoinConversionsResponse object
 // This constructor will assign default values to properties that have it defined,
@@ -121,7 +124,34 @@ func (o ListStablecoinConversionsResponse) ToMap() (map[string]interface{}, erro
 	if !IsNil(o.NextPageCursor) {
 		toSerialize["next_page_cursor"] = o.NextPageCursor
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ListStablecoinConversionsResponse) UnmarshalJSON(data []byte) (err error) {
+	varListStablecoinConversionsResponse := _ListStablecoinConversionsResponse{}
+
+	err = json.Unmarshal(data, &varListStablecoinConversionsResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ListStablecoinConversionsResponse(varListStablecoinConversionsResponse)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "items")
+		delete(additionalProperties, "next_page_cursor")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableListStablecoinConversionsResponse struct {
