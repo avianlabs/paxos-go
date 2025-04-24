@@ -383,7 +383,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateProfile_request'
+              $ref: '#/components/schemas/ProfilePublicUpdateProfileBody'
         required: true
       responses:
         "200":
@@ -559,7 +559,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateSandboxDepositRequest'
+              $ref: '#/components/schemas/FundingSandboxCreateSandboxDepositBody'
         required: true
       responses:
         "200":
@@ -1355,6 +1355,7 @@ paths:
         This endpoint enables you to receive a URL to upload a document to Paxos.
         When uploading a document one must specify the document type, you will receive a
         URL to upload a document into using a POST request. (see curl documentation)
+        An uploaded document must be less than 100 MB in size.
       operationId: DocumentUpload
       parameters:
       - description: The id of the identity the document is associated with.
@@ -1375,7 +1376,7 @@ paths:
                   document_types:
                   - PROOF_OF_RESIDENCY
             schema:
-              $ref: '#/components/schemas/DocumentUploadRequest'
+              $ref: '#/components/schemas/IdentityPublicDocumentUploadBody'
         required: true
       responses:
         "200":
@@ -1525,7 +1526,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateIdentityRequest'
+              $ref: '#/components/schemas/IdentityPublicUpdateIdentityBody'
         required: true
       responses:
         "200":
@@ -1559,7 +1560,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
+              $ref: '#/components/schemas/IdentityPublicRetryIdVerificationBody'
         required: true
       responses:
         "200":
@@ -2205,7 +2206,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SandboxSetIdentityStatusRequest'
+              $ref: '#/components/schemas/IdentitySandboxSandboxSetIdentityStatusBody'
         required: true
       responses:
         "200":
@@ -3337,7 +3338,7 @@ paths:
                   metadata:
                     customer_id: 9b8c9cba-801e-4418-adc0-ede709df6339
             schema:
-              $ref: '#/components/schemas/Create_Order_Request'
+              $ref: '#/components/schemas/ExchangePublicCreateOrderBody'
         required: true
       responses:
         "200":
@@ -3685,7 +3686,7 @@ paths:
                   metadata:
                     customer_id: 9b8c9cba-801e-4418-adc0-ede709df6339
             schema:
-              $ref: '#/components/schemas/Create_Quote_Execution_Request'
+              $ref: '#/components/schemas/ExchangePublicCreateQuoteExecutionBody'
         required: true
       responses:
         "200":
@@ -3975,7 +3976,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RejectCryptoDepositRequest'
+              $ref: '#/components/schemas/TransferPublicRejectCryptoDepositBody'
         required: true
       responses:
         "200":
@@ -4047,7 +4048,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateCryptoDepositRequest'
+              $ref: '#/components/schemas/TransferPublicUpdateCryptoDepositBody'
         required: true
       responses:
         "200":
@@ -4816,7 +4817,7 @@ paths:
                     key1: value1
                     key2: value2
             schema:
-              $ref: '#/components/schemas/UpdateFiatAccountRequest'
+              $ref: '#/components/schemas/TransferPublicUpdateFiatAccountBody'
         required: true
       responses:
         "200":
@@ -5817,6 +5818,20 @@ paths:
             enum:
             - TRAVEL_RULE_INFO_REQUESTED
             - TRAVEL_RULE_REJECTED
+            type: string
+          type: array
+        style: form
+      - description: Optionally filter by status.
+        explode: true
+        in: query
+        name: statuses
+        required: false
+        schema:
+          items:
+            enum:
+            - PENDING
+            - COMPLETED
+            - FAILED
             type: string
           type: array
         style: form
@@ -7169,6 +7184,16 @@ components:
       enum:
       - CREATED_AT
       type: string
+    ProfilePublicUpdateProfileBody:
+      example:
+        profile_id: b7b77d82-e6a7-4ae9-9904-36231aedf985
+        nickname: MyProfileName
+      properties:
+        nickname:
+          type: string
+      required:
+      - nickname
+      type: object
     CreateProfileRequest:
       example:
         nickname: nickname
@@ -7308,6 +7333,31 @@ components:
           format: date-time
           type: string
       type: object
+    FundingSandboxCreateSandboxDepositBody:
+      example:
+        amount: amount
+        crypto_network: BITCOIN
+        crypto_address: crypto_address
+        asset: asset
+      properties:
+        asset:
+          description: The kind of asset to deposit.
+          type: string
+        amount:
+          description: The amount to deposit.
+          pattern: "^[0-9]*\\.?[0-9]+$"
+          type: string
+        crypto_network:
+          $ref: '#/components/schemas/CryptoNetwork'
+        crypto_address:
+          title: "The crypto address on which to deposit the asset. If not set, then\
+            \ a random address is used"
+          type: string
+      required:
+      - amount
+      - asset
+      title: CreateSandboxDepositRequest
+      type: object
     CreateSandboxDepositResponse:
       example:
         activity_id: activity_id
@@ -7325,6 +7375,7 @@ components:
       - LITECOIN
       - SOLANA
       - POLYGON_POS
+      - BASE
       - ARBITRUM_ONE
       type: string
     CustomerDueDiligenceNetWorthRange:
@@ -7363,6 +7414,71 @@ components:
       - INCOME_750K_TO_1M
       - INCOME_ABOVE_1M
       type: string
+    IdentityPublicDocumentUploadBody:
+      example:
+        name: name
+        document_types:
+        - OTHER_DOCUMENTS
+        - OTHER_DOCUMENTS
+      properties:
+        name:
+          description: The file name.
+          type: string
+        document_types:
+          description: A list of document types contained within the uploaded file.
+          items:
+            $ref: '#/components/schemas/DocumentType'
+          type: array
+      required:
+      - name
+      title: DocumentUploadRequest
+      type: object
+    IdentityPublicRetryIdVerificationBody:
+      type: object
+    IdentityPublicUpdateIdentityBody:
+      example:
+        id: f190b163-208f-4d73-8deb-4fb8b24add00
+        person_details:
+          first_name: John
+      properties:
+        person_details:
+          $ref: '#/components/schemas/PersonDetails'
+        metadata:
+          additionalProperties:
+            type: string
+          title: API User-facing metadata
+          type: object
+        set_user_disabled:
+          description: "`true` disables the identity. `false` re-enables it, unless\
+            \ it has been disabled by a Paxos admin."
+          type: boolean
+        institution_details:
+          $ref: '#/components/schemas/InstitutionDetails'
+        ref_id:
+          description: A user-facing ID to prevent duplicate identity creation. Unique
+            for all identities created by the same API user.
+          type: string
+        tax_details:
+          items:
+            $ref: '#/components/schemas/TaxDetail'
+          title: list of tax details associated with the identity
+          type: array
+        set_tax_details_not_required:
+          description: Set to true if tax details are not legally required.
+          type: boolean
+        customer_due_diligence:
+          $ref: '#/components/schemas/CustomerDueDiligence'
+        is_merchant:
+          description: Set to true to indicate that this identity is a merchant.
+          type: boolean
+        last_kyc_refresh_date:
+          description: |-
+            Set to the timestamp the identity has last undergone a periodic kyc refresh. If unset, the update is not for
+            periodic kyc refresh. RFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`. ex: `2006-01-02T15:04:05Z`.
+          format: date-time
+          type: string
+      title: UpdateIdentityRequest
+      type: object
     ListIdentitiesRequestOrderBy:
       enum:
       - CREATED_AT
@@ -7777,11 +7893,13 @@ components:
           title: members associated with institution identity type
           type: array
         created_at:
-          description: the time at which the identity is created at.
+          description: "The time at which the identity is created at. RFC3339 format,\
+            \ like `YYYY-MM-DDTHH:MM:SS.sssZ`. ex: `2006-01-02T15:04:05Z`."
           format: date-time
           type: string
         updated_at:
-          description: the time at which the identity is updated at.
+          description: "The time at which the identity is updated at. RFC3339 format,\
+            \ like `YYYY-MM-DDTHH:MM:SS.sssZ`. ex: `2006-01-02T15:04:05Z`."
           format: date-time
           type: string
         tax_details:
@@ -7799,6 +7917,11 @@ components:
         is_merchant:
           description: True if the identity is a merchant.
           type: boolean
+        last_kyc_refresh_date:
+          description: "The last timestamp the identity has undergone a periodic kyc\
+            \ refresh. RFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`. ex: `2006-01-02T15:04:05Z`."
+          format: date-time
+          type: string
       required:
       - id
       type: object
@@ -8719,12 +8842,164 @@ components:
       type: object
     DeleteAccountMemberResponse:
       type: object
+    IdentitySandboxSandboxSetIdentityStatusBody:
+      example:
+        id: f190b163-208f-4d73-8deb-4fb8b24add00
+        id_verification_status: APPROVED
+        sanctions_verification_status: APPROVED
+      properties:
+        id_verification_status:
+          $ref: '#/components/schemas/IdentityStatus'
+        sanctions_verification_status:
+          $ref: '#/components/schemas/IdentityStatus'
+        user_disabled:
+          $ref: '#/components/schemas/SetDisable'
+        admin_disabled:
+          $ref: '#/components/schemas/SetDisable'
+        document_verification_status:
+          $ref: '#/components/schemas/IdentityStatus'
+        additional_screening_status:
+          $ref: '#/components/schemas/IdentityStatus'
+      title: SandboxSetIdentityStatusRequest
+      type: object
     SandboxSetIdentityResponse:
       type: object
     SetDisable:
       properties:
         disabled:
           type: boolean
+      type: object
+    ExchangePublicCreateOrderBody:
+      example:
+        side: BUY
+        market: ETHUSD
+        type: LIMIT
+        price: "190.23"
+        base_amount: "2.35781498"
+        metadata:
+          customer_id: 9b8c9cba-801e-4418-adc0-ede709df6339
+      properties:
+        ref_id:
+          description: The idempotence ID for order creation. Can be reused if the
+            order has been closed for more than 24 hours.
+          type: string
+        side:
+          $ref: '#/components/schemas/OrderSide'
+        market:
+          $ref: '#/components/schemas/Market'
+        type:
+          $ref: '#/components/schemas/OrderType'
+        base_amount:
+          description: The base currency amount for any limit order or the exact amount
+            to sell for a market sell order.
+          pattern: "^[0-9]*\\.?[0-9]+$"
+          type: string
+        price:
+          description: The quote price.
+          type: string
+        quote_amount:
+          description: The quote currency amount of purchase for a market buy order.
+          pattern: "^[0-9]*\\.?[0-9]+$"
+          type: string
+        metadata:
+          additionalProperties:
+            type: string
+          description: |-
+            Metadata to store on the quote and created order.
+            Up to 6 key/value pairs may be stored, with each key and value at most 100 characters.
+          type: object
+        await_fill_millis:
+          description: |-
+            The amount of time to wait for the order to fill, in milliseconds.
+            When `await_fill_millis` is set to a non-zero value, the Create Order call does not return immediately on order creation. Instead, the call blocks until either:
+              1. The order has filled completely
+              2. The time `await_fill_millis` has elapsed
+            The maximum wait timeout is 10 seconds (10000 milliseconds).
+          format: int64
+          maximum: 10000
+          type: integer
+        time_in_force:
+          $ref: '#/components/schemas/TimeInForce'
+        expiration_date:
+          description: |-
+            The date the order will expire if not completed when specified time in force is GTT.
+            Format is a unix timestamp in milliseconds (13-digits) UTC (total milliseconds that have elapsed since January 1st, 1970 UTC).
+          format: uint64
+          type: string
+        identity_id:
+          description: "The end user that requests the trade. This field must be used\
+            \ in conjunction with `identity_account_id`, otherwise the order is rejected.\
+            \ Depending on your integration type, `identity_id` and `identity_account_id`\
+            \ may be required."
+          type: string
+        identity_account_id:
+          description: "The account under which this order is placed. The provided\
+            \ identity must be allowed to trade on behalf of this account. This field\
+            \ must be used in conjunction with `identity_id`, otherwise the order\
+            \ is rejected. Depending on your integration type, `identity_account_id`\
+            \ and `identity_id` may be required."
+          type: string
+        stop_price:
+          title: The stop price at which a stop order will trigger
+          type: string
+        recipient_profile_id:
+          description: "The profileId that will receive settled currency (base for\
+            \ buy orders, quote for sell orders)."
+          type: string
+        self_match_prevention_id:
+          description: |-
+            The string field used to prevent matching against an opposite side order submitted by the same Crypto Brokerage customer. If this field is not submitted, an order that matches against another order submitted by the same customer will cancel the original resting order. Up to 36 characters are supported.
+            This field requires additional permissions only available to certain accounts. Reach out to your Paxos Representative for more information.
+          type: string
+      required:
+      - market
+      - side
+      - type
+      title: Create Order Request
+      type: object
+    ExchangePublicCreateQuoteExecutionBody:
+      example:
+        quote_id: 366a26d2-3098-4226-a520-4bb43ae4d922
+        quote_amount: "14102.82"
+        metadata:
+          customer_id: 9b8c9cba-801e-4418-adc0-ede709df6339
+      properties:
+        quote_id:
+          description: The ID of the held Quote for buying or selling some asset.
+          type: string
+        ref_id:
+          description: A unique identifier for the quote execution (for idempotence).
+          type: string
+        base_amount:
+          description: The amount of the base asset (crypto) to buy or sell using
+            the specified quote. The maximum precision is 8 decimals.
+          pattern: "^[0-9]*\\.?[0-9]+$"
+          type: string
+        quote_amount:
+          description: The amount of the quote asset (fiat) to spend or acquire using
+            the specified quote. The maximum precision is 2 decimals.
+          pattern: "^[0-9]*\\.?[0-9]+$"
+          type: string
+        metadata:
+          additionalProperties:
+            type: string
+          description: |-
+            Metadata to store on the quote execution.
+            Up to 6 key/value pairs may be stored, with each key and value at most 100 characters.
+          type: object
+        identity_id:
+          description: The end user that requests the quote execution.
+          type: string
+        account_id:
+          description: The account under which this quote execution is placed. The
+            provided identity must be allowed to trade on behalf of this account.
+          type: string
+        recipient_profile_id:
+          description: The ID of the profile under which to deposit the funds.
+          type: string
+      required:
+      - quote_id
+      title: Create Quote Execution Request
       type: object
     PricePriceMarket:
       description: ""
@@ -9930,6 +10205,87 @@ components:
       - CREDIT
       - DEBIT
       type: string
+    TransferPublicRejectCryptoDepositBody:
+      example:
+        identity_id: 54385e67-d7ef-40d1-b488-ceda6dd9b264
+      properties:
+        identity_id:
+          description: The Identity (`identity_id`) of the end user that requests
+            to reject the deposit.
+          type: string
+      required:
+      - identity_id
+      title: RejectCryptoDepositRequest
+      type: object
+    TransferPublicUpdateCryptoDepositBody:
+      example:
+        identity_id: 54385e67-d7ef-40d1-b488-ceda6dd9b264
+        originator_address_info:
+          first_name: John
+          last_name: Doe
+      properties:
+        identity_id:
+          description: The Identity (`identity_id`) of the end user updating the deposit.
+          type: string
+        originator_address_info:
+          $ref: '#/components/schemas/AddressInfo'
+      required:
+      - identity_id
+      - originator_address_info
+      title: UpdateCryptoDepositRequest
+      type: object
+    TransferPublicUpdateFiatAccountBody:
+      example:
+        metadata:
+          key: metadata
+        fiat_network_instructions:
+          wire:
+            intermediary_routing_details:
+              bank_name: bank_name
+              bank_address:
+                country: country
+                province: province
+                address2: address2
+                city: city
+                address1: address1
+                zip_code: zip_code
+            routing_details:
+              bank_name: bank_name
+              bank_address:
+                country: country
+                province: province
+                address2: address2
+                city: city
+                address1: address1
+                zip_code: zip_code
+            fiat_account_owner_address:
+              country: country
+              province: province
+              address2: address2
+              city: city
+              address1: address1
+              zip_code: zip_code
+        fiat_account_owner:
+          person_details:
+            last_name: last_name
+            first_name: first_name
+          institution_details:
+            name: name
+      properties:
+        fiat_account_owner:
+          $ref: '#/components/schemas/FiatAccountOwner'
+        fiat_network_instructions:
+          $ref: '#/components/schemas/UpdateFiatAccountRequestUpdateFiatNetworkInstructions'
+        metadata:
+          additionalProperties:
+            type: string
+          description: |-
+            Optional client-specified metadata.
+            Up to 6 key/value pairs may be provided.
+            Each key and value must be less than or equal to 100 characters.
+          type: object
+      title: UpdateFiatAccountRequest
+      type: object
     UpdateFiatAccountRequestUpdateFiatNetworkInstructions:
       example:
         wire:
@@ -11302,6 +11658,7 @@ components:
           crypto_tx_hash: f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16
           crypto_tx_index: "0"
           destination_address: 1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2
+          notional_value: "1.02"
           metadata:
             my_id: 4024ee50-eefb-4f2e-85c7-e7899c0b7da5
         - id: f190b163-208f-4d73-8deb-4fb8b24add00
@@ -11322,6 +11679,7 @@ components:
           crypto_tx_hash: f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16
           crypto_tx_index: "0"
           destination_address: 1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2
+          notional_value: "1.02"
           metadata:
             my_id: 4024ee50-eefb-4f2e-85c7-e7899c0b7da5
         next_page_cursor: next_page_cursor
@@ -11413,6 +11771,7 @@ components:
         crypto_tx_hash: f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16
         crypto_tx_index: "0"
         destination_address: 1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2
+        notional_value: "1.02"
         metadata:
           my_id: 4024ee50-eefb-4f2e-85c7-e7899c0b7da5
       properties:
@@ -11505,6 +11864,10 @@ components:
           type: string
         secondary_status:
           $ref: '#/components/schemas/SecondaryStatus'
+        notional_value:
+          description: "For crypto withdrawals and deposits, the USD value of the\
+            \ combined amount and fee at the time of the transfer."
+          type: string
       required:
       - amount
       - asset
@@ -12155,332 +12518,6 @@ components:
           description: |
             Additional structured metadata about the error.
           type: object
-      type: object
-    UpdateProfile_request:
-      example:
-        profile_id: b7b77d82-e6a7-4ae9-9904-36231aedf985
-        nickname: MyProfileName
-      properties:
-        nickname:
-          type: string
-      required:
-      - nickname
-      type: object
-    CreateSandboxDepositRequest:
-      example:
-        amount: amount
-        crypto_network: BITCOIN
-        asset: asset
-      properties:
-        asset:
-          description: The kind of asset to deposit.
-          type: string
-        amount:
-          description: The amount to deposit.
-          pattern: "^[0-9]*\\.?[0-9]+$"
-          type: string
-        crypto_network:
-          $ref: '#/components/schemas/CryptoNetwork'
-      required:
-      - amount
-      - asset
-      title: CreateSandboxDepositRequest
-      type: object
-    DocumentUploadRequest:
-      example:
-        name: name
-        document_types:
-        - OTHER_DOCUMENTS
-        - OTHER_DOCUMENTS
-      properties:
-        name:
-          description: The file name.
-          type: string
-        document_types:
-          description: A list of document types contained within the uploaded file.
-          items:
-            $ref: '#/components/schemas/DocumentType'
-          type: array
-      required:
-      - name
-      title: DocumentUploadRequest
-      type: object
-    UpdateIdentityRequest:
-      example:
-        id: f190b163-208f-4d73-8deb-4fb8b24add00
-        person_details:
-          first_name: John
-      properties:
-        person_details:
-          $ref: '#/components/schemas/PersonDetails'
-        metadata:
-          additionalProperties:
-            type: string
-          title: API User-facing metadata
-          type: object
-        set_user_disabled:
-          description: "`true` disables the identity. `false` re-enables it, unless\
-            \ it has been disabled by a Paxos admin."
-          type: boolean
-        institution_details:
-          $ref: '#/components/schemas/InstitutionDetails'
-        ref_id:
-          description: A user-facing ID to prevent duplicate identity creation. Unique
-            for all identities created by the same API user.
-          type: string
-        tax_details:
-          items:
-            $ref: '#/components/schemas/TaxDetail'
-          title: list of tax details associated with the identity
-          type: array
-        set_tax_details_not_required:
-          description: Set to true if tax details are not legally required.
-          type: boolean
-        customer_due_diligence:
-          $ref: '#/components/schemas/CustomerDueDiligence'
-        is_merchant:
-          description: Set to true to indicate that this identity is a merchant.
-          type: boolean
-        last_kyc_refresh_date:
-          description: |-
-            Set to the timestamp the identity has last undergone a periodic kyc refresh. If unset, the update is not for
-            periodic kyc refresh.
-          format: date-time
-          type: string
-      title: UpdateIdentityRequest
-      type: object
-    SandboxSetIdentityStatusRequest:
-      example:
-        id: f190b163-208f-4d73-8deb-4fb8b24add00
-        id_verification_status: APPROVED
-        sanctions_verification_status: APPROVED
-      properties:
-        id_verification_status:
-          $ref: '#/components/schemas/IdentityStatus'
-        sanctions_verification_status:
-          $ref: '#/components/schemas/IdentityStatus'
-        user_disabled:
-          $ref: '#/components/schemas/SetDisable'
-        admin_disabled:
-          $ref: '#/components/schemas/SetDisable'
-        document_verification_status:
-          $ref: '#/components/schemas/IdentityStatus'
-        additional_screening_status:
-          $ref: '#/components/schemas/IdentityStatus'
-      title: SandboxSetIdentityStatusRequest
-      type: object
-    Create_Order_Request:
-      example:
-        side: BUY
-        market: ETHUSD
-        type: LIMIT
-        price: "190.23"
-        base_amount: "2.35781498"
-        metadata:
-          customer_id: 9b8c9cba-801e-4418-adc0-ede709df6339
-      properties:
-        ref_id:
-          description: The idempotence ID for order creation. Can be reused if the
-            order has been closed for more than 24 hours.
-          type: string
-        side:
-          $ref: '#/components/schemas/OrderSide'
-        market:
-          $ref: '#/components/schemas/Market'
-        type:
-          $ref: '#/components/schemas/OrderType'
-        base_amount:
-          description: The base currency amount for any limit order or the exact amount
-            to sell for a market sell order.
-          pattern: "^[0-9]*\\.?[0-9]+$"
-          type: string
-        price:
-          description: The quote price.
-          type: string
-        quote_amount:
-          description: The quote currency amount of purchase for a market buy order.
-          pattern: "^[0-9]*\\.?[0-9]+$"
-          type: string
-        metadata:
-          additionalProperties:
-            type: string
-          description: |-
-            Metadata to store on the quote and created order.
-            Up to 6 key/value pairs may be stored, with each key and value at most 100 characters.
-          type: object
-        await_fill_millis:
-          description: |-
-            The amount of time to wait for the order to fill, in milliseconds.
-            When `await_fill_millis` is set to a non-zero value, the Create Order call does not return immediately on order creation. Instead, the call blocks until either:
-              1. The order has filled completely
-              2. The time `await_fill_millis` has elapsed
-            The maximum wait timeout is 10 seconds (10000 milliseconds).
-          format: int64
-          maximum: 10000
-          type: integer
-        time_in_force:
-          $ref: '#/components/schemas/TimeInForce'
-        expiration_date:
-          description: |-
-            The date the order will expire if not completed when specified time in force is GTT.
-            Format is a unix timestamp in milliseconds (13-digits) UTC (total milliseconds that have elapsed since January 1st, 1970 UTC).
-          format: uint64
-          type: string
-        identity_id:
-          description: "The end user that requests the trade. This field must be used\
-            \ in conjunction with `identity_account_id`, otherwise the order is rejected.\
-            \ Depending on your integration type, `identity_id` and `identity_account_id`\
-            \ may be required."
-          type: string
-        identity_account_id:
-          description: "The account under which this order is placed. The provided\
-            \ identity must be allowed to trade on behalf of this account. This field\
-            \ must be used in conjunction with `identity_id`, otherwise the order\
-            \ is rejected. Depending on your integration type, `identity_account_id`\
-            \ and `identity_id` may be required."
-          type: string
-        stop_price:
-          title: The stop price at which a stop order will trigger
-          type: string
-        recipient_profile_id:
-          description: "The profileId that will receive settled currency (base for\
-            \ buy orders, quote for sell orders)."
-          type: string
-        self_match_prevention_id:
-          description: |-
-            The string field used to prevent matching against an opposite side order submitted by the same Crypto Brokerage customer. If this field is not submitted, an order that matches against another order submitted by the same customer will cancel the original resting order. Up to 36 characters are supported.
-            This field requires additional permissions only available to certain accounts. Reach out to your Paxos Representative for more information.
-          type: string
-      required:
-      - market
-      - side
-      - type
-      title: Create Order Request
-      type: object
-    Create_Quote_Execution_Request:
-      example:
-        quote_id: 366a26d2-3098-4226-a520-4bb43ae4d922
-        quote_amount: "14102.82"
-        metadata:
-          customer_id: 9b8c9cba-801e-4418-adc0-ede709df6339
-      properties:
-        quote_id:
-          description: The ID of the held Quote for buying or selling some asset.
-          type: string
-        ref_id:
-          description: A unique identifier for the quote execution (for idempotence).
-          type: string
-        base_amount:
-          description: The amount of the base asset (crypto) to buy or sell using
-            the specified quote. The maximum precision is 8 decimals.
-          pattern: "^[0-9]*\\.?[0-9]+$"
-          type: string
-        quote_amount:
-          description: The amount of the quote asset (fiat) to spend or acquire using
-            the specified quote. The maximum precision is 2 decimals.
-          pattern: "^[0-9]*\\.?[0-9]+$"
-          type: string
-        metadata:
-          additionalProperties:
-            type: string
-          description: |-
-            Metadata to store on the quote execution.
-            Up to 6 key/value pairs may be stored, with each key and value at most 100 characters.
-          type: object
-        identity_id:
-          description: The end user that requests the quote execution.
-          type: string
-        account_id:
-          description: The account under which this quote execution is placed. The
-            provided identity must be allowed to trade on behalf of this account.
-          type: string
-        recipient_profile_id:
-          description: The ID of the profile under which to deposit the funds.
-          type: string
-      required:
-      - quote_id
-      title: Create Quote Execution Request
-      type: object
-    RejectCryptoDepositRequest:
-      example:
-        identity_id: 54385e67-d7ef-40d1-b488-ceda6dd9b264
-      properties:
-        identity_id:
-          description: The Identity (`identity_id`) of the end user that requests
-            to reject the deposit.
-          type: string
-      required:
-      - identity_id
-      title: RejectCryptoDepositRequest
-      type: object
-    UpdateCryptoDepositRequest:
-      example:
-        identity_id: 54385e67-d7ef-40d1-b488-ceda6dd9b264
-        originator_address_info:
-          first_name: John
-          last_name: Doe
-      properties:
-        identity_id:
-          description: The Identity (`identity_id`) of the end user updating the deposit.
-          type: string
-        originator_address_info:
-          $ref: '#/components/schemas/AddressInfo'
-      required:
-      - identity_id
-      - originator_address_info
-      title: UpdateCryptoDepositRequest
-      type: object
-    UpdateFiatAccountRequest:
-      example:
-        metadata:
-          key: metadata
-        fiat_network_instructions:
-          wire:
-            intermediary_routing_details:
-              bank_name: bank_name
-              bank_address:
-                country: country
-                province: province
-                address2: address2
-                city: city
-                address1: address1
-                zip_code: zip_code
-            routing_details:
-              bank_name: bank_name
-              bank_address:
-                country: country
-                province: province
-                address2: address2
-                city: city
-                address1: address1
-                zip_code: zip_code
-            fiat_account_owner_address:
-              country: country
-              province: province
-              address2: address2
-              city: city
-              address1: address1
-              zip_code: zip_code
-        fiat_account_owner:
-          person_details:
-            last_name: last_name
-            first_name: first_name
-          institution_details:
-            name: name
-      properties:
-        fiat_account_owner:
-          $ref: '#/components/schemas/FiatAccountOwner'
-        fiat_network_instructions:
-          $ref: '#/components/schemas/UpdateFiatAccountRequestUpdateFiatNetworkInstructions'
-        metadata:
-          additionalProperties:
-            type: string
-          description: |-
-            Optional client-specified metadata.
-            Up to 6 key/value pairs may be provided.
-            Each key and value must be less than or equal to 100 characters.
-          type: object
-      title: UpdateFiatAccountRequest
       type: object
   securitySchemes:
     OAuth2:

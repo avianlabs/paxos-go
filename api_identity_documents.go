@@ -27,11 +27,11 @@ type ApiDocumentUploadRequest struct {
 	ctx context.Context
 	ApiService *IdentityDocumentsAPIService
 	identityId string
-	documentUploadRequest *DocumentUploadRequest
+	identityPublicDocumentUploadBody *IdentityPublicDocumentUploadBody
 }
 
-func (r ApiDocumentUploadRequest) DocumentUploadRequest(documentUploadRequest DocumentUploadRequest) ApiDocumentUploadRequest {
-	r.documentUploadRequest = &documentUploadRequest
+func (r ApiDocumentUploadRequest) IdentityPublicDocumentUploadBody(identityPublicDocumentUploadBody IdentityPublicDocumentUploadBody) ApiDocumentUploadRequest {
+	r.identityPublicDocumentUploadBody = &identityPublicDocumentUploadBody
 	return r
 }
 
@@ -45,6 +45,7 @@ DocumentUpload Document Upload
 This endpoint enables you to receive a URL to upload a document to Paxos.
 When uploading a document one must specify the document type, you will receive a
 URL to upload a document into using a POST request. (see curl documentation)
+An uploaded document must be less than 100 MB in size.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param identityId The id of the identity the document is associated with.
@@ -79,8 +80,8 @@ func (a *IdentityDocumentsAPIService) DocumentUploadExecute(r ApiDocumentUploadR
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.documentUploadRequest == nil {
-		return localVarReturnValue, nil, reportError("documentUploadRequest is required and must be specified")
+	if r.identityPublicDocumentUploadBody == nil {
+		return localVarReturnValue, nil, reportError("identityPublicDocumentUploadBody is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -101,7 +102,7 @@ func (a *IdentityDocumentsAPIService) DocumentUploadExecute(r ApiDocumentUploadR
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.documentUploadRequest
+	localVarPostBody = r.identityPublicDocumentUploadBody
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -239,7 +240,7 @@ func (a *IdentityDocumentsAPIService) ListIdentityDocumentsExecute(r ApiListIden
 	localVarFormParams := url.Values{}
 
 	if r.includePendingDocs != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "include_pending_docs", r.includePendingDocs, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_pending_docs", r.includePendingDocs, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

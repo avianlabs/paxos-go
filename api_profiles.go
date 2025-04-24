@@ -298,7 +298,7 @@ func (a *ProfilesAPIService) GetProfileExecute(r ApiGetProfileRequest) (*Profile
 	localVarFormParams := url.Values{}
 
 	if r.includeDeactivated != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "include_deactivated", r.includeDeactivated, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_deactivated", r.includeDeactivated, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -523,10 +523,10 @@ func (a *ProfilesAPIService) ListProfileBalancesExecute(r ApiListProfileBalances
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "assets", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "assets", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "assets", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "assets", t, "form", "multi")
 		}
 	}
 	// to determine the Content-Type header
@@ -702,34 +702,34 @@ func (a *ProfilesAPIService) ListProfilesExecute(r ApiListProfilesRequest) (*Lis
 	localVarFormParams := url.Values{}
 
 	if r.createdAtLt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lt", r.createdAtLt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lt", r.createdAtLt, "form", "")
 	}
 	if r.createdAtLte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lte", r.createdAtLte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lte", r.createdAtLte, "form", "")
 	}
 	if r.createdAtEq != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.eq", r.createdAtEq, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.eq", r.createdAtEq, "form", "")
 	}
 	if r.createdAtGte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gte", r.createdAtGte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gte", r.createdAtGte, "form", "")
 	}
 	if r.createdAtGt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gt", r.createdAtGt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gt", r.createdAtGt, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	if r.order != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "form", "")
 	}
 	if r.orderBy != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "form", "")
 	}
 	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "form", "")
 	}
 	if r.nickname != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "nickname", r.nickname, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "nickname", r.nickname, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -789,11 +789,11 @@ type ApiUpdateProfileRequest struct {
 	ctx context.Context
 	ApiService *ProfilesAPIService
 	profileId string
-	updateProfileRequest *UpdateProfileRequest
+	profilePublicUpdateProfileBody *ProfilePublicUpdateProfileBody
 }
 
-func (r ApiUpdateProfileRequest) UpdateProfileRequest(updateProfileRequest UpdateProfileRequest) ApiUpdateProfileRequest {
-	r.updateProfileRequest = &updateProfileRequest
+func (r ApiUpdateProfileRequest) ProfilePublicUpdateProfileBody(profilePublicUpdateProfileBody ProfilePublicUpdateProfileBody) ApiUpdateProfileRequest {
+	r.profilePublicUpdateProfileBody = &profilePublicUpdateProfileBody
 	return r
 }
 
@@ -839,8 +839,8 @@ func (a *ProfilesAPIService) UpdateProfileExecute(r ApiUpdateProfileRequest) (*P
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.updateProfileRequest == nil {
-		return localVarReturnValue, nil, reportError("updateProfileRequest is required and must be specified")
+	if r.profilePublicUpdateProfileBody == nil {
+		return localVarReturnValue, nil, reportError("profilePublicUpdateProfileBody is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -861,7 +861,7 @@ func (a *ProfilesAPIService) UpdateProfileExecute(r ApiUpdateProfileRequest) (*P
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.updateProfileRequest
+	localVarPostBody = r.profilePublicUpdateProfileBody
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

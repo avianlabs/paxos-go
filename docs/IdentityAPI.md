@@ -250,7 +250,7 @@ Name | Type | Description  | Notes
 
 ## UpdateIdentity
 
-> Identity UpdateIdentity(ctx, id).UpdateIdentityRequest(updateIdentityRequest).Execute()
+> Identity UpdateIdentity(ctx, id).IdentityPublicUpdateIdentityBody(identityPublicUpdateIdentityBody).Execute()
 
 Update Identity
 
@@ -270,11 +270,11 @@ import (
 
 func main() {
 	id := "id_example" // string | 
-	updateIdentityRequest := *openapiclient.NewUpdateIdentityRequest() // UpdateIdentityRequest | 
+	identityPublicUpdateIdentityBody := *openapiclient.NewIdentityPublicUpdateIdentityBody() // IdentityPublicUpdateIdentityBody | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.IdentityAPI.UpdateIdentity(context.Background(), id).UpdateIdentityRequest(updateIdentityRequest).Execute()
+	resp, r, err := apiClient.IdentityAPI.UpdateIdentity(context.Background(), id).IdentityPublicUpdateIdentityBody(identityPublicUpdateIdentityBody).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `IdentityAPI.UpdateIdentity``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -300,7 +300,7 @@ Other parameters are passed through a pointer to a apiUpdateIdentityRequest stru
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **updateIdentityRequest** | [**UpdateIdentityRequest**](UpdateIdentityRequest.md) |  | 
+ **identityPublicUpdateIdentityBody** | [**IdentityPublicUpdateIdentityBody**](IdentityPublicUpdateIdentityBody.md) |  | 
 
 ### Return type
 

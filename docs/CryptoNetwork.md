@@ -15,6 +15,8 @@
 
 * `POLYGON_POS` (value: `"POLYGON_POS"`)
 
+* `BASE` (value: `"BASE"`)
+
 * `ARBITRUM_ONE` (value: `"ARBITRUM_ONE"`)
 
 

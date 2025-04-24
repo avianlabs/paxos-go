@@ -91,10 +91,10 @@ func (a *QuotesAPIService) ListQuotesExecute(r ApiListQuotesRequest) (*ListQuote
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "markets", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "markets", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "markets", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "markets", t, "form", "multi")
 		}
 	}
 	// to determine the Content-Type header

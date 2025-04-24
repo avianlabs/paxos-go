@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 ## CreateSandboxDeposit
 
-> CreateSandboxDepositResponse CreateSandboxDeposit(ctx, profileId).CreateSandboxDepositRequest(createSandboxDepositRequest).Execute()
+> CreateSandboxDepositResponse CreateSandboxDeposit(ctx, profileId).FundingSandboxCreateSandboxDepositBody(fundingSandboxCreateSandboxDepositBody).Execute()
 
 Create Sandbox Deposit
 
@@ -30,11 +30,11 @@ import (
 
 func main() {
 	profileId := "profileId_example" // string | The ID of the profile that will credited with the assets.
-	createSandboxDepositRequest := *openapiclient.NewCreateSandboxDepositRequest("Asset_example", "Amount_example") // CreateSandboxDepositRequest | 
+	fundingSandboxCreateSandboxDepositBody := *openapiclient.NewFundingSandboxCreateSandboxDepositBody("Asset_example", "Amount_example") // FundingSandboxCreateSandboxDepositBody | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.SandboxDepositsAPI.CreateSandboxDeposit(context.Background(), profileId).CreateSandboxDepositRequest(createSandboxDepositRequest).Execute()
+	resp, r, err := apiClient.SandboxDepositsAPI.CreateSandboxDeposit(context.Background(), profileId).FundingSandboxCreateSandboxDepositBody(fundingSandboxCreateSandboxDepositBody).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `SandboxDepositsAPI.CreateSandboxDeposit``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -60,7 +60,7 @@ Other parameters are passed through a pointer to a apiCreateSandboxDepositReques
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **createSandboxDepositRequest** | [**CreateSandboxDepositRequest**](CreateSandboxDepositRequest.md) |  | 
+ **fundingSandboxCreateSandboxDepositBody** | [**FundingSandboxCreateSandboxDepositBody**](FundingSandboxCreateSandboxDepositBody.md) |  | 
 
 ### Return type
 

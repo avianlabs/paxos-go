@@ -133,22 +133,22 @@ func (a *PricingAPIService) ListHistoricalPricesExecute(r ApiListHistoricalPrice
 	localVarFormParams := url.Values{}
 
 	if r.maxDataPoints != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "max_data_points", r.maxDataPoints, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "max_data_points", r.maxDataPoints, "form", "")
 	}
 	if r.rangeBegin != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "range.begin", r.rangeBegin, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range.begin", r.rangeBegin, "form", "")
 	}
 	if r.rangeEnd != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "range.end", r.rangeEnd, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range.end", r.rangeEnd, "form", "")
 	}
 	if r.paginationLimit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "pagination.limit", r.paginationLimit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pagination.limit", r.paginationLimit, "form", "")
 	}
 	if r.paginationOffset != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "pagination.offset", r.paginationOffset, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "pagination.offset", r.paginationOffset, "form", "")
 	}
 	if r.increment != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "increment", r.increment, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "increment", r.increment, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -265,10 +265,10 @@ func (a *PricingAPIService) ListPricesExecute(r ApiListPricesRequest) (*ListPric
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "markets", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "markets", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "markets", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "markets", t, "form", "multi")
 		}
 	}
 	// to determine the Content-Type header

@@ -118,22 +118,22 @@ func (a *ExchangePublicAPIService) ListProfileExecutionsExecute(r ApiListProfile
 	localVarFormParams := url.Values{}
 
 	if r.orderId != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_id", r.orderId, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_id", r.orderId, "form", "")
 	}
 	if r.sinceExecutionId != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "since_execution_id", r.sinceExecutionId, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "since_execution_id", r.sinceExecutionId, "form", "")
 	}
 	if r.rangeBegin != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "range.begin", r.rangeBegin, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range.begin", r.rangeBegin, "form", "")
 	}
 	if r.rangeEnd != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "range.end", r.rangeEnd, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range.end", r.rangeEnd, "form", "")
 	}
 	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -291,33 +291,33 @@ func (a *ExchangePublicAPIService) ListProfileOrdersExecute(r ApiListProfileOrde
 	localVarFormParams := url.Values{}
 
 	if r.market != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "market", r.market, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "market", r.market, "form", "")
 	}
 	if r.status != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "status", r.status, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "status", r.status, "form", "")
 	}
 	if r.orderTimeBegin != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_time.begin", r.orderTimeBegin, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_time.begin", r.orderTimeBegin, "form", "")
 	}
 	if r.orderTimeEnd != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_time.end", r.orderTimeEnd, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_time.end", r.orderTimeEnd, "form", "")
 	}
 	if r.refIds != nil {
 		t := *r.refIds
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "ref_ids", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "ref_ids", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "ref_ids", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "ref_ids", t, "form", "multi")
 		}
 	}
 	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

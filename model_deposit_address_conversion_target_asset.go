@@ -20,8 +20,8 @@ type DepositAddressConversionTargetAsset string
 
 // List of DepositAddressConversionTargetAsset
 const (
-	DepositAddressConversionTargetAsset_NO_CONVERSION DepositAddressConversionTargetAsset = "NO_CONVERSION"
-	DepositAddressConversionTargetAsset_USD DepositAddressConversionTargetAsset = "USD"
+	NO_CONVERSION DepositAddressConversionTargetAsset = "NO_CONVERSION"
+	USD DepositAddressConversionTargetAsset = "USD"
 )
 
 // All allowed values of DepositAddressConversionTargetAsset enum
