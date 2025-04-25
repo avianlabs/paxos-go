@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 ## SandboxSetIdentityStatus
 
-> map[string]interface{} SandboxSetIdentityStatus(ctx, id).SandboxSetIdentityStatusRequest(sandboxSetIdentityStatusRequest).Execute()
+> map[string]interface{} SandboxSetIdentityStatus(ctx, id).IdentitySandboxSandboxSetIdentityStatusBody(identitySandboxSandboxSetIdentityStatusBody).Execute()
 
 Sandbox Set Identity Status
 
@@ -30,11 +30,11 @@ import (
 
 func main() {
 	id := "id_example" // string | 
-	sandboxSetIdentityStatusRequest := *openapiclient.NewSandboxSetIdentityStatusRequest() // SandboxSetIdentityStatusRequest | 
+	identitySandboxSandboxSetIdentityStatusBody := *openapiclient.NewIdentitySandboxSandboxSetIdentityStatusBody() // IdentitySandboxSandboxSetIdentityStatusBody | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.SandboxIdentityAPI.SandboxSetIdentityStatus(context.Background(), id).SandboxSetIdentityStatusRequest(sandboxSetIdentityStatusRequest).Execute()
+	resp, r, err := apiClient.SandboxIdentityAPI.SandboxSetIdentityStatus(context.Background(), id).IdentitySandboxSandboxSetIdentityStatusBody(identitySandboxSandboxSetIdentityStatusBody).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `SandboxIdentityAPI.SandboxSetIdentityStatus``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -60,7 +60,7 @@ Other parameters are passed through a pointer to a apiSandboxSetIdentityStatusRe
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **sandboxSetIdentityStatusRequest** | [**SandboxSetIdentityStatusRequest**](SandboxSetIdentityStatusRequest.md) |  | 
+ **identitySandboxSandboxSetIdentityStatusBody** | [**IdentitySandboxSandboxSetIdentityStatusBody**](IdentitySandboxSandboxSetIdentityStatusBody.md) |  | 
 
 ### Return type
 

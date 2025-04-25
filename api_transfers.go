@@ -157,6 +157,7 @@ type ApiListTransfersRequest struct {
 	groupIds *[]string
 	cryptoTxHashes *[]string
 	secondaryStatuses *[]string
+	statuses *[]string
 }
 
 // Optionally filter by the target profiles of the transfers. Limit 100. Can be combined with created_at.* or updated_at.* filtering options only.
@@ -294,6 +295,12 @@ func (r ApiListTransfersRequest) CryptoTxHashes(cryptoTxHashes []string) ApiList
 // Optionally filter by secondary status.   - TRAVEL_RULE_INFO_REQUESTED: Travel rule information is required to continue processing the transfer.  - TRAVEL_RULE_REJECTED: Transfer has been terminally rejected due to failing travel rule checks.
 func (r ApiListTransfersRequest) SecondaryStatuses(secondaryStatuses []string) ApiListTransfersRequest {
 	r.secondaryStatuses = &secondaryStatuses
+	return r
+}
+
+// Optionally filter by status.
+func (r ApiListTransfersRequest) Statuses(statuses []string) ApiListTransfersRequest {
+	r.statuses = &statuses
 	return r
 }
 
@@ -485,6 +492,17 @@ func (a *TransfersAPIService) ListTransfersExecute(r ApiListTransfersRequest) (*
 			}
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "secondary_statuses", t, "multi")
+		}
+	}
+	if r.statuses != nil {
+		t := *r.statuses
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "statuses", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "statuses", t, "multi")
 		}
 	}
 	// to determine the Content-Type header

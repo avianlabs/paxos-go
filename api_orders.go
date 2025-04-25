@@ -147,11 +147,11 @@ type ApiCreateOrderRequest struct {
 	ctx context.Context
 	ApiService *OrdersAPIService
 	profileId string
-	createOrderRequest *CreateOrderRequest
+	exchangePublicCreateOrderBody *ExchangePublicCreateOrderBody
 }
 
-func (r ApiCreateOrderRequest) CreateOrderRequest(createOrderRequest CreateOrderRequest) ApiCreateOrderRequest {
-	r.createOrderRequest = &createOrderRequest
+func (r ApiCreateOrderRequest) ExchangePublicCreateOrderBody(exchangePublicCreateOrderBody ExchangePublicCreateOrderBody) ApiCreateOrderRequest {
+	r.exchangePublicCreateOrderBody = &exchangePublicCreateOrderBody
 	return r
 }
 
@@ -222,8 +222,8 @@ func (a *OrdersAPIService) CreateOrderExecute(r ApiCreateOrderRequest) (*Order, 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.createOrderRequest == nil {
-		return localVarReturnValue, nil, reportError("createOrderRequest is required and must be specified")
+	if r.exchangePublicCreateOrderBody == nil {
+		return localVarReturnValue, nil, reportError("exchangePublicCreateOrderBody is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -244,7 +244,7 @@ func (a *OrdersAPIService) CreateOrderExecute(r ApiCreateOrderRequest) (*Order, 
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.createOrderRequest
+	localVarPostBody = r.exchangePublicCreateOrderBody
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

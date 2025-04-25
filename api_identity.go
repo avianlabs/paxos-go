@@ -866,11 +866,11 @@ type ApiUpdateIdentityRequest struct {
 	ctx context.Context
 	ApiService *IdentityAPIService
 	id string
-	updateIdentityRequest *UpdateIdentityRequest
+	identityPublicUpdateIdentityBody *IdentityPublicUpdateIdentityBody
 }
 
-func (r ApiUpdateIdentityRequest) UpdateIdentityRequest(updateIdentityRequest UpdateIdentityRequest) ApiUpdateIdentityRequest {
-	r.updateIdentityRequest = &updateIdentityRequest
+func (r ApiUpdateIdentityRequest) IdentityPublicUpdateIdentityBody(identityPublicUpdateIdentityBody IdentityPublicUpdateIdentityBody) ApiUpdateIdentityRequest {
+	r.identityPublicUpdateIdentityBody = &identityPublicUpdateIdentityBody
 	return r
 }
 
@@ -926,8 +926,8 @@ func (a *IdentityAPIService) UpdateIdentityExecute(r ApiUpdateIdentityRequest) (
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.updateIdentityRequest == nil {
-		return localVarReturnValue, nil, reportError("updateIdentityRequest is required and must be specified")
+	if r.identityPublicUpdateIdentityBody == nil {
+		return localVarReturnValue, nil, reportError("identityPublicUpdateIdentityBody is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -948,7 +948,7 @@ func (a *IdentityAPIService) UpdateIdentityExecute(r ApiUpdateIdentityRequest) (
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.updateIdentityRequest
+	localVarPostBody = r.identityPublicUpdateIdentityBody
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

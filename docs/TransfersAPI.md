@@ -81,7 +81,7 @@ Name | Type | Description  | Notes
 
 ## ListTransfers
 
-> ListTransfersResponse ListTransfers(ctx).ProfileIds(profileIds).IdentityIds(identityIds).RefIds(refIds).CreatedAtLt(createdAtLt).CreatedAtLte(createdAtLte).CreatedAtEq(createdAtEq).CreatedAtGte(createdAtGte).CreatedAtGt(createdAtGt).UpdatedAtLt(updatedAtLt).UpdatedAtLte(updatedAtLte).UpdatedAtEq(updatedAtEq).UpdatedAtGte(updatedAtGte).UpdatedAtGt(updatedAtGt).Limit(limit).Order(order).OrderBy(orderBy).PageCursor(pageCursor).AccountIds(accountIds).Ids(ids).Type_(type_).GroupIds(groupIds).CryptoTxHashes(cryptoTxHashes).SecondaryStatuses(secondaryStatuses).Execute()
+> ListTransfersResponse ListTransfers(ctx).ProfileIds(profileIds).IdentityIds(identityIds).RefIds(refIds).CreatedAtLt(createdAtLt).CreatedAtLte(createdAtLte).CreatedAtEq(createdAtEq).CreatedAtGte(createdAtGte).CreatedAtGt(createdAtGt).UpdatedAtLt(updatedAtLt).UpdatedAtLte(updatedAtLte).UpdatedAtEq(updatedAtEq).UpdatedAtGte(updatedAtGte).UpdatedAtGt(updatedAtGt).Limit(limit).Order(order).OrderBy(orderBy).PageCursor(pageCursor).AccountIds(accountIds).Ids(ids).Type_(type_).GroupIds(groupIds).CryptoTxHashes(cryptoTxHashes).SecondaryStatuses(secondaryStatuses).Statuses(statuses).Execute()
 
 List Transfers
 
@@ -124,10 +124,11 @@ func main() {
 	groupIds := []string{"Inner_example"} // []string | Optionally filter by transfer `group_ids`. Limit 100. (optional)
 	cryptoTxHashes := []string{"Inner_example"} // []string | Optionally filter by the on-chain transaction hash for crypto transactions. Limit 100. (optional)
 	secondaryStatuses := []string{"SecondaryStatuses_example"} // []string | Optionally filter by secondary status.   - TRAVEL_RULE_INFO_REQUESTED: Travel rule information is required to continue processing the transfer.  - TRAVEL_RULE_REJECTED: Transfer has been terminally rejected due to failing travel rule checks. (optional)
+	statuses := []string{"Statuses_example"} // []string | Optionally filter by status. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.TransfersAPI.ListTransfers(context.Background()).ProfileIds(profileIds).IdentityIds(identityIds).RefIds(refIds).CreatedAtLt(createdAtLt).CreatedAtLte(createdAtLte).CreatedAtEq(createdAtEq).CreatedAtGte(createdAtGte).CreatedAtGt(createdAtGt).UpdatedAtLt(updatedAtLt).UpdatedAtLte(updatedAtLte).UpdatedAtEq(updatedAtEq).UpdatedAtGte(updatedAtGte).UpdatedAtGt(updatedAtGt).Limit(limit).Order(order).OrderBy(orderBy).PageCursor(pageCursor).AccountIds(accountIds).Ids(ids).Type_(type_).GroupIds(groupIds).CryptoTxHashes(cryptoTxHashes).SecondaryStatuses(secondaryStatuses).Execute()
+	resp, r, err := apiClient.TransfersAPI.ListTransfers(context.Background()).ProfileIds(profileIds).IdentityIds(identityIds).RefIds(refIds).CreatedAtLt(createdAtLt).CreatedAtLte(createdAtLte).CreatedAtEq(createdAtEq).CreatedAtGte(createdAtGte).CreatedAtGt(createdAtGt).UpdatedAtLt(updatedAtLt).UpdatedAtLte(updatedAtLte).UpdatedAtEq(updatedAtEq).UpdatedAtGte(updatedAtGte).UpdatedAtGt(updatedAtGt).Limit(limit).Order(order).OrderBy(orderBy).PageCursor(pageCursor).AccountIds(accountIds).Ids(ids).Type_(type_).GroupIds(groupIds).CryptoTxHashes(cryptoTxHashes).SecondaryStatuses(secondaryStatuses).Statuses(statuses).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `TransfersAPI.ListTransfers``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -171,6 +172,7 @@ Name | Type | Description  | Notes
  **groupIds** | **[]string** | Optionally filter by transfer &#x60;group_ids&#x60;. Limit 100. | 
  **cryptoTxHashes** | **[]string** | Optionally filter by the on-chain transaction hash for crypto transactions. Limit 100. | 
  **secondaryStatuses** | **[]string** | Optionally filter by secondary status.   - TRAVEL_RULE_INFO_REQUESTED: Travel rule information is required to continue processing the transfer.  - TRAVEL_RULE_REJECTED: Transfer has been terminally rejected due to failing travel rule checks. | 
+ **statuses** | **[]string** | Optionally filter by status. | 
 
 ### Return type
 

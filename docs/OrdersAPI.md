@@ -87,7 +87,7 @@ Name | Type | Description  | Notes
 
 ## CreateOrder
 
-> Order CreateOrder(ctx, profileId).CreateOrderRequest(createOrderRequest).Execute()
+> Order CreateOrder(ctx, profileId).ExchangePublicCreateOrderBody(exchangePublicCreateOrderBody).Execute()
 
 Create Order
 
@@ -107,11 +107,11 @@ import (
 
 func main() {
 	profileId := "profileId_example" // string | The profileId the order will be associated with.
-	createOrderRequest := *openapiclient.NewCreateOrderRequest(openapiclient.OrderSide("BUY"), openapiclient.Market("ETHEUR"), openapiclient.OrderType("LIMIT")) // CreateOrderRequest | 
+	exchangePublicCreateOrderBody := *openapiclient.NewExchangePublicCreateOrderBody(openapiclient.OrderSide("BUY"), openapiclient.Market("ETHEUR"), openapiclient.OrderType("LIMIT")) // ExchangePublicCreateOrderBody | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.OrdersAPI.CreateOrder(context.Background(), profileId).CreateOrderRequest(createOrderRequest).Execute()
+	resp, r, err := apiClient.OrdersAPI.CreateOrder(context.Background(), profileId).ExchangePublicCreateOrderBody(exchangePublicCreateOrderBody).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `OrdersAPI.CreateOrder``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -137,7 +137,7 @@ Other parameters are passed through a pointer to a apiCreateOrderRequest struct 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **createOrderRequest** | [**CreateOrderRequest**](CreateOrderRequest.md) |  | 
+ **exchangePublicCreateOrderBody** | [**ExchangePublicCreateOrderBody**](ExchangePublicCreateOrderBody.md) |  | 
 
 ### Return type
 

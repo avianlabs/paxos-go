@@ -65,6 +65,8 @@ type Transfer struct {
 	// For fiat withdrawals, the Paxos ID of the owner's fiat account (UUID).
 	FiatAccountId *string `json:"fiat_account_id,omitempty"`
 	SecondaryStatus *SecondaryStatus `json:"secondary_status,omitempty"`
+	// For crypto withdrawals and deposits, the USD value of the combined amount and fee at the time of the transfer.
+	NotionalValue *string `json:"notional_value,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -803,6 +805,38 @@ func (o *Transfer) SetSecondaryStatus(v SecondaryStatus) {
 	o.SecondaryStatus = &v
 }
 
+// GetNotionalValue returns the NotionalValue field value if set, zero value otherwise.
+func (o *Transfer) GetNotionalValue() string {
+	if o == nil || IsNil(o.NotionalValue) {
+		var ret string
+		return ret
+	}
+	return *o.NotionalValue
+}
+
+// GetNotionalValueOk returns a tuple with the NotionalValue field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Transfer) GetNotionalValueOk() (*string, bool) {
+	if o == nil || IsNil(o.NotionalValue) {
+		return nil, false
+	}
+	return o.NotionalValue, true
+}
+
+// HasNotionalValue returns a boolean if a field has been set.
+func (o *Transfer) HasNotionalValue() bool {
+	if o != nil && !IsNil(o.NotionalValue) {
+		return true
+	}
+
+	return false
+}
+
+// SetNotionalValue gets a reference to the given string and assigns it to the NotionalValue field.
+func (o *Transfer) SetNotionalValue(v string) {
+	o.NotionalValue = &v
+}
+
 func (o Transfer) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -863,6 +897,9 @@ func (o Transfer) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.SecondaryStatus) {
 		toSerialize["secondary_status"] = o.SecondaryStatus
+	}
+	if !IsNil(o.NotionalValue) {
+		toSerialize["notional_value"] = o.NotionalValue
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -943,6 +980,7 @@ func (o *Transfer) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "group_id")
 		delete(additionalProperties, "fiat_account_id")
 		delete(additionalProperties, "secondary_status")
+		delete(additionalProperties, "notional_value")
 		o.AdditionalProperties = additionalProperties
 	}
 

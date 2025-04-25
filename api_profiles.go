@@ -789,11 +789,11 @@ type ApiUpdateProfileRequest struct {
 	ctx context.Context
 	ApiService *ProfilesAPIService
 	profileId string
-	updateProfileRequest *UpdateProfileRequest
+	profilePublicUpdateProfileBody *ProfilePublicUpdateProfileBody
 }
 
-func (r ApiUpdateProfileRequest) UpdateProfileRequest(updateProfileRequest UpdateProfileRequest) ApiUpdateProfileRequest {
-	r.updateProfileRequest = &updateProfileRequest
+func (r ApiUpdateProfileRequest) ProfilePublicUpdateProfileBody(profilePublicUpdateProfileBody ProfilePublicUpdateProfileBody) ApiUpdateProfileRequest {
+	r.profilePublicUpdateProfileBody = &profilePublicUpdateProfileBody
 	return r
 }
 
@@ -839,8 +839,8 @@ func (a *ProfilesAPIService) UpdateProfileExecute(r ApiUpdateProfileRequest) (*P
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.updateProfileRequest == nil {
-		return localVarReturnValue, nil, reportError("updateProfileRequest is required and must be specified")
+	if r.profilePublicUpdateProfileBody == nil {
+		return localVarReturnValue, nil, reportError("profilePublicUpdateProfileBody is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -861,7 +861,7 @@ func (a *ProfilesAPIService) UpdateProfileExecute(r ApiUpdateProfileRequest) (*P
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.updateProfileRequest
+	localVarPostBody = r.profilePublicUpdateProfileBody
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

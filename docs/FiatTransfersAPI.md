@@ -598,7 +598,7 @@ Name | Type | Description  | Notes
 
 ## UpdateFiatAccount
 
-> FiatAccount UpdateFiatAccount(ctx, id).UpdateFiatAccountRequest(updateFiatAccountRequest).Execute()
+> FiatAccount UpdateFiatAccount(ctx, id).TransferPublicUpdateFiatAccountBody(transferPublicUpdateFiatAccountBody).Execute()
 
 Update Fiat Account
 
@@ -618,11 +618,11 @@ import (
 
 func main() {
 	id := "id_example" // string | The Paxos fiat account ID (UUID). The Fiat Account ID (`id`) is provided in the response of the [Create Fiat Account](#operation/CreateFiatAccount). Use this ID to retrieve the instructions using [Get Fiat Account](#operation/GetFiatAccount) & [List Fiat Accounts](#operation/ListFiatAccounts).
-	updateFiatAccountRequest := *openapiclient.NewUpdateFiatAccountRequest() // UpdateFiatAccountRequest | 
+	transferPublicUpdateFiatAccountBody := *openapiclient.NewTransferPublicUpdateFiatAccountBody() // TransferPublicUpdateFiatAccountBody | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.FiatTransfersAPI.UpdateFiatAccount(context.Background(), id).UpdateFiatAccountRequest(updateFiatAccountRequest).Execute()
+	resp, r, err := apiClient.FiatTransfersAPI.UpdateFiatAccount(context.Background(), id).TransferPublicUpdateFiatAccountBody(transferPublicUpdateFiatAccountBody).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `FiatTransfersAPI.UpdateFiatAccount``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -648,7 +648,7 @@ Other parameters are passed through a pointer to a apiUpdateFiatAccountRequest s
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **updateFiatAccountRequest** | [**UpdateFiatAccountRequest**](UpdateFiatAccountRequest.md) |  | 
+ **transferPublicUpdateFiatAccountBody** | [**TransferPublicUpdateFiatAccountBody**](TransferPublicUpdateFiatAccountBody.md) |  | 
 
 ### Return type
 

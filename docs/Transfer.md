@@ -29,6 +29,7 @@ Name | Type | Description | Notes
 **GroupId** | Pointer to **string** | Unique identifier linking the debit and credit sides of an internal or Paxos transfer. | [optional] 
 **FiatAccountId** | Pointer to **string** | For fiat withdrawals, the Paxos ID of the owner&#39;s fiat account (UUID). | [optional] 
 **SecondaryStatus** | Pointer to [**SecondaryStatus**](SecondaryStatus.md) |  | [optional] 
+**NotionalValue** | Pointer to **string** | For crypto withdrawals and deposits, the USD value of the combined amount and fee at the time of the transfer. | [optional] 
 
 ## Methods
 
@@ -613,6 +614,31 @@ SetSecondaryStatus sets SecondaryStatus field to given value.
 `func (o *Transfer) HasSecondaryStatus() bool`
 
 HasSecondaryStatus returns a boolean if a field has been set.
+
+### GetNotionalValue
+
+`func (o *Transfer) GetNotionalValue() string`
+
+GetNotionalValue returns the NotionalValue field if non-nil, zero value otherwise.
+
+### GetNotionalValueOk
+
+`func (o *Transfer) GetNotionalValueOk() (*string, bool)`
+
+GetNotionalValueOk returns a tuple with the NotionalValue field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetNotionalValue
+
+`func (o *Transfer) SetNotionalValue(v string)`
+
+SetNotionalValue sets NotionalValue field to given value.
+
+### HasNotionalValue
+
+`func (o *Transfer) HasNotionalValue() bool`
+
+HasNotionalValue returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

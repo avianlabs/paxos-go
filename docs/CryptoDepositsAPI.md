@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 ## RejectCryptoDeposit
 
-> map[string]interface{} RejectCryptoDeposit(ctx, id).RejectCryptoDepositRequest(rejectCryptoDepositRequest).Execute()
+> map[string]interface{} RejectCryptoDeposit(ctx, id).TransferPublicRejectCryptoDepositBody(transferPublicRejectCryptoDepositBody).Execute()
 
 Reject Crypto Deposit
 
@@ -31,11 +31,11 @@ import (
 
 func main() {
 	id := "id_example" // string | Paxos ID of the crypto deposit to reject. To retrieve the ID, log in to your Paxos account and go to the [Activity](https://account.paxos.com/wallet/activity) tab. Download the CSV activity file and check the ID column.
-	rejectCryptoDepositRequest := *openapiclient.NewRejectCryptoDepositRequest("IdentityId_example") // RejectCryptoDepositRequest | 
+	transferPublicRejectCryptoDepositBody := *openapiclient.NewTransferPublicRejectCryptoDepositBody("IdentityId_example") // TransferPublicRejectCryptoDepositBody | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.CryptoDepositsAPI.RejectCryptoDeposit(context.Background(), id).RejectCryptoDepositRequest(rejectCryptoDepositRequest).Execute()
+	resp, r, err := apiClient.CryptoDepositsAPI.RejectCryptoDeposit(context.Background(), id).TransferPublicRejectCryptoDepositBody(transferPublicRejectCryptoDepositBody).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CryptoDepositsAPI.RejectCryptoDeposit``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -61,7 +61,7 @@ Other parameters are passed through a pointer to a apiRejectCryptoDepositRequest
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **rejectCryptoDepositRequest** | [**RejectCryptoDepositRequest**](RejectCryptoDepositRequest.md) |  | 
+ **transferPublicRejectCryptoDepositBody** | [**TransferPublicRejectCryptoDepositBody**](TransferPublicRejectCryptoDepositBody.md) |  | 
 
 ### Return type
 
@@ -83,7 +83,7 @@ Name | Type | Description  | Notes
 
 ## UpdateCryptoDeposit
 
-> map[string]interface{} UpdateCryptoDeposit(ctx, id).UpdateCryptoDepositRequest(updateCryptoDepositRequest).Execute()
+> map[string]interface{} UpdateCryptoDeposit(ctx, id).TransferPublicUpdateCryptoDepositBody(transferPublicUpdateCryptoDepositBody).Execute()
 
 Update Crypto Deposit
 
@@ -103,11 +103,11 @@ import (
 
 func main() {
 	id := "id_example" // string | Paxos ID of the crypto deposit to update. To retrieve the ID, log in to your Paxos account and go to the [Activity](https://account.paxos.com/wallet/activity) tab. Download the CSV activity file and check the ID column.
-	updateCryptoDepositRequest := *openapiclient.NewUpdateCryptoDepositRequest("IdentityId_example", *openapiclient.NewAddressInfo()) // UpdateCryptoDepositRequest | 
+	transferPublicUpdateCryptoDepositBody := *openapiclient.NewTransferPublicUpdateCryptoDepositBody("IdentityId_example", *openapiclient.NewAddressInfo()) // TransferPublicUpdateCryptoDepositBody | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.CryptoDepositsAPI.UpdateCryptoDeposit(context.Background(), id).UpdateCryptoDepositRequest(updateCryptoDepositRequest).Execute()
+	resp, r, err := apiClient.CryptoDepositsAPI.UpdateCryptoDeposit(context.Background(), id).TransferPublicUpdateCryptoDepositBody(transferPublicUpdateCryptoDepositBody).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CryptoDepositsAPI.UpdateCryptoDeposit``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -133,7 +133,7 @@ Other parameters are passed through a pointer to a apiUpdateCryptoDepositRequest
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **updateCryptoDepositRequest** | [**UpdateCryptoDepositRequest**](UpdateCryptoDepositRequest.md) |  | 
+ **transferPublicUpdateCryptoDepositBody** | [**TransferPublicUpdateCryptoDepositBody**](TransferPublicUpdateCryptoDepositBody.md) |  | 
 
 ### Return type
 
