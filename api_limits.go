@@ -77,7 +77,7 @@ func (a *LimitsAPIService) ListTransferLimitsExecute(r ApiListTransferLimitsRequ
 		return localVarReturnValue, nil, reportError("transferType is required and must be specified")
 	}
 
-	parameterAddToHeaderOrQuery(localVarQueryParams, "transfer_type", r.transferType, "form", "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "transfer_type", r.transferType, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 

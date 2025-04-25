@@ -20,8 +20,8 @@ type ObligationDirection string
 
 // List of ObligationDirection
 const (
-	DELIVER ObligationDirection = "DELIVER"
-	RECEIVE ObligationDirection = "RECEIVE"
+	ObligationDirection_DELIVER ObligationDirection = "DELIVER"
+	ObligationDirection_RECEIVE ObligationDirection = "RECEIVE"
 )
 
 // All allowed values of ObligationDirection enum

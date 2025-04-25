@@ -20,12 +20,12 @@ type WealthSource string
 
 // List of WealthSource
 const (
-	INHERITANCE WealthSource = "INHERITANCE"
-	INVESTMENT_GAINS WealthSource = "INVESTMENT_GAINS"
-	BUSINESS_OWNERSHIP_DIVIDENDS WealthSource = "BUSINESS_OWNERSHIP_DIVIDENDS"
-	EMPLOYMENT_INCOME WealthSource = "EMPLOYMENT_INCOME"
-	REAL_ESTATE WealthSource = "REAL_ESTATE"
-	OTHER_SOURCE_OF_WEALTH WealthSource = "OTHER_SOURCE_OF_WEALTH"
+	WealthSource_INHERITANCE WealthSource = "INHERITANCE"
+	WealthSource_INVESTMENT_GAINS WealthSource = "INVESTMENT_GAINS"
+	WealthSource_BUSINESS_OWNERSHIP_DIVIDENDS WealthSource = "BUSINESS_OWNERSHIP_DIVIDENDS"
+	WealthSource_EMPLOYMENT_INCOME WealthSource = "EMPLOYMENT_INCOME"
+	WealthSource_REAL_ESTATE WealthSource = "REAL_ESTATE"
+	WealthSource_OTHER_SOURCE_OF_WEALTH WealthSource = "OTHER_SOURCE_OF_WEALTH"
 )
 
 // All allowed values of WealthSource enum

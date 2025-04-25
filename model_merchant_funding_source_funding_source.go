@@ -20,13 +20,13 @@ type MerchantFundingSourceFundingSource string
 
 // List of MerchantFundingSourceFundingSource
 const (
-	BUSINESS_LOANS_FINANCING MerchantFundingSourceFundingSource = "BUSINESS_LOANS_FINANCING"
-	SALARY_SAVINGS MerchantFundingSourceFundingSource = "SALARY_SAVINGS"
-	INVESTMENT_GAINS MerchantFundingSourceFundingSource = "INVESTMENT_GAINS"
-	INHERITANCE MerchantFundingSourceFundingSource = "INHERITANCE"
-	REAL_ESTATE_INCOME MerchantFundingSourceFundingSource = "REAL_ESTATE_INCOME"
-	NON_PROFIT_SOURCES MerchantFundingSourceFundingSource = "NON_PROFIT_SOURCES"
-	OTHER_BUSINESS_INCOME MerchantFundingSourceFundingSource = "OTHER_BUSINESS_INCOME"
+	MerchantFundingSourceFundingSource_BUSINESS_LOANS_FINANCING MerchantFundingSourceFundingSource = "BUSINESS_LOANS_FINANCING"
+	MerchantFundingSourceFundingSource_SALARY_SAVINGS MerchantFundingSourceFundingSource = "SALARY_SAVINGS"
+	MerchantFundingSourceFundingSource_INVESTMENT_GAINS MerchantFundingSourceFundingSource = "INVESTMENT_GAINS"
+	MerchantFundingSourceFundingSource_INHERITANCE MerchantFundingSourceFundingSource = "INHERITANCE"
+	MerchantFundingSourceFundingSource_REAL_ESTATE_INCOME MerchantFundingSourceFundingSource = "REAL_ESTATE_INCOME"
+	MerchantFundingSourceFundingSource_NON_PROFIT_SOURCES MerchantFundingSourceFundingSource = "NON_PROFIT_SOURCES"
+	MerchantFundingSourceFundingSource_OTHER_BUSINESS_INCOME MerchantFundingSourceFundingSource = "OTHER_BUSINESS_INCOME"
 )
 
 // All allowed values of MerchantFundingSourceFundingSource enum

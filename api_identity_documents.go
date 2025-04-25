@@ -240,7 +240,7 @@ func (a *IdentityDocumentsAPIService) ListIdentityDocumentsExecute(r ApiListIden
 	localVarFormParams := url.Values{}
 
 	if r.includePendingDocs != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "include_pending_docs", r.includePendingDocs, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_pending_docs", r.includePendingDocs, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

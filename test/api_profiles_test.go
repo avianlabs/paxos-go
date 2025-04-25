@@ -34,6 +34,20 @@ func Test_paxos_ProfilesAPIService(t *testing.T) {
 
 	})
 
+	t.Run("Test ProfilesAPIService DeactivateProfile", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var profileId string
+
+		resp, httpRes, err := apiClient.ProfilesAPI.DeactivateProfile(context.Background(), profileId).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
 	t.Run("Test ProfilesAPIService GetProfile", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
@@ -82,6 +96,20 @@ func Test_paxos_ProfilesAPIService(t *testing.T) {
 		t.Skip("skip test")  // remove to run test
 
 		resp, httpRes, err := apiClient.ProfilesAPI.ListProfiles(context.Background()).Execute()
+
+		require.Nil(t, err)
+		require.NotNil(t, resp)
+		assert.Equal(t, 200, httpRes.StatusCode)
+
+	})
+
+	t.Run("Test ProfilesAPIService UpdateProfile", func(t *testing.T) {
+
+		t.Skip("skip test")  // remove to run test
+
+		var profileId string
+
+		resp, httpRes, err := apiClient.ProfilesAPI.UpdateProfile(context.Background(), profileId).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

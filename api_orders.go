@@ -527,28 +527,28 @@ func (a *OrdersAPIService) ListExecutionsExecute(r ApiListExecutionsRequest) (*L
 	localVarFormParams := url.Values{}
 
 	if r.profileId != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "profile_id", r.profileId, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "profile_id", r.profileId, "")
 	}
 	if r.accountId != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "account_id", r.accountId, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "account_id", r.accountId, "")
 	}
 	if r.orderId != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_id", r.orderId, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_id", r.orderId, "")
 	}
 	if r.sinceExecutionId != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "since_execution_id", r.sinceExecutionId, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "since_execution_id", r.sinceExecutionId, "")
 	}
 	if r.rangeBegin != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "range.begin", r.rangeBegin, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range.begin", r.rangeBegin, "")
 	}
 	if r.rangeEnd != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "range.end", r.rangeEnd, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range.end", r.rangeEnd, "")
 	}
 	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -717,39 +717,39 @@ func (a *OrdersAPIService) ListOrdersExecute(r ApiListOrdersRequest) (*ListOrder
 	localVarFormParams := url.Values{}
 
 	if r.profileId != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "profile_id", r.profileId, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "profile_id", r.profileId, "")
 	}
 	if r.accountId != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "account_id", r.accountId, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "account_id", r.accountId, "")
 	}
 	if r.market != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "market", r.market, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "market", r.market, "")
 	}
 	if r.status != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "status", r.status, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "status", r.status, "")
 	}
 	if r.orderTimeBegin != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_time.begin", r.orderTimeBegin, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_time.begin", r.orderTimeBegin, "")
 	}
 	if r.orderTimeEnd != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_time.end", r.orderTimeEnd, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_time.end", r.orderTimeEnd, "")
 	}
 	if r.refIds != nil {
 		t := *r.refIds
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "ref_ids", s.Index(i).Interface(), "form", "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "ref_ids", s.Index(i).Interface(), "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "ref_ids", t, "form", "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "ref_ids", t, "multi")
 		}
 	}
 	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
