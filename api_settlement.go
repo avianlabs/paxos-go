@@ -641,23 +641,23 @@ func (a *SettlementAPIService) ListTransactionsExecute(r ApiListTransactionsRequ
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				parameterAddToHeaderOrQuery(localVarQueryParams, "statuses", s.Index(i).Interface(), "multi")
+				parameterAddToHeaderOrQuery(localVarQueryParams, "statuses", s.Index(i).Interface(), "form", "multi")
 			}
 		} else {
-			parameterAddToHeaderOrQuery(localVarQueryParams, "statuses", t, "multi")
+			parameterAddToHeaderOrQuery(localVarQueryParams, "statuses", t, "form", "multi")
 		}
 	}
 	if r.sourceProfileId != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "source_profile_id", r.sourceProfileId, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "source_profile_id", r.sourceProfileId, "form", "")
 	}
 	if r.targetProfileId != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "target_profile_id", r.targetProfileId, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "target_profile_id", r.targetProfileId, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

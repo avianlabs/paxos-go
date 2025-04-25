@@ -544,31 +544,31 @@ func (a *StablecoinConversionAPIService) ListStablecoinConversionsExecute(r ApiL
 	localVarFormParams := url.Values{}
 
 	if r.profileId != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "profile_id", r.profileId, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "profile_id", r.profileId, "form", "")
 	}
 	if r.refId != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "ref_id", r.refId, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "ref_id", r.refId, "form", "")
 	}
 	if r.createdAtBegin != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.begin", r.createdAtBegin, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.begin", r.createdAtBegin, "form", "")
 	}
 	if r.createdAtEnd != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.end", r.createdAtEnd, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.end", r.createdAtEnd, "form", "")
 	}
 	if r.updatedAtBegin != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.begin", r.updatedAtBegin, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.begin", r.updatedAtBegin, "form", "")
 	}
 	if r.updatedAtEnd != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.end", r.updatedAtEnd, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.end", r.updatedAtEnd, "form", "")
 	}
 	if r.order != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "form", "")
 	}
 	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

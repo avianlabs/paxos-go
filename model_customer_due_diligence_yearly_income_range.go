@@ -20,13 +20,13 @@ type CustomerDueDiligenceYearlyIncomeRange string
 
 // List of CustomerDueDiligenceYearlyIncomeRange
 const (
-	CustomerDueDiligenceYearlyIncomeRange_INCOME_0_TO_50_K CustomerDueDiligenceYearlyIncomeRange = "INCOME_0_TO_50K"
-	CustomerDueDiligenceYearlyIncomeRange_INCOME_50_K_TO_100_K CustomerDueDiligenceYearlyIncomeRange = "INCOME_50K_TO_100K"
-	CustomerDueDiligenceYearlyIncomeRange_INCOME_100_K_TO_250_K CustomerDueDiligenceYearlyIncomeRange = "INCOME_100K_TO_250K"
-	CustomerDueDiligenceYearlyIncomeRange_INCOME_250_K_TO_500_K CustomerDueDiligenceYearlyIncomeRange = "INCOME_250K_TO_500K"
-	CustomerDueDiligenceYearlyIncomeRange_INCOME_500_K_TO_750_K CustomerDueDiligenceYearlyIncomeRange = "INCOME_500K_TO_750K"
-	CustomerDueDiligenceYearlyIncomeRange_INCOME_750_K_TO_1_M CustomerDueDiligenceYearlyIncomeRange = "INCOME_750K_TO_1M"
-	CustomerDueDiligenceYearlyIncomeRange_INCOME_ABOVE_1_M CustomerDueDiligenceYearlyIncomeRange = "INCOME_ABOVE_1M"
+	INCOME_0_TO_50_K CustomerDueDiligenceYearlyIncomeRange = "INCOME_0_TO_50K"
+	INCOME_50_K_TO_100_K CustomerDueDiligenceYearlyIncomeRange = "INCOME_50K_TO_100K"
+	INCOME_100_K_TO_250_K CustomerDueDiligenceYearlyIncomeRange = "INCOME_100K_TO_250K"
+	INCOME_250_K_TO_500_K CustomerDueDiligenceYearlyIncomeRange = "INCOME_250K_TO_500K"
+	INCOME_500_K_TO_750_K CustomerDueDiligenceYearlyIncomeRange = "INCOME_500K_TO_750K"
+	INCOME_750_K_TO_1_M CustomerDueDiligenceYearlyIncomeRange = "INCOME_750K_TO_1M"
+	INCOME_ABOVE_1_M CustomerDueDiligenceYearlyIncomeRange = "INCOME_ABOVE_1M"
 )
 
 // All allowed values of CustomerDueDiligenceYearlyIncomeRange enum

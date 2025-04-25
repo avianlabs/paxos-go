@@ -20,8 +20,8 @@ type TaxFormType string
 
 // List of TaxFormType
 const (
-	TaxFormType_FORM_1099_B TaxFormType = "FORM_1099_B"
-	TaxFormType_FORM_1099_MISC TaxFormType = "FORM_1099_MISC"
+	FORM_1099_B TaxFormType = "FORM_1099_B"
+	FORM_1099_MISC TaxFormType = "FORM_1099_MISC"
 )
 
 // All allowed values of TaxFormType enum

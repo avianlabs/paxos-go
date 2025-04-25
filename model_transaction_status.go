@@ -20,11 +20,11 @@ type TransactionStatus string
 
 // List of TransactionStatus
 const (
-	TransactionStatus_PENDING TransactionStatus = "PENDING"
-	TransactionStatus_SETTLED TransactionStatus = "SETTLED"
-	TransactionStatus_EXPIRED TransactionStatus = "EXPIRED"
-	TransactionStatus_CANCELLED TransactionStatus = "CANCELLED"
-	TransactionStatus_AFFIRMED TransactionStatus = "AFFIRMED"
+	PENDING TransactionStatus = "PENDING"
+	SETTLED TransactionStatus = "SETTLED"
+	EXPIRED TransactionStatus = "EXPIRED"
+	CANCELLED TransactionStatus = "CANCELLED"
+	AFFIRMED TransactionStatus = "AFFIRMED"
 )
 
 // All allowed values of TransactionStatus enum
