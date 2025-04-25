@@ -435,49 +435,49 @@ func (a *AccountsAPIService) ListAccountsExecute(r ApiListAccountsRequest) (*Lis
 	localVarFormParams := url.Values{}
 
 	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "form", "")
 	}
 	if r.order != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "form", "")
 	}
 	if r.orderBy != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	if r.createdAtLt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lt", r.createdAtLt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lt", r.createdAtLt, "form", "")
 	}
 	if r.createdAtLte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lte", r.createdAtLte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lte", r.createdAtLte, "form", "")
 	}
 	if r.createdAtEq != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.eq", r.createdAtEq, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.eq", r.createdAtEq, "form", "")
 	}
 	if r.createdAtGte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gte", r.createdAtGte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gte", r.createdAtGte, "form", "")
 	}
 	if r.createdAtGt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gt", r.createdAtGt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gt", r.createdAtGt, "form", "")
 	}
 	if r.identityId != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "identity_id", r.identityId, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "identity_id", r.identityId, "form", "")
 	}
 	if r.updatedAtLt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.lt", r.updatedAtLt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.lt", r.updatedAtLt, "form", "")
 	}
 	if r.updatedAtLte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.lte", r.updatedAtLte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.lte", r.updatedAtLte, "form", "")
 	}
 	if r.updatedAtEq != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.eq", r.updatedAtEq, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.eq", r.updatedAtEq, "form", "")
 	}
 	if r.updatedAtGte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.gte", r.updatedAtGte, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.gte", r.updatedAtGte, "form", "")
 	}
 	if r.updatedAtGt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.gt", r.updatedAtGt, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.gt", r.updatedAtGt, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

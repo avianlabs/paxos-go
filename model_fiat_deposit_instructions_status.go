@@ -20,8 +20,8 @@ type FiatDepositInstructionsStatus string
 
 // List of FiatDepositInstructionsStatus
 const (
-	FiatDepositInstructionsStatus_VALID FiatDepositInstructionsStatus = "VALID"
-	FiatDepositInstructionsStatus_DEPRECATED FiatDepositInstructionsStatus = "DEPRECATED"
+	VALID FiatDepositInstructionsStatus = "VALID"
+	DEPRECATED FiatDepositInstructionsStatus = "DEPRECATED"
 )
 
 // All allowed values of FiatDepositInstructionsStatus enum

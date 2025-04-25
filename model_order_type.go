@@ -20,11 +20,11 @@ type OrderType string
 
 // List of OrderType
 const (
-	OrderType_LIMIT OrderType = "LIMIT"
-	OrderType_MARKET OrderType = "MARKET"
-	OrderType_POST_ONLY_LIMIT OrderType = "POST_ONLY_LIMIT"
-	OrderType_STOP_MARKET OrderType = "STOP_MARKET"
-	OrderType_STOP_LIMIT OrderType = "STOP_LIMIT"
+	LIMIT OrderType = "LIMIT"
+	MARKET OrderType = "MARKET"
+	POST_ONLY_LIMIT OrderType = "POST_ONLY_LIMIT"
+	STOP_MARKET OrderType = "STOP_MARKET"
+	STOP_LIMIT OrderType = "STOP_LIMIT"
 )
 
 // All allowed values of OrderType enum

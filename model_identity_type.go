@@ -20,8 +20,8 @@ type IdentityType string
 
 // List of IdentityType
 const (
-	IdentityType_PERSON IdentityType = "PERSON"
-	IdentityType_INSTITUTION IdentityType = "INSTITUTION"
+	PERSON IdentityType = "PERSON"
+	INSTITUTION IdentityType = "INSTITUTION"
 )
 
 // All allowed values of IdentityType enum

@@ -20,11 +20,11 @@ type AccountAccountType string
 
 // List of AccountAccountType
 const (
-	AccountAccountType_BROKERAGE AccountAccountType = "BROKERAGE"
-	AccountAccountType_TRADITIONAL_IRA AccountAccountType = "TRADITIONAL_IRA"
-	AccountAccountType_ROTH_IRA AccountAccountType = "ROTH_IRA"
-	AccountAccountType_SEP_IRA AccountAccountType = "SEP_IRA"
-	AccountAccountType_FINANCIAL_ADVISOR AccountAccountType = "FINANCIAL_ADVISOR"
+	BROKERAGE AccountAccountType = "BROKERAGE"
+	TRADITIONAL_IRA AccountAccountType = "TRADITIONAL_IRA"
+	ROTH_IRA AccountAccountType = "ROTH_IRA"
+	SEP_IRA AccountAccountType = "SEP_IRA"
+	FINANCIAL_ADVISOR AccountAccountType = "FINANCIAL_ADVISOR"
 )
 
 // All allowed values of AccountAccountType enum

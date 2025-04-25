@@ -20,10 +20,10 @@ type InstitutionType string
 
 // List of InstitutionType
 const (
-	InstitutionType_TRUST InstitutionType = "TRUST"
-	InstitutionType_CORPORATION InstitutionType = "CORPORATION"
-	InstitutionType_LLC InstitutionType = "LLC"
-	InstitutionType_PARTNERSHIP InstitutionType = "PARTNERSHIP"
+	TRUST InstitutionType = "TRUST"
+	CORPORATION InstitutionType = "CORPORATION"
+	LLC InstitutionType = "LLC"
+	PARTNERSHIP InstitutionType = "PARTNERSHIP"
 )
 
 // All allowed values of InstitutionType enum

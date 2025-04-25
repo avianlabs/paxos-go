@@ -20,13 +20,13 @@ type CustomerRegion string
 
 // List of CustomerRegion
 const (
-	CustomerRegion_US_CANADA CustomerRegion = "US_CANADA"
-	CustomerRegion_MEXICO_CENTRAL_AMERICA CustomerRegion = "MEXICO_CENTRAL_AMERICA"
-	CustomerRegion_SOUTH_AMERICA CustomerRegion = "SOUTH_AMERICA"
-	CustomerRegion_EUROPE CustomerRegion = "EUROPE"
-	CustomerRegion_ASIA CustomerRegion = "ASIA"
-	CustomerRegion_AFRICA CustomerRegion = "AFRICA"
-	CustomerRegion_OCEANIA CustomerRegion = "OCEANIA"
+	US_CANADA CustomerRegion = "US_CANADA"
+	MEXICO_CENTRAL_AMERICA CustomerRegion = "MEXICO_CENTRAL_AMERICA"
+	SOUTH_AMERICA CustomerRegion = "SOUTH_AMERICA"
+	EUROPE CustomerRegion = "EUROPE"
+	ASIA CustomerRegion = "ASIA"
+	AFRICA CustomerRegion = "AFRICA"
+	OCEANIA CustomerRegion = "OCEANIA"
 )
 
 // All allowed values of CustomerRegion enum
