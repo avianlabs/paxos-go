@@ -27,11 +27,11 @@ type ApiRejectCryptoDepositRequest struct {
 	ctx context.Context
 	ApiService *CryptoDepositsAPIService
 	id string
-	rejectCryptoDepositRequest *RejectCryptoDepositRequest
+	transferPublicRejectCryptoDepositBody *TransferPublicRejectCryptoDepositBody
 }
 
-func (r ApiRejectCryptoDepositRequest) RejectCryptoDepositRequest(rejectCryptoDepositRequest RejectCryptoDepositRequest) ApiRejectCryptoDepositRequest {
-	r.rejectCryptoDepositRequest = &rejectCryptoDepositRequest
+func (r ApiRejectCryptoDepositRequest) TransferPublicRejectCryptoDepositBody(transferPublicRejectCryptoDepositBody TransferPublicRejectCryptoDepositBody) ApiRejectCryptoDepositRequest {
+	r.transferPublicRejectCryptoDepositBody = &transferPublicRejectCryptoDepositBody
 	return r
 }
 
@@ -79,8 +79,8 @@ func (a *CryptoDepositsAPIService) RejectCryptoDepositExecute(r ApiRejectCryptoD
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.rejectCryptoDepositRequest == nil {
-		return localVarReturnValue, nil, reportError("rejectCryptoDepositRequest is required and must be specified")
+	if r.transferPublicRejectCryptoDepositBody == nil {
+		return localVarReturnValue, nil, reportError("transferPublicRejectCryptoDepositBody is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -101,7 +101,7 @@ func (a *CryptoDepositsAPIService) RejectCryptoDepositExecute(r ApiRejectCryptoD
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.rejectCryptoDepositRequest
+	localVarPostBody = r.transferPublicRejectCryptoDepositBody
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -175,11 +175,11 @@ type ApiUpdateCryptoDepositRequest struct {
 	ctx context.Context
 	ApiService *CryptoDepositsAPIService
 	id string
-	updateCryptoDepositRequest *UpdateCryptoDepositRequest
+	transferPublicUpdateCryptoDepositBody *TransferPublicUpdateCryptoDepositBody
 }
 
-func (r ApiUpdateCryptoDepositRequest) UpdateCryptoDepositRequest(updateCryptoDepositRequest UpdateCryptoDepositRequest) ApiUpdateCryptoDepositRequest {
-	r.updateCryptoDepositRequest = &updateCryptoDepositRequest
+func (r ApiUpdateCryptoDepositRequest) TransferPublicUpdateCryptoDepositBody(transferPublicUpdateCryptoDepositBody TransferPublicUpdateCryptoDepositBody) ApiUpdateCryptoDepositRequest {
+	r.transferPublicUpdateCryptoDepositBody = &transferPublicUpdateCryptoDepositBody
 	return r
 }
 
@@ -226,8 +226,8 @@ func (a *CryptoDepositsAPIService) UpdateCryptoDepositExecute(r ApiUpdateCryptoD
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.updateCryptoDepositRequest == nil {
-		return localVarReturnValue, nil, reportError("updateCryptoDepositRequest is required and must be specified")
+	if r.transferPublicUpdateCryptoDepositBody == nil {
+		return localVarReturnValue, nil, reportError("transferPublicUpdateCryptoDepositBody is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -248,7 +248,7 @@ func (a *CryptoDepositsAPIService) UpdateCryptoDepositExecute(r ApiUpdateCryptoD
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.updateCryptoDepositRequest
+	localVarPostBody = r.transferPublicUpdateCryptoDepositBody
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

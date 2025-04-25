@@ -28,11 +28,11 @@ type ApiCreateQuoteExecutionRequest struct {
 	ctx context.Context
 	ApiService *QuoteExecutionsAPIService
 	profileId string
-	createQuoteExecutionRequest *CreateQuoteExecutionRequest
+	exchangePublicCreateQuoteExecutionBody *ExchangePublicCreateQuoteExecutionBody
 }
 
-func (r ApiCreateQuoteExecutionRequest) CreateQuoteExecutionRequest(createQuoteExecutionRequest CreateQuoteExecutionRequest) ApiCreateQuoteExecutionRequest {
-	r.createQuoteExecutionRequest = &createQuoteExecutionRequest
+func (r ApiCreateQuoteExecutionRequest) ExchangePublicCreateQuoteExecutionBody(exchangePublicCreateQuoteExecutionBody ExchangePublicCreateQuoteExecutionBody) ApiCreateQuoteExecutionRequest {
+	r.exchangePublicCreateQuoteExecutionBody = &exchangePublicCreateQuoteExecutionBody
 	return r
 }
 
@@ -98,8 +98,8 @@ func (a *QuoteExecutionsAPIService) CreateQuoteExecutionExecute(r ApiCreateQuote
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.createQuoteExecutionRequest == nil {
-		return localVarReturnValue, nil, reportError("createQuoteExecutionRequest is required and must be specified")
+	if r.exchangePublicCreateQuoteExecutionBody == nil {
+		return localVarReturnValue, nil, reportError("exchangePublicCreateQuoteExecutionBody is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -120,7 +120,7 @@ func (a *QuoteExecutionsAPIService) CreateQuoteExecutionExecute(r ApiCreateQuote
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.createQuoteExecutionRequest
+	localVarPostBody = r.exchangePublicCreateQuoteExecutionBody
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

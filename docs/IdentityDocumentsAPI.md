@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 ## DocumentUpload
 
-> DocumentUploadResponse DocumentUpload(ctx, identityId).DocumentUploadRequest(documentUploadRequest).Execute()
+> DocumentUploadResponse DocumentUpload(ctx, identityId).IdentityPublicDocumentUploadBody(identityPublicDocumentUploadBody).Execute()
 
 Document Upload
 
@@ -31,11 +31,11 @@ import (
 
 func main() {
 	identityId := "identityId_example" // string | The id of the identity the document is associated with.
-	documentUploadRequest := *openapiclient.NewDocumentUploadRequest("Name_example") // DocumentUploadRequest | 
+	identityPublicDocumentUploadBody := *openapiclient.NewIdentityPublicDocumentUploadBody("Name_example") // IdentityPublicDocumentUploadBody | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.IdentityDocumentsAPI.DocumentUpload(context.Background(), identityId).DocumentUploadRequest(documentUploadRequest).Execute()
+	resp, r, err := apiClient.IdentityDocumentsAPI.DocumentUpload(context.Background(), identityId).IdentityPublicDocumentUploadBody(identityPublicDocumentUploadBody).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `IdentityDocumentsAPI.DocumentUpload``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -61,7 +61,7 @@ Other parameters are passed through a pointer to a apiDocumentUploadRequest stru
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **documentUploadRequest** | [**DocumentUploadRequest**](DocumentUploadRequest.md) |  | 
+ **identityPublicDocumentUploadBody** | [**IdentityPublicDocumentUploadBody**](IdentityPublicDocumentUploadBody.md) |  | 
 
 ### Return type
 

@@ -27,11 +27,11 @@ type ApiCreateSandboxDepositRequest struct {
 	ctx context.Context
 	ApiService *SandboxDepositsAPIService
 	profileId string
-	createSandboxDepositRequest *CreateSandboxDepositRequest
+	fundingSandboxCreateSandboxDepositBody *FundingSandboxCreateSandboxDepositBody
 }
 
-func (r ApiCreateSandboxDepositRequest) CreateSandboxDepositRequest(createSandboxDepositRequest CreateSandboxDepositRequest) ApiCreateSandboxDepositRequest {
-	r.createSandboxDepositRequest = &createSandboxDepositRequest
+func (r ApiCreateSandboxDepositRequest) FundingSandboxCreateSandboxDepositBody(fundingSandboxCreateSandboxDepositBody FundingSandboxCreateSandboxDepositBody) ApiCreateSandboxDepositRequest {
+	r.fundingSandboxCreateSandboxDepositBody = &fundingSandboxCreateSandboxDepositBody
 	return r
 }
 
@@ -81,8 +81,8 @@ func (a *SandboxDepositsAPIService) CreateSandboxDepositExecute(r ApiCreateSandb
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.createSandboxDepositRequest == nil {
-		return localVarReturnValue, nil, reportError("createSandboxDepositRequest is required and must be specified")
+	if r.fundingSandboxCreateSandboxDepositBody == nil {
+		return localVarReturnValue, nil, reportError("fundingSandboxCreateSandboxDepositBody is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -103,7 +103,7 @@ func (a *SandboxDepositsAPIService) CreateSandboxDepositExecute(r ApiCreateSandb
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.createSandboxDepositRequest
+	localVarPostBody = r.fundingSandboxCreateSandboxDepositBody
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

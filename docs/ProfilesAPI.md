@@ -454,7 +454,7 @@ Name | Type | Description  | Notes
 
 ## UpdateProfile
 
-> Profile UpdateProfile(ctx, profileId).UpdateProfileRequest(updateProfileRequest).Execute()
+> Profile UpdateProfile(ctx, profileId).ProfilePublicUpdateProfileBody(profilePublicUpdateProfileBody).Execute()
 
 Update Profile
 
@@ -474,11 +474,11 @@ import (
 
 func main() {
 	profileId := "profileId_example" // string | 
-	updateProfileRequest := *openapiclient.NewUpdateProfileRequest("Nickname_example") // UpdateProfileRequest | 
+	profilePublicUpdateProfileBody := *openapiclient.NewProfilePublicUpdateProfileBody("Nickname_example") // ProfilePublicUpdateProfileBody | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ProfilesAPI.UpdateProfile(context.Background(), profileId).UpdateProfileRequest(updateProfileRequest).Execute()
+	resp, r, err := apiClient.ProfilesAPI.UpdateProfile(context.Background(), profileId).ProfilePublicUpdateProfileBody(profilePublicUpdateProfileBody).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ProfilesAPI.UpdateProfile``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -504,7 +504,7 @@ Other parameters are passed through a pointer to a apiUpdateProfileRequest struc
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **updateProfileRequest** | [**UpdateProfileRequest**](UpdateProfileRequest.md) |  | 
+ **profilePublicUpdateProfileBody** | [**ProfilePublicUpdateProfileBody**](ProfilePublicUpdateProfileBody.md) |  | 
 
 ### Return type
 

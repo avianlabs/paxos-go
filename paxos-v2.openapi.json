@@ -373,19 +373,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "example": {
-                  "profile_id": "b7b77d82-e6a7-4ae9-9904-36231aedf985",
-                  "nickname": "MyProfileName"
-                },
-                "properties": {
-                  "nickname": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "nickname"
-                ]
+                "$ref": "#/components/schemas/ProfilePublicUpdateProfileBody"
               }
             }
           },
@@ -637,26 +625,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "asset": {
-                    "type": "string",
-                    "description": "The kind of asset to deposit."
-                  },
-                  "amount": {
-                    "type": "string",
-                    "description": "The amount to deposit.",
-                    "pattern": "^[0-9]*\\.?[0-9]+$"
-                  },
-                  "crypto_network": {
-                    "$ref": "#/components/schemas/CryptoNetwork"
-                  }
-                },
-                "title": "CreateSandboxDepositRequest",
-                "required": [
-                  "asset",
-                  "amount"
-                ]
+                "$ref": "#/components/schemas/FundingSandboxCreateSandboxDepositBody"
               }
             }
           },
@@ -1248,7 +1217,7 @@
       },
       "put": {
         "summary": "Document Upload",
-        "description": "This endpoint enables you to receive a URL to upload a document to Paxos.\nWhen uploading a document one must specify the document type, you will receive a\nURL to upload a document into using a POST request. (see curl documentation)",
+        "description": "This endpoint enables you to receive a URL to upload a document to Paxos.\nWhen uploading a document one must specify the document type, you will receive a\nURL to upload a document into using a POST request. (see curl documentation)\nAn uploaded document must be less than 100 MB in size.",
         "operationId": "DocumentUpload",
         "responses": {
           "200": {
@@ -1371,24 +1340,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "The file name."
-                  },
-                  "document_types": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/DocumentType"
-                    },
-                    "description": "A list of document types contained within the uploaded file."
-                  }
-                },
-                "title": "DocumentUploadRequest",
-                "required": [
-                  "name"
-                ]
+                "$ref": "#/components/schemas/IdentityPublicDocumentUploadBody"
               },
               "examples": {
                 "Create Document Upload": {
@@ -1503,60 +1455,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "example": {
-                  "id": "f190b163-208f-4d73-8deb-4fb8b24add00",
-                  "person_details": {
-                    "first_name": "John"
-                  }
-                },
-                "properties": {
-                  "person_details": {
-                    "$ref": "#/components/schemas/PersonDetails"
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "string"
-                    },
-                    "title": "API User-facing metadata"
-                  },
-                  "set_user_disabled": {
-                    "type": "boolean",
-                    "description": "`true` disables the identity. `false` re-enables it, unless it has been disabled by a Paxos admin."
-                  },
-                  "institution_details": {
-                    "$ref": "#/components/schemas/InstitutionDetails"
-                  },
-                  "ref_id": {
-                    "type": "string",
-                    "description": "A user-facing ID to prevent duplicate identity creation. Unique for all identities created by the same API user."
-                  },
-                  "tax_details": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/TaxDetail"
-                    },
-                    "title": "list of tax details associated with the identity"
-                  },
-                  "set_tax_details_not_required": {
-                    "type": "boolean",
-                    "description": "Set to true if tax details are not legally required."
-                  },
-                  "customer_due_diligence": {
-                    "$ref": "#/components/schemas/CustomerDueDiligence"
-                  },
-                  "is_merchant": {
-                    "type": "boolean",
-                    "description": "Set to true to indicate that this identity is a merchant."
-                  },
-                  "last_kyc_refresh_date": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "Set to the timestamp the identity has last undergone a periodic kyc refresh. If unset, the update is not for\nperiodic kyc refresh."
-                  }
-                },
-                "title": "UpdateIdentityRequest"
+                "$ref": "#/components/schemas/IdentityPublicUpdateIdentityBody"
               }
             }
           },
@@ -1606,7 +1505,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "$ref": "#/components/schemas/IdentityPublicRetryIdVerificationBody"
               }
             }
           },
@@ -2298,33 +2197,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "example": {
-                  "id": "f190b163-208f-4d73-8deb-4fb8b24add00",
-                  "id_verification_status": "APPROVED",
-                  "sanctions_verification_status": "APPROVED"
-                },
-                "properties": {
-                  "id_verification_status": {
-                    "$ref": "#/components/schemas/IdentityStatus"
-                  },
-                  "sanctions_verification_status": {
-                    "$ref": "#/components/schemas/IdentityStatus"
-                  },
-                  "user_disabled": {
-                    "$ref": "#/components/schemas/SetDisable"
-                  },
-                  "admin_disabled": {
-                    "$ref": "#/components/schemas/SetDisable"
-                  },
-                  "document_verification_status": {
-                    "$ref": "#/components/schemas/IdentityStatus"
-                  },
-                  "additional_screening_status": {
-                    "$ref": "#/components/schemas/IdentityStatus"
-                  }
-                },
-                "title": "SandboxSetIdentityStatusRequest"
+                "$ref": "#/components/schemas/IdentitySandboxSandboxSetIdentityStatusBody"
               }
             }
           },
@@ -3681,93 +3554,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "example": {
-                  "side": "BUY",
-                  "market": "ETHUSD",
-                  "type": "LIMIT",
-                  "price": "190.23",
-                  "base_amount": "2.35781498",
-                  "metadata": {
-                    "customer_id": "9b8c9cba-801e-4418-adc0-ede709df6339"
-                  }
-                },
-                "properties": {
-                  "ref_id": {
-                    "type": "string",
-                    "description": "The idempotence ID for order creation. Can be reused if the order has been closed for more than 24 hours."
-                  },
-                  "side": {
-                    "$ref": "#/components/schemas/OrderSide"
-                  },
-                  "market": {
-                    "$ref": "#/components/schemas/Market"
-                  },
-                  "type": {
-                    "$ref": "#/components/schemas/OrderType"
-                  },
-                  "base_amount": {
-                    "type": "string",
-                    "description": "The base currency amount for any limit order or the exact amount to sell for a market sell order.",
-                    "pattern": "^[0-9]*\\.?[0-9]+$"
-                  },
-                  "price": {
-                    "type": "string",
-                    "description": "The quote price."
-                  },
-                  "quote_amount": {
-                    "type": "string",
-                    "description": "The quote currency amount of purchase for a market buy order.",
-                    "pattern": "^[0-9]*\\.?[0-9]+$"
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "string"
-                    },
-                    "description": "Metadata to store on the quote and created order.\nUp to 6 key/value pairs may be stored, with each key and value at most 100 characters."
-                  },
-                  "await_fill_millis": {
-                    "type": "integer",
-                    "format": "int64",
-                    "description": "The amount of time to wait for the order to fill, in milliseconds.\nWhen `await_fill_millis` is set to a non-zero value, the Create Order call does not return immediately on order creation. Instead, the call blocks until either:\n  1. The order has filled completely\n  2. The time `await_fill_millis` has elapsed\nThe maximum wait timeout is 10 seconds (10000 milliseconds).",
-                    "maximum": 10000
-                  },
-                  "time_in_force": {
-                    "$ref": "#/components/schemas/TimeInForce"
-                  },
-                  "expiration_date": {
-                    "type": "string",
-                    "format": "uint64",
-                    "description": "The date the order will expire if not completed when specified time in force is GTT.\nFormat is a unix timestamp in milliseconds (13-digits) UTC (total milliseconds that have elapsed since January 1st, 1970 UTC)."
-                  },
-                  "identity_id": {
-                    "type": "string",
-                    "description": "The end user that requests the trade. This field must be used in conjunction with `identity_account_id`, otherwise the order is rejected. Depending on your integration type, `identity_id` and `identity_account_id` may be required."
-                  },
-                  "identity_account_id": {
-                    "type": "string",
-                    "description": "The account under which this order is placed. The provided identity must be allowed to trade on behalf of this account. This field must be used in conjunction with `identity_id`, otherwise the order is rejected. Depending on your integration type, `identity_account_id` and `identity_id` may be required."
-                  },
-                  "stop_price": {
-                    "type": "string",
-                    "title": "The stop price at which a stop order will trigger"
-                  },
-                  "recipient_profile_id": {
-                    "type": "string",
-                    "description": "The profileId that will receive settled currency (base for buy orders, quote for sell orders)."
-                  },
-                  "self_match_prevention_id": {
-                    "type": "string",
-                    "description": "The string field used to prevent matching against an opposite side order submitted by the same Crypto Brokerage customer. If this field is not submitted, an order that matches against another order submitted by the same customer will cancel the original resting order. Up to 36 characters are supported.\nThis field requires additional permissions only available to certain accounts. Reach out to your Paxos Representative for more information."
-                  }
-                },
-                "title": "Create Order Request",
-                "required": [
-                  "side",
-                  "market",
-                  "type"
-                ]
+                "$ref": "#/components/schemas/ExchangePublicCreateOrderBody"
               },
               "examples": {
                 "Limit Buy": {
@@ -4248,57 +4035,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "example": {
-                  "quote_id": "366a26d2-3098-4226-a520-4bb43ae4d922",
-                  "quote_amount": "14102.82",
-                  "metadata": {
-                    "customer_id": "9b8c9cba-801e-4418-adc0-ede709df6339"
-                  }
-                },
-                "properties": {
-                  "quote_id": {
-                    "type": "string",
-                    "description": "The ID of the held Quote for buying or selling some asset."
-                  },
-                  "ref_id": {
-                    "type": "string",
-                    "description": "A unique identifier for the quote execution (for idempotence)."
-                  },
-                  "base_amount": {
-                    "type": "string",
-                    "description": "The amount of the base asset (crypto) to buy or sell using the specified quote. The maximum precision is 8 decimals.",
-                    "pattern": "^[0-9]*\\.?[0-9]+$"
-                  },
-                  "quote_amount": {
-                    "type": "string",
-                    "description": "The amount of the quote asset (fiat) to spend or acquire using the specified quote. The maximum precision is 2 decimals.",
-                    "pattern": "^[0-9]*\\.?[0-9]+$"
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "string"
-                    },
-                    "description": "Metadata to store on the quote execution.\nUp to 6 key/value pairs may be stored, with each key and value at most 100 characters."
-                  },
-                  "identity_id": {
-                    "type": "string",
-                    "description": "The end user that requests the quote execution."
-                  },
-                  "account_id": {
-                    "type": "string",
-                    "description": "The account under which this quote execution is placed. The provided identity must be allowed to trade on behalf of this account."
-                  },
-                  "recipient_profile_id": {
-                    "type": "string",
-                    "description": "The ID of the profile under which to deposit the funds."
-                  }
-                },
-                "title": "Create Quote Execution Request",
-                "required": [
-                  "quote_id"
-                ]
+                "$ref": "#/components/schemas/ExchangePublicCreateQuoteExecutionBody"
               },
               "examples": {
                 "Buy $100 BTC": {
@@ -4664,20 +4401,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "example": {
-                  "identity_id": "54385e67-d7ef-40d1-b488-ceda6dd9b264"
-                },
-                "properties": {
-                  "identity_id": {
-                    "type": "string",
-                    "description": "The Identity (`identity_id`) of the end user that requests to reject the deposit."
-                  }
-                },
-                "title": "RejectCryptoDepositRequest",
-                "required": [
-                  "identity_id"
-                ]
+                "$ref": "#/components/schemas/TransferPublicRejectCryptoDepositBody"
               }
             }
           },
@@ -4776,28 +4500,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "example": {
-                  "identity_id": "54385e67-d7ef-40d1-b488-ceda6dd9b264",
-                  "originator_address_info": {
-                    "first_name": "John",
-                    "last_name": "Doe"
-                  }
-                },
-                "properties": {
-                  "identity_id": {
-                    "type": "string",
-                    "description": "The Identity (`identity_id`) of the end user updating the deposit."
-                  },
-                  "originator_address_info": {
-                    "$ref": "#/components/schemas/AddressInfo"
-                  }
-                },
-                "title": "UpdateCryptoDepositRequest",
-                "required": [
-                  "identity_id",
-                  "originator_address_info"
-                ]
+                "$ref": "#/components/schemas/TransferPublicUpdateCryptoDepositBody"
               }
             }
           },
@@ -5781,23 +5484,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "fiat_account_owner": {
-                    "$ref": "#/components/schemas/FiatAccountOwner"
-                  },
-                  "fiat_network_instructions": {
-                    "$ref": "#/components/schemas/UpdateFiatAccountRequestUpdateFiatNetworkInstructions"
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "string"
-                    },
-                    "description": "Optional client-specified metadata.\nUp to 6 key/value pairs may be provided.\nEach key and value must be less than or equal to 100 characters."
-                  }
-                },
-                "title": "UpdateFiatAccountRequest"
+                "$ref": "#/components/schemas/TransferPublicUpdateFiatAccountBody"
               },
               "examples": {
                 "Update fiat account owner person details": {
@@ -7057,6 +6744,24 @@
                 "enum": [
                   "TRAVEL_RULE_INFO_REQUESTED",
                   "TRAVEL_RULE_REJECTED"
+                ]
+              }
+            }
+          },
+          {
+            "name": "statuses",
+            "description": "Optionally filter by status.",
+            "in": "query",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "PENDING",
+                  "COMPLETED",
+                  "FAILED"
                 ]
               }
             }
@@ -8439,6 +8144,21 @@
           "CREATED_AT"
         ]
       },
+      "ProfilePublicUpdateProfileBody": {
+        "type": "object",
+        "example": {
+          "profile_id": "b7b77d82-e6a7-4ae9-9904-36231aedf985",
+          "nickname": "MyProfileName"
+        },
+        "properties": {
+          "nickname": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nickname"
+        ]
+      },
       "CreateProfileRequest": {
         "type": "object",
         "properties": {
@@ -8591,6 +8311,32 @@
           }
         }
       },
+      "FundingSandboxCreateSandboxDepositBody": {
+        "type": "object",
+        "properties": {
+          "asset": {
+            "type": "string",
+            "description": "The kind of asset to deposit."
+          },
+          "amount": {
+            "type": "string",
+            "description": "The amount to deposit.",
+            "pattern": "^[0-9]*\\.?[0-9]+$"
+          },
+          "crypto_network": {
+            "$ref": "#/components/schemas/CryptoNetwork"
+          },
+          "crypto_address": {
+            "type": "string",
+            "title": "The crypto address on which to deposit the asset. If not set, then a random address is used"
+          }
+        },
+        "title": "CreateSandboxDepositRequest",
+        "required": [
+          "asset",
+          "amount"
+        ]
+      },
       "CreateSandboxDepositResponse": {
         "type": "object",
         "properties": {
@@ -8609,6 +8355,7 @@
           "LITECOIN",
           "SOLANA",
           "POLYGON_POS",
+          "BASE",
           "ARBITRUM_ONE"
         ],
         "description": "A CryptoNetwork is a blockchain transmitting cryptocurrencies."
@@ -8654,6 +8401,85 @@
           "INCOME_750K_TO_1M",
           "INCOME_ABOVE_1M"
         ]
+      },
+      "IdentityPublicDocumentUploadBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The file name."
+          },
+          "document_types": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocumentType"
+            },
+            "description": "A list of document types contained within the uploaded file."
+          }
+        },
+        "title": "DocumentUploadRequest",
+        "required": [
+          "name"
+        ]
+      },
+      "IdentityPublicRetryIdVerificationBody": {
+        "type": "object"
+      },
+      "IdentityPublicUpdateIdentityBody": {
+        "type": "object",
+        "example": {
+          "id": "f190b163-208f-4d73-8deb-4fb8b24add00",
+          "person_details": {
+            "first_name": "John"
+          }
+        },
+        "properties": {
+          "person_details": {
+            "$ref": "#/components/schemas/PersonDetails"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "API User-facing metadata"
+          },
+          "set_user_disabled": {
+            "type": "boolean",
+            "description": "`true` disables the identity. `false` re-enables it, unless it has been disabled by a Paxos admin."
+          },
+          "institution_details": {
+            "$ref": "#/components/schemas/InstitutionDetails"
+          },
+          "ref_id": {
+            "type": "string",
+            "description": "A user-facing ID to prevent duplicate identity creation. Unique for all identities created by the same API user."
+          },
+          "tax_details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaxDetail"
+            },
+            "title": "list of tax details associated with the identity"
+          },
+          "set_tax_details_not_required": {
+            "type": "boolean",
+            "description": "Set to true if tax details are not legally required."
+          },
+          "customer_due_diligence": {
+            "$ref": "#/components/schemas/CustomerDueDiligence"
+          },
+          "is_merchant": {
+            "type": "boolean",
+            "description": "Set to true to indicate that this identity is a merchant."
+          },
+          "last_kyc_refresh_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Set to the timestamp the identity has last undergone a periodic kyc refresh. If unset, the update is not for\nperiodic kyc refresh. RFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`. ex: `2006-01-02T15:04:05Z`."
+          }
+        },
+        "title": "UpdateIdentityRequest"
       },
       "ListIdentitiesRequestOrderBy": {
         "type": "string",
@@ -8988,12 +8814,12 @@
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "the time at which the identity is created at."
+            "description": "The time at which the identity is created at. RFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`. ex: `2006-01-02T15:04:05Z`."
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
-            "description": "the time at which the identity is updated at."
+            "description": "The time at which the identity is updated at. RFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`. ex: `2006-01-02T15:04:05Z`."
           },
           "tax_details": {
             "type": "array",
@@ -9015,6 +8841,11 @@
           "is_merchant": {
             "type": "boolean",
             "description": "True if the identity is a merchant."
+          },
+          "last_kyc_refresh_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The last timestamp the identity has undergone a periodic kyc refresh. RFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`. ex: `2006-01-02T15:04:05Z`."
           }
         },
         "required": [
@@ -9792,6 +9623,35 @@
       "DeleteAccountMemberResponse": {
         "type": "object"
       },
+      "IdentitySandboxSandboxSetIdentityStatusBody": {
+        "type": "object",
+        "example": {
+          "id": "f190b163-208f-4d73-8deb-4fb8b24add00",
+          "id_verification_status": "APPROVED",
+          "sanctions_verification_status": "APPROVED"
+        },
+        "properties": {
+          "id_verification_status": {
+            "$ref": "#/components/schemas/IdentityStatus"
+          },
+          "sanctions_verification_status": {
+            "$ref": "#/components/schemas/IdentityStatus"
+          },
+          "user_disabled": {
+            "$ref": "#/components/schemas/SetDisable"
+          },
+          "admin_disabled": {
+            "$ref": "#/components/schemas/SetDisable"
+          },
+          "document_verification_status": {
+            "$ref": "#/components/schemas/IdentityStatus"
+          },
+          "additional_screening_status": {
+            "$ref": "#/components/schemas/IdentityStatus"
+          }
+        },
+        "title": "SandboxSetIdentityStatusRequest"
+      },
       "SandboxSetIdentityResponse": {
         "type": "object"
       },
@@ -9802,6 +9662,148 @@
             "type": "boolean"
           }
         }
+      },
+      "ExchangePublicCreateOrderBody": {
+        "type": "object",
+        "example": {
+          "side": "BUY",
+          "market": "ETHUSD",
+          "type": "LIMIT",
+          "price": "190.23",
+          "base_amount": "2.35781498",
+          "metadata": {
+            "customer_id": "9b8c9cba-801e-4418-adc0-ede709df6339"
+          }
+        },
+        "properties": {
+          "ref_id": {
+            "type": "string",
+            "description": "The idempotence ID for order creation. Can be reused if the order has been closed for more than 24 hours."
+          },
+          "side": {
+            "$ref": "#/components/schemas/OrderSide"
+          },
+          "market": {
+            "$ref": "#/components/schemas/Market"
+          },
+          "type": {
+            "$ref": "#/components/schemas/OrderType"
+          },
+          "base_amount": {
+            "type": "string",
+            "description": "The base currency amount for any limit order or the exact amount to sell for a market sell order.",
+            "pattern": "^[0-9]*\\.?[0-9]+$"
+          },
+          "price": {
+            "type": "string",
+            "description": "The quote price."
+          },
+          "quote_amount": {
+            "type": "string",
+            "description": "The quote currency amount of purchase for a market buy order.",
+            "pattern": "^[0-9]*\\.?[0-9]+$"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata to store on the quote and created order.\nUp to 6 key/value pairs may be stored, with each key and value at most 100 characters."
+          },
+          "await_fill_millis": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The amount of time to wait for the order to fill, in milliseconds.\nWhen `await_fill_millis` is set to a non-zero value, the Create Order call does not return immediately on order creation. Instead, the call blocks until either:\n  1. The order has filled completely\n  2. The time `await_fill_millis` has elapsed\nThe maximum wait timeout is 10 seconds (10000 milliseconds).",
+            "maximum": 10000
+          },
+          "time_in_force": {
+            "$ref": "#/components/schemas/TimeInForce"
+          },
+          "expiration_date": {
+            "type": "string",
+            "format": "uint64",
+            "description": "The date the order will expire if not completed when specified time in force is GTT.\nFormat is a unix timestamp in milliseconds (13-digits) UTC (total milliseconds that have elapsed since January 1st, 1970 UTC)."
+          },
+          "identity_id": {
+            "type": "string",
+            "description": "The end user that requests the trade. This field must be used in conjunction with `identity_account_id`, otherwise the order is rejected. Depending on your integration type, `identity_id` and `identity_account_id` may be required."
+          },
+          "identity_account_id": {
+            "type": "string",
+            "description": "The account under which this order is placed. The provided identity must be allowed to trade on behalf of this account. This field must be used in conjunction with `identity_id`, otherwise the order is rejected. Depending on your integration type, `identity_account_id` and `identity_id` may be required."
+          },
+          "stop_price": {
+            "type": "string",
+            "title": "The stop price at which a stop order will trigger"
+          },
+          "recipient_profile_id": {
+            "type": "string",
+            "description": "The profileId that will receive settled currency (base for buy orders, quote for sell orders)."
+          },
+          "self_match_prevention_id": {
+            "type": "string",
+            "description": "The string field used to prevent matching against an opposite side order submitted by the same Crypto Brokerage customer. If this field is not submitted, an order that matches against another order submitted by the same customer will cancel the original resting order. Up to 36 characters are supported.\nThis field requires additional permissions only available to certain accounts. Reach out to your Paxos Representative for more information."
+          }
+        },
+        "title": "Create Order Request",
+        "required": [
+          "side",
+          "market",
+          "type"
+        ]
+      },
+      "ExchangePublicCreateQuoteExecutionBody": {
+        "type": "object",
+        "example": {
+          "quote_id": "366a26d2-3098-4226-a520-4bb43ae4d922",
+          "quote_amount": "14102.82",
+          "metadata": {
+            "customer_id": "9b8c9cba-801e-4418-adc0-ede709df6339"
+          }
+        },
+        "properties": {
+          "quote_id": {
+            "type": "string",
+            "description": "The ID of the held Quote for buying or selling some asset."
+          },
+          "ref_id": {
+            "type": "string",
+            "description": "A unique identifier for the quote execution (for idempotence)."
+          },
+          "base_amount": {
+            "type": "string",
+            "description": "The amount of the base asset (crypto) to buy or sell using the specified quote. The maximum precision is 8 decimals.",
+            "pattern": "^[0-9]*\\.?[0-9]+$"
+          },
+          "quote_amount": {
+            "type": "string",
+            "description": "The amount of the quote asset (fiat) to spend or acquire using the specified quote. The maximum precision is 2 decimals.",
+            "pattern": "^[0-9]*\\.?[0-9]+$"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Metadata to store on the quote execution.\nUp to 6 key/value pairs may be stored, with each key and value at most 100 characters."
+          },
+          "identity_id": {
+            "type": "string",
+            "description": "The end user that requests the quote execution."
+          },
+          "account_id": {
+            "type": "string",
+            "description": "The account under which this quote execution is placed. The provided identity must be allowed to trade on behalf of this account."
+          },
+          "recipient_profile_id": {
+            "type": "string",
+            "description": "The ID of the profile under which to deposit the funds."
+          }
+        },
+        "title": "Create Quote Execution Request",
+        "required": [
+          "quote_id"
+        ]
       },
       "PricePriceMarket": {
         "type": "string",
@@ -10663,6 +10665,65 @@
           "DEBIT"
         ],
         "description": "Direction of the transfer."
+      },
+      "TransferPublicRejectCryptoDepositBody": {
+        "type": "object",
+        "example": {
+          "identity_id": "54385e67-d7ef-40d1-b488-ceda6dd9b264"
+        },
+        "properties": {
+          "identity_id": {
+            "type": "string",
+            "description": "The Identity (`identity_id`) of the end user that requests to reject the deposit."
+          }
+        },
+        "title": "RejectCryptoDepositRequest",
+        "required": [
+          "identity_id"
+        ]
+      },
+      "TransferPublicUpdateCryptoDepositBody": {
+        "type": "object",
+        "example": {
+          "identity_id": "54385e67-d7ef-40d1-b488-ceda6dd9b264",
+          "originator_address_info": {
+            "first_name": "John",
+            "last_name": "Doe"
+          }
+        },
+        "properties": {
+          "identity_id": {
+            "type": "string",
+            "description": "The Identity (`identity_id`) of the end user updating the deposit."
+          },
+          "originator_address_info": {
+            "$ref": "#/components/schemas/AddressInfo"
+          }
+        },
+        "title": "UpdateCryptoDepositRequest",
+        "required": [
+          "identity_id",
+          "originator_address_info"
+        ]
+      },
+      "TransferPublicUpdateFiatAccountBody": {
+        "type": "object",
+        "properties": {
+          "fiat_account_owner": {
+            "$ref": "#/components/schemas/FiatAccountOwner"
+          },
+          "fiat_network_instructions": {
+            "$ref": "#/components/schemas/UpdateFiatAccountRequestUpdateFiatNetworkInstructions"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Optional client-specified metadata.\nUp to 6 key/value pairs may be provided.\nEach key and value must be less than or equal to 100 characters."
+          }
+        },
+        "title": "UpdateFiatAccountRequest"
       },
       "UpdateFiatAccountRequestUpdateFiatNetworkInstructions": {
         "type": "object",
@@ -11755,6 +11816,7 @@
           "crypto_tx_hash": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
           "crypto_tx_index": "0",
           "destination_address": "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2",
+          "notional_value": "1.02",
           "metadata": {
             "my_id": "4024ee50-eefb-4f2e-85c7-e7899c0b7da5"
           }
@@ -11861,6 +11923,10 @@
           },
           "secondary_status": {
             "$ref": "#/components/schemas/SecondaryStatus"
+          },
+          "notional_value": {
+            "type": "string",
+            "description": "For crypto withdrawals and deposits, the USD value of the combined amount and fee at the time of the transfer."
           }
         },
         "required": [

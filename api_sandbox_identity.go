@@ -27,11 +27,11 @@ type ApiSandboxSetIdentityStatusRequest struct {
 	ctx context.Context
 	ApiService *SandboxIdentityAPIService
 	id string
-	sandboxSetIdentityStatusRequest *SandboxSetIdentityStatusRequest
+	identitySandboxSandboxSetIdentityStatusBody *IdentitySandboxSandboxSetIdentityStatusBody
 }
 
-func (r ApiSandboxSetIdentityStatusRequest) SandboxSetIdentityStatusRequest(sandboxSetIdentityStatusRequest SandboxSetIdentityStatusRequest) ApiSandboxSetIdentityStatusRequest {
-	r.sandboxSetIdentityStatusRequest = &sandboxSetIdentityStatusRequest
+func (r ApiSandboxSetIdentityStatusRequest) IdentitySandboxSandboxSetIdentityStatusBody(identitySandboxSandboxSetIdentityStatusBody IdentitySandboxSandboxSetIdentityStatusBody) ApiSandboxSetIdentityStatusRequest {
+	r.identitySandboxSandboxSetIdentityStatusBody = &identitySandboxSandboxSetIdentityStatusBody
 	return r
 }
 
@@ -81,8 +81,8 @@ func (a *SandboxIdentityAPIService) SandboxSetIdentityStatusExecute(r ApiSandbox
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.sandboxSetIdentityStatusRequest == nil {
-		return localVarReturnValue, nil, reportError("sandboxSetIdentityStatusRequest is required and must be specified")
+	if r.identitySandboxSandboxSetIdentityStatusBody == nil {
+		return localVarReturnValue, nil, reportError("identitySandboxSandboxSetIdentityStatusBody is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -103,7 +103,7 @@ func (a *SandboxIdentityAPIService) SandboxSetIdentityStatusExecute(r ApiSandbox
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.sandboxSetIdentityStatusRequest
+	localVarPostBody = r.identitySandboxSandboxSetIdentityStatusBody
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

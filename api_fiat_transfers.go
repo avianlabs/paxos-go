@@ -1277,11 +1277,11 @@ type ApiUpdateFiatAccountRequest struct {
 	ctx context.Context
 	ApiService *FiatTransfersAPIService
 	id string
-	updateFiatAccountRequest *UpdateFiatAccountRequest
+	transferPublicUpdateFiatAccountBody *TransferPublicUpdateFiatAccountBody
 }
 
-func (r ApiUpdateFiatAccountRequest) UpdateFiatAccountRequest(updateFiatAccountRequest UpdateFiatAccountRequest) ApiUpdateFiatAccountRequest {
-	r.updateFiatAccountRequest = &updateFiatAccountRequest
+func (r ApiUpdateFiatAccountRequest) TransferPublicUpdateFiatAccountBody(transferPublicUpdateFiatAccountBody TransferPublicUpdateFiatAccountBody) ApiUpdateFiatAccountRequest {
+	r.transferPublicUpdateFiatAccountBody = &transferPublicUpdateFiatAccountBody
 	return r
 }
 
@@ -1334,8 +1334,8 @@ func (a *FiatTransfersAPIService) UpdateFiatAccountExecute(r ApiUpdateFiatAccoun
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.updateFiatAccountRequest == nil {
-		return localVarReturnValue, nil, reportError("updateFiatAccountRequest is required and must be specified")
+	if r.transferPublicUpdateFiatAccountBody == nil {
+		return localVarReturnValue, nil, reportError("transferPublicUpdateFiatAccountBody is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -1356,7 +1356,7 @@ func (a *FiatTransfersAPIService) UpdateFiatAccountExecute(r ApiUpdateFiatAccoun
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.updateFiatAccountRequest
+	localVarPostBody = r.transferPublicUpdateFiatAccountBody
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

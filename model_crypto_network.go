@@ -26,6 +26,7 @@ const (
 	CryptoNetwork_LITECOIN CryptoNetwork = "LITECOIN"
 	CryptoNetwork_SOLANA CryptoNetwork = "SOLANA"
 	CryptoNetwork_POLYGON_POS CryptoNetwork = "POLYGON_POS"
+	CryptoNetwork_BASE CryptoNetwork = "BASE"
 	CryptoNetwork_ARBITRUM_ONE CryptoNetwork = "ARBITRUM_ONE"
 )
 
@@ -37,6 +38,7 @@ var AllowedCryptoNetworkEnumValues = []CryptoNetwork{
 	"LITECOIN",
 	"SOLANA",
 	"POLYGON_POS",
+	"BASE",
 	"ARBITRUM_ONE",
 }
 

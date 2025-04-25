@@ -32,9 +32,9 @@ type Identity struct {
 	RefId *string `json:"ref_id,omitempty"`
 	InstitutionDetails *InstitutionDetails `json:"institution_details,omitempty"`
 	InstitutionMembers []InstitutionMember `json:"institution_members,omitempty"`
-	// the time at which the identity is created at.
+	// The time at which the identity is created at. RFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`. ex: `2006-01-02T15:04:05Z`.
 	CreatedAt *time.Time `json:"created_at,omitempty"`
-	// the time at which the identity is updated at.
+	// The time at which the identity is updated at. RFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`. ex: `2006-01-02T15:04:05Z`.
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 	TaxDetails []TaxDetail `json:"tax_details,omitempty"`
 	TaxDetailsNotRequired *bool `json:"tax_details_not_required,omitempty"`
@@ -42,6 +42,8 @@ type Identity struct {
 	CustomerDueDiligence *CustomerDueDiligence `json:"customer_due_diligence,omitempty"`
 	// True if the identity is a merchant.
 	IsMerchant *bool `json:"is_merchant,omitempty"`
+	// The last timestamp the identity has undergone a periodic kyc refresh. RFC3339 format, like `YYYY-MM-DDTHH:MM:SS.sssZ`. ex: `2006-01-02T15:04:05Z`.
+	LastKycRefreshDate *time.Time `json:"last_kyc_refresh_date,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -601,6 +603,38 @@ func (o *Identity) SetIsMerchant(v bool) {
 	o.IsMerchant = &v
 }
 
+// GetLastKycRefreshDate returns the LastKycRefreshDate field value if set, zero value otherwise.
+func (o *Identity) GetLastKycRefreshDate() time.Time {
+	if o == nil || IsNil(o.LastKycRefreshDate) {
+		var ret time.Time
+		return ret
+	}
+	return *o.LastKycRefreshDate
+}
+
+// GetLastKycRefreshDateOk returns a tuple with the LastKycRefreshDate field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Identity) GetLastKycRefreshDateOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.LastKycRefreshDate) {
+		return nil, false
+	}
+	return o.LastKycRefreshDate, true
+}
+
+// HasLastKycRefreshDate returns a boolean if a field has been set.
+func (o *Identity) HasLastKycRefreshDate() bool {
+	if o != nil && !IsNil(o.LastKycRefreshDate) {
+		return true
+	}
+
+	return false
+}
+
+// SetLastKycRefreshDate gets a reference to the given time.Time and assigns it to the LastKycRefreshDate field.
+func (o *Identity) SetLastKycRefreshDate(v time.Time) {
+	o.LastKycRefreshDate = &v
+}
+
 func (o Identity) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -659,6 +693,9 @@ func (o Identity) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.IsMerchant) {
 		toSerialize["is_merchant"] = o.IsMerchant
+	}
+	if !IsNil(o.LastKycRefreshDate) {
+		toSerialize["last_kyc_refresh_date"] = o.LastKycRefreshDate
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -720,6 +757,7 @@ func (o *Identity) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "summary_tin_verification_status")
 		delete(additionalProperties, "customer_due_diligence")
 		delete(additionalProperties, "is_merchant")
+		delete(additionalProperties, "last_kyc_refresh_date")
 		o.AdditionalProperties = additionalProperties
 	}
 

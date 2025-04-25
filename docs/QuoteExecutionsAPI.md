@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## CreateQuoteExecution
 
-> QuoteExecution CreateQuoteExecution(ctx, profileId).CreateQuoteExecutionRequest(createQuoteExecutionRequest).Execute()
+> QuoteExecution CreateQuoteExecution(ctx, profileId).ExchangePublicCreateQuoteExecutionBody(exchangePublicCreateQuoteExecutionBody).Execute()
 
 Create Quote Execution
 
@@ -32,11 +32,11 @@ import (
 
 func main() {
 	profileId := "profileId_example" // string | The ID of the profile under which to execute this order.
-	createQuoteExecutionRequest := *openapiclient.NewCreateQuoteExecutionRequest("QuoteId_example") // CreateQuoteExecutionRequest | 
+	exchangePublicCreateQuoteExecutionBody := *openapiclient.NewExchangePublicCreateQuoteExecutionBody("QuoteId_example") // ExchangePublicCreateQuoteExecutionBody | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.QuoteExecutionsAPI.CreateQuoteExecution(context.Background(), profileId).CreateQuoteExecutionRequest(createQuoteExecutionRequest).Execute()
+	resp, r, err := apiClient.QuoteExecutionsAPI.CreateQuoteExecution(context.Background(), profileId).ExchangePublicCreateQuoteExecutionBody(exchangePublicCreateQuoteExecutionBody).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `QuoteExecutionsAPI.CreateQuoteExecution``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -62,7 +62,7 @@ Other parameters are passed through a pointer to a apiCreateQuoteExecutionReques
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **createQuoteExecutionRequest** | [**CreateQuoteExecutionRequest**](CreateQuoteExecutionRequest.md) |  | 
+ **exchangePublicCreateQuoteExecutionBody** | [**ExchangePublicCreateQuoteExecutionBody**](ExchangePublicCreateQuoteExecutionBody.md) |  | 
 
 ### Return type
 

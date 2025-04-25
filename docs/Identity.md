@@ -14,13 +14,14 @@ Name | Type | Description | Notes
 **RefId** | Pointer to **string** | A user-facing ID to prevent duplicate account creation. Unique for all accounts created by the same API user. | [optional] 
 **InstitutionDetails** | Pointer to [**InstitutionDetails**](InstitutionDetails.md) |  | [optional] 
 **InstitutionMembers** | Pointer to [**[]InstitutionMember**](InstitutionMember.md) |  | [optional] 
-**CreatedAt** | Pointer to **time.Time** | the time at which the identity is created at. | [optional] 
-**UpdatedAt** | Pointer to **time.Time** | the time at which the identity is updated at. | [optional] 
+**CreatedAt** | Pointer to **time.Time** | The time at which the identity is created at. RFC3339 format, like &#x60;YYYY-MM-DDTHH:MM:SS.sssZ&#x60;. ex: &#x60;2006-01-02T15:04:05Z&#x60;. | [optional] 
+**UpdatedAt** | Pointer to **time.Time** | The time at which the identity is updated at. RFC3339 format, like &#x60;YYYY-MM-DDTHH:MM:SS.sssZ&#x60;. ex: &#x60;2006-01-02T15:04:05Z&#x60;. | [optional] 
 **TaxDetails** | Pointer to [**[]TaxDetail**](TaxDetail.md) |  | [optional] 
 **TaxDetailsNotRequired** | Pointer to **bool** |  | [optional] 
 **SummaryTinVerificationStatus** | Pointer to [**TINVerificationStatus**](TINVerificationStatus.md) |  | [optional] 
 **CustomerDueDiligence** | Pointer to [**CustomerDueDiligence**](CustomerDueDiligence.md) |  | [optional] 
 **IsMerchant** | Pointer to **bool** | True if the identity is a merchant. | [optional] 
+**LastKycRefreshDate** | Pointer to **time.Time** | The last timestamp the identity has undergone a periodic kyc refresh. RFC3339 format, like &#x60;YYYY-MM-DDTHH:MM:SS.sssZ&#x60;. ex: &#x60;2006-01-02T15:04:05Z&#x60;. | [optional] 
 
 ## Methods
 
@@ -460,6 +461,31 @@ SetIsMerchant sets IsMerchant field to given value.
 `func (o *Identity) HasIsMerchant() bool`
 
 HasIsMerchant returns a boolean if a field has been set.
+
+### GetLastKycRefreshDate
+
+`func (o *Identity) GetLastKycRefreshDate() time.Time`
+
+GetLastKycRefreshDate returns the LastKycRefreshDate field if non-nil, zero value otherwise.
+
+### GetLastKycRefreshDateOk
+
+`func (o *Identity) GetLastKycRefreshDateOk() (*time.Time, bool)`
+
+GetLastKycRefreshDateOk returns a tuple with the LastKycRefreshDate field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLastKycRefreshDate
+
+`func (o *Identity) SetLastKycRefreshDate(v time.Time)`
+
+SetLastKycRefreshDate sets LastKycRefreshDate field to given value.
+
+### HasLastKycRefreshDate
+
+`func (o *Identity) HasLastKycRefreshDate() bool`
+
+HasLastKycRefreshDate returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
