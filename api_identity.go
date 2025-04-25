@@ -538,10 +538,10 @@ func (a *IdentityAPIService) GetIdentityExecute(r ApiGetIdentityRequest) (*Ident
 	localVarFormParams := url.Values{}
 
 	if r.includeDetails != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "include_details", r.includeDetails, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_details", r.includeDetails, "")
 	}
 	if r.includeInstitutionMembers != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "include_institution_members", r.includeInstitutionMembers, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_institution_members", r.includeInstitutionMembers, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -761,52 +761,52 @@ func (a *IdentityAPIService) ListIdentitiesExecute(r ApiListIdentitiesRequest) (
 	localVarFormParams := url.Values{}
 
 	if r.summaryStatus != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "summary_status", r.summaryStatus, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "summary_status", r.summaryStatus, "")
 	}
 	if r.createdAtLt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lt", r.createdAtLt, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lt", r.createdAtLt, "")
 	}
 	if r.createdAtLte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lte", r.createdAtLte, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lte", r.createdAtLte, "")
 	}
 	if r.createdAtEq != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.eq", r.createdAtEq, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.eq", r.createdAtEq, "")
 	}
 	if r.createdAtGte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gte", r.createdAtGte, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gte", r.createdAtGte, "")
 	}
 	if r.createdAtGt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gt", r.createdAtGt, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gt", r.createdAtGt, "")
 	}
 	if r.updatedAtLt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.lt", r.updatedAtLt, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.lt", r.updatedAtLt, "")
 	}
 	if r.updatedAtLte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.lte", r.updatedAtLte, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.lte", r.updatedAtLte, "")
 	}
 	if r.updatedAtEq != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.eq", r.updatedAtEq, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.eq", r.updatedAtEq, "")
 	}
 	if r.updatedAtGte != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.gte", r.updatedAtGte, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.gte", r.updatedAtGte, "")
 	}
 	if r.updatedAtGt != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.gt", r.updatedAtGt, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "updated_at.gt", r.updatedAtGt, "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
 	}
 	if r.order != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "")
 	}
 	if r.orderBy != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "")
 	}
 	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
 	}
 	if r.identityType != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "identity_type", r.identityType, "form", "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "identity_type", r.identityType, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

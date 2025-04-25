@@ -20,8 +20,8 @@ type SecondaryStatusName string
 
 // List of SecondaryStatusName
 const (
-	TRAVEL_RULE_INFO_REQUESTED SecondaryStatusName = "TRAVEL_RULE_INFO_REQUESTED"
-	TRAVEL_RULE_REJECTED SecondaryStatusName = "TRAVEL_RULE_REJECTED"
+	SecondaryStatusName_TRAVEL_RULE_INFO_REQUESTED SecondaryStatusName = "TRAVEL_RULE_INFO_REQUESTED"
+	SecondaryStatusName_TRAVEL_RULE_REJECTED SecondaryStatusName = "TRAVEL_RULE_REJECTED"
 )
 
 // All allowed values of SecondaryStatusName enum

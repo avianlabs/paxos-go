@@ -20,12 +20,12 @@ type PersonDetailsCIPIDType string
 
 // List of PersonDetailsCIPIDType
 const (
-	SSN PersonDetailsCIPIDType = "SSN"
-	ID_CARD PersonDetailsCIPIDType = "ID_CARD"
-	ITIN PersonDetailsCIPIDType = "ITIN"
-	PASSPORT PersonDetailsCIPIDType = "PASSPORT"
-	DRIVING_LICENSE PersonDetailsCIPIDType = "DRIVING_LICENSE"
-	VISA PersonDetailsCIPIDType = "VISA"
+	PersonDetailsCIPIDType_SSN PersonDetailsCIPIDType = "SSN"
+	PersonDetailsCIPIDType_ID_CARD PersonDetailsCIPIDType = "ID_CARD"
+	PersonDetailsCIPIDType_ITIN PersonDetailsCIPIDType = "ITIN"
+	PersonDetailsCIPIDType_PASSPORT PersonDetailsCIPIDType = "PASSPORT"
+	PersonDetailsCIPIDType_DRIVING_LICENSE PersonDetailsCIPIDType = "DRIVING_LICENSE"
+	PersonDetailsCIPIDType_VISA PersonDetailsCIPIDType = "VISA"
 )
 
 // All allowed values of PersonDetailsCIPIDType enum

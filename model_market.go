@@ -20,20 +20,20 @@ type Market string
 
 // List of Market
 const (
-	ETHEUR Market = "ETHEUR"
-	ETHSGD Market = "ETHSGD"
-	ETHUSD Market = "ETHUSD"
-	BTCEUR Market = "BTCEUR"
-	BTCSGD Market = "BTCSGD"
-	BTCUSD Market = "BTCUSD"
-	PAXGUSD Market = "PAXGUSD"
-	BCHUSD Market = "BCHUSD"
-	LTCUSD Market = "LTCUSD"
-	USDPUSD Market = "USDPUSD"
-	LINKUSD Market = "LINKUSD"
-	MATICUSD Market = "MATICUSD"
-	AAVEUSD Market = "AAVEUSD"
-	UNIUSD Market = "UNIUSD"
+	Market_ETHEUR Market = "ETHEUR"
+	Market_ETHSGD Market = "ETHSGD"
+	Market_ETHUSD Market = "ETHUSD"
+	Market_BTCEUR Market = "BTCEUR"
+	Market_BTCSGD Market = "BTCSGD"
+	Market_BTCUSD Market = "BTCUSD"
+	Market_PAXGUSD Market = "PAXGUSD"
+	Market_BCHUSD Market = "BCHUSD"
+	Market_LTCUSD Market = "LTCUSD"
+	Market_USDPUSD Market = "USDPUSD"
+	Market_LINKUSD Market = "LINKUSD"
+	Market_MATICUSD Market = "MATICUSD"
+	Market_AAVEUSD Market = "AAVEUSD"
+	Market_UNIUSD Market = "UNIUSD"
 )
 
 // All allowed values of Market enum
