@@ -21,8 +21,6 @@ var _ MappedNullable = &ListTaxFormsResponse{}
 type ListTaxFormsResponse struct {
 	// List of tax form URLs. The size shall not exceed `users_limit` times `form_types`.
 	TaxFormUrls []TaxFormURL `json:"tax_form_urls,omitempty"`
-	// Cursor token required for fetching the next page.
-	NextPageCursor *string `json:"next_page_cursor,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -77,38 +75,6 @@ func (o *ListTaxFormsResponse) SetTaxFormUrls(v []TaxFormURL) {
 	o.TaxFormUrls = v
 }
 
-// GetNextPageCursor returns the NextPageCursor field value if set, zero value otherwise.
-func (o *ListTaxFormsResponse) GetNextPageCursor() string {
-	if o == nil || IsNil(o.NextPageCursor) {
-		var ret string
-		return ret
-	}
-	return *o.NextPageCursor
-}
-
-// GetNextPageCursorOk returns a tuple with the NextPageCursor field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *ListTaxFormsResponse) GetNextPageCursorOk() (*string, bool) {
-	if o == nil || IsNil(o.NextPageCursor) {
-		return nil, false
-	}
-	return o.NextPageCursor, true
-}
-
-// HasNextPageCursor returns a boolean if a field has been set.
-func (o *ListTaxFormsResponse) HasNextPageCursor() bool {
-	if o != nil && !IsNil(o.NextPageCursor) {
-		return true
-	}
-
-	return false
-}
-
-// SetNextPageCursor gets a reference to the given string and assigns it to the NextPageCursor field.
-func (o *ListTaxFormsResponse) SetNextPageCursor(v string) {
-	o.NextPageCursor = &v
-}
-
 func (o ListTaxFormsResponse) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -121,9 +87,6 @@ func (o ListTaxFormsResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if !IsNil(o.TaxFormUrls) {
 		toSerialize["tax_form_urls"] = o.TaxFormUrls
-	}
-	if !IsNil(o.NextPageCursor) {
-		toSerialize["next_page_cursor"] = o.NextPageCursor
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -148,7 +111,6 @@ func (o *ListTaxFormsResponse) UnmarshalJSON(data []byte) (err error) {
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "tax_form_urls")
-		delete(additionalProperties, "next_page_cursor")
 		o.AdditionalProperties = additionalProperties
 	}
 

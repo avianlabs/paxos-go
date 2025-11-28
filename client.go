@@ -50,6 +50,8 @@ type APIClient struct {
 
 	// API Services
 
+	APICredentialsAPI *APICredentialsAPIService
+
 	AccountMembersAPI *AccountMembersAPIService
 
 	AccountsAPI *AccountsAPIService
@@ -60,6 +62,8 @@ type APIClient struct {
 
 	DepositAddressesAPI *DepositAddressesAPIService
 
+	EventsAPI *EventsAPIService
+
 	ExchangePublicAPI *ExchangePublicAPIService
 
 	FeesAPI *FeesAPIService
@@ -68,21 +72,29 @@ type APIClient struct {
 
 	IdentityAPI *IdentityAPIService
 
-	IdentityCredentialsAPI *IdentityCredentialsAPIService
-
 	IdentityDocumentsAPI *IdentityDocumentsAPIService
 
 	InstitutionMembersAPI *InstitutionMembersAPIService
 
 	InternalTransfersAPI *InternalTransfersAPIService
 
+	IssuerQuotesAPI *IssuerQuotesAPIService
+
 	LimitsAPI *LimitsAPIService
 
 	MarketDataAPI *MarketDataAPIService
 
+	MonitoringAddressesAPI *MonitoringAddressesAPIService
+
+	OrchestrationRulesAPI *OrchestrationRulesAPIService
+
+	OrchestrationsAPI *OrchestrationsAPIService
+
 	OrdersAPI *OrdersAPIService
 
 	PaxosTransfersAPI *PaxosTransfersAPIService
+
+	PaymentsAPI *PaymentsAPIService
 
 	PricingAPI *PricingAPIService
 
@@ -101,6 +113,8 @@ type APIClient struct {
 	SettlementAPI *SettlementAPIService
 
 	StablecoinConversionAPI *StablecoinConversionAPIService
+
+	StatementsAPI *StatementsAPIService
 
 	TaxFormsAPI *TaxFormsAPIService
 
@@ -123,23 +137,29 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
+	c.APICredentialsAPI = (*APICredentialsAPIService)(&c.common)
 	c.AccountMembersAPI = (*AccountMembersAPIService)(&c.common)
 	c.AccountsAPI = (*AccountsAPIService)(&c.common)
 	c.CryptoDepositsAPI = (*CryptoDepositsAPIService)(&c.common)
 	c.CryptoWithdrawalsAPI = (*CryptoWithdrawalsAPIService)(&c.common)
 	c.DepositAddressesAPI = (*DepositAddressesAPIService)(&c.common)
+	c.EventsAPI = (*EventsAPIService)(&c.common)
 	c.ExchangePublicAPI = (*ExchangePublicAPIService)(&c.common)
 	c.FeesAPI = (*FeesAPIService)(&c.common)
 	c.FiatTransfersAPI = (*FiatTransfersAPIService)(&c.common)
 	c.IdentityAPI = (*IdentityAPIService)(&c.common)
-	c.IdentityCredentialsAPI = (*IdentityCredentialsAPIService)(&c.common)
 	c.IdentityDocumentsAPI = (*IdentityDocumentsAPIService)(&c.common)
 	c.InstitutionMembersAPI = (*InstitutionMembersAPIService)(&c.common)
 	c.InternalTransfersAPI = (*InternalTransfersAPIService)(&c.common)
+	c.IssuerQuotesAPI = (*IssuerQuotesAPIService)(&c.common)
 	c.LimitsAPI = (*LimitsAPIService)(&c.common)
 	c.MarketDataAPI = (*MarketDataAPIService)(&c.common)
+	c.MonitoringAddressesAPI = (*MonitoringAddressesAPIService)(&c.common)
+	c.OrchestrationRulesAPI = (*OrchestrationRulesAPIService)(&c.common)
+	c.OrchestrationsAPI = (*OrchestrationsAPIService)(&c.common)
 	c.OrdersAPI = (*OrdersAPIService)(&c.common)
 	c.PaxosTransfersAPI = (*PaxosTransfersAPIService)(&c.common)
+	c.PaymentsAPI = (*PaymentsAPIService)(&c.common)
 	c.PricingAPI = (*PricingAPIService)(&c.common)
 	c.ProfilesAPI = (*ProfilesAPIService)(&c.common)
 	c.QuoteExecutionsAPI = (*QuoteExecutionsAPIService)(&c.common)
@@ -149,6 +169,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.SandboxIdentityAPI = (*SandboxIdentityAPIService)(&c.common)
 	c.SettlementAPI = (*SettlementAPIService)(&c.common)
 	c.StablecoinConversionAPI = (*StablecoinConversionAPIService)(&c.common)
+	c.StatementsAPI = (*StatementsAPIService)(&c.common)
 	c.TaxFormsAPI = (*TaxFormsAPIService)(&c.common)
 	c.TransfersAPI = (*TransfersAPIService)(&c.common)
 

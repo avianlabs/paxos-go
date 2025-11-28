@@ -23,6 +23,7 @@ const (
 	FiatNetwork_WIRE FiatNetwork = "WIRE"
 	FiatNetwork_DBS_ACT FiatNetwork = "DBS_ACT"
 	FiatNetwork_CUBIX FiatNetwork = "CUBIX"
+	FiatNetwork_SCB FiatNetwork = "SCB"
 )
 
 // All allowed values of FiatNetwork enum
@@ -30,6 +31,7 @@ var AllowedFiatNetworkEnumValues = []FiatNetwork{
 	"WIRE",
 	"DBS_ACT",
 	"CUBIX",
+	"SCB",
 }
 
 func (v *FiatNetwork) UnmarshalJSON(src []byte) error {

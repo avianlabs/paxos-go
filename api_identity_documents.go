@@ -42,10 +42,15 @@ func (r ApiDocumentUploadRequest) Execute() (*DocumentUploadResponse, *http.Resp
 /*
 DocumentUpload Document Upload
 
-This endpoint enables you to receive a URL to upload a document to Paxos.
-When uploading a document one must specify the document type, you will receive a
-URL to upload a document into using a POST request. (see curl documentation)
-An uploaded document must be less than 100 MB in size.
+This endpoint enables you to receive a URL to upload a document to Paxos for identity verification or enhanced due diligence purposes.
+When uploading a document you must specify the document type. You will receive a
+URL where you can upload the document using a POST request.
+
+Requirements:
+- Uploaded documents must be less than 100 MB in size
+- Supported formats include PDF, JPG, and PNG
+
+For more information on document requirements for enhanced due diligence, see [here](https://docs.paxos.com/identity/edd).
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param identityId The id of the identity the document is associated with.

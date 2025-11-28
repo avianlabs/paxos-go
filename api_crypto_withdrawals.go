@@ -16,6 +16,8 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"time"
+	"reflect"
 )
 
 
@@ -41,6 +43,28 @@ func (r ApiCreateCryptoWithdrawalRequest) Execute() (*Transfer, *http.Response, 
 CreateCryptoWithdrawal Create Crypto Withdrawal
 
 Withdraw a cryptocurrency asset to a specified destination address.
+
+**Important for Stellar Network (PYUSD):**
+
+When withdrawing PYUSD on the Stellar network, the destination address must have an established trustline with the PYUSD issuer:
+
+- **PYUSD Issuer**: `GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5` (mainnet)
+- **Asset Code**: `PYUSD`
+
+**How to Establish a Trustline:**
+
+The recipient must use a Stellar wallet or the Stellar SDK to:
+1. Ensure their account has minimum XLM balance (at least 1 XLM recommended)
+2. Create a trustline to the PYUSD issuer for the PYUSD asset
+3. Confirm the trustline is active before requesting withdrawal
+
+**Verifying Trustline Status:**
+
+You can verify if an address has the required trustline by:
+- Using Stellar blockchain explorers (e.g., stellar.expert)
+- Querying the Stellar Horizon API
+- Using the Stellar SDK to check account balances
+
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiCreateCryptoWithdrawalRequest
@@ -148,6 +172,387 @@ func (a *CryptoWithdrawalsAPIService) CreateCryptoWithdrawalExecute(r ApiCreateC
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiListCryptoDestinationAddressesRequest struct {
+	ctx context.Context
+	ApiService *CryptoWithdrawalsAPIService
+	ids *[]string
+	cryptoNetworks *[]string
+	addresses *[]string
+	nicknames *[]string
+	bookmarkedStatus *bool
+	createdAtLt *time.Time
+	createdAtLte *time.Time
+	createdAtEq *time.Time
+	createdAtGte *time.Time
+	createdAtGt *time.Time
+	limit *int32
+	order *string
+	orderBy *string
+	pageCursor *string
+}
+
+// Optionally filter by the UUIDs of the crypto destination addresses. Limit 100.
+func (r ApiListCryptoDestinationAddressesRequest) Ids(ids []string) ApiListCryptoDestinationAddressesRequest {
+	r.ids = &ids
+	return r
+}
+
+// Optionally filter by the &#x60;crypto_network&#x60; of the destination addresses. Limit 100.
+func (r ApiListCryptoDestinationAddressesRequest) CryptoNetworks(cryptoNetworks []string) ApiListCryptoDestinationAddressesRequest {
+	r.cryptoNetworks = &cryptoNetworks
+	return r
+}
+
+// Optionally filter by specific addresses. Limit 100.
+func (r ApiListCryptoDestinationAddressesRequest) Addresses(addresses []string) ApiListCryptoDestinationAddressesRequest {
+	r.addresses = &addresses
+	return r
+}
+
+// Optionally filter by specific nicknames. Limit 100.
+func (r ApiListCryptoDestinationAddressesRequest) Nicknames(nicknames []string) ApiListCryptoDestinationAddressesRequest {
+	r.nicknames = &nicknames
+	return r
+}
+
+// Optionally filter by bookmarked status. If omitted, addresses regardless of bookmarked status will be returned.
+func (r ApiListCryptoDestinationAddressesRequest) BookmarkedStatus(bookmarkedStatus bool) ApiListCryptoDestinationAddressesRequest {
+	r.bookmarkedStatus = &bookmarkedStatus
+	return r
+}
+
+// Include timestamps strictly less than lt. RFC3339 format, like &#x60;2006-01-02T15:04:05Z&#x60;.
+func (r ApiListCryptoDestinationAddressesRequest) CreatedAtLt(createdAtLt time.Time) ApiListCryptoDestinationAddressesRequest {
+	r.createdAtLt = &createdAtLt
+	return r
+}
+
+// Include timestamps less than or equal to lte. RFC3339 format, like &#x60;2006-01-02T15:04:05Z&#x60;.
+func (r ApiListCryptoDestinationAddressesRequest) CreatedAtLte(createdAtLte time.Time) ApiListCryptoDestinationAddressesRequest {
+	r.createdAtLte = &createdAtLte
+	return r
+}
+
+// Include timestamps exactly equal to eq. RFC3339 format, like &#x60;2006-01-02T15:04:05Z&#x60;.
+func (r ApiListCryptoDestinationAddressesRequest) CreatedAtEq(createdAtEq time.Time) ApiListCryptoDestinationAddressesRequest {
+	r.createdAtEq = &createdAtEq
+	return r
+}
+
+// Include timestamps greater than or equal to lte. RFC3339 format, like &#x60;2006-01-02T15:04:05Z&#x60;.
+func (r ApiListCryptoDestinationAddressesRequest) CreatedAtGte(createdAtGte time.Time) ApiListCryptoDestinationAddressesRequest {
+	r.createdAtGte = &createdAtGte
+	return r
+}
+
+// Include timestamps strictly greater than gt. RFC3339 format, like &#x60;2006-01-02T15:04:05Z&#x60;.
+func (r ApiListCryptoDestinationAddressesRequest) CreatedAtGt(createdAtGt time.Time) ApiListCryptoDestinationAddressesRequest {
+	r.createdAtGt = &createdAtGt
+	return r
+}
+
+// Number of results to return. Defaults to 100 if no limit is provided. Maximum 1000.
+func (r ApiListCryptoDestinationAddressesRequest) Limit(limit int32) ApiListCryptoDestinationAddressesRequest {
+	r.limit = &limit
+	return r
+}
+
+// Return items in ascending (ASC) or descending (DESC) order. Defaults to DESC.
+func (r ApiListCryptoDestinationAddressesRequest) Order(order string) ApiListCryptoDestinationAddressesRequest {
+	r.order = &order
+	return r
+}
+
+// The specific method by which the returned results will be ordered.
+func (r ApiListCryptoDestinationAddressesRequest) OrderBy(orderBy string) ApiListCryptoDestinationAddressesRequest {
+	r.orderBy = &orderBy
+	return r
+}
+
+// Optional cursor for getting the next page of results.
+func (r ApiListCryptoDestinationAddressesRequest) PageCursor(pageCursor string) ApiListCryptoDestinationAddressesRequest {
+	r.pageCursor = &pageCursor
+	return r
+}
+
+func (r ApiListCryptoDestinationAddressesRequest) Execute() (*ListCryptoDestinationAddressesResponse, *http.Response, error) {
+	return r.ApiService.ListCryptoDestinationAddressesExecute(r)
+}
+
+/*
+ListCryptoDestinationAddresses List Crypto Destination Addresses
+
+List all crypto destination addresses, optionally filtering and paging the results
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiListCryptoDestinationAddressesRequest
+*/
+func (a *CryptoWithdrawalsAPIService) ListCryptoDestinationAddresses(ctx context.Context) ApiListCryptoDestinationAddressesRequest {
+	return ApiListCryptoDestinationAddressesRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return ListCryptoDestinationAddressesResponse
+func (a *CryptoWithdrawalsAPIService) ListCryptoDestinationAddressesExecute(r ApiListCryptoDestinationAddressesRequest) (*ListCryptoDestinationAddressesResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *ListCryptoDestinationAddressesResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CryptoWithdrawalsAPIService.ListCryptoDestinationAddresses")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/transfer/crypto-destination-addresses"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.ids != nil {
+		t := *r.ids
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "ids", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "ids", t, "multi")
+		}
+	}
+	if r.cryptoNetworks != nil {
+		t := *r.cryptoNetworks
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "crypto_networks", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "crypto_networks", t, "multi")
+		}
+	}
+	if r.addresses != nil {
+		t := *r.addresses
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "addresses", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "addresses", t, "multi")
+		}
+	}
+	if r.nicknames != nil {
+		t := *r.nicknames
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "nicknames", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "nicknames", t, "multi")
+		}
+	}
+	if r.bookmarkedStatus != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "bookmarked_status", r.bookmarkedStatus, "")
+	}
+	if r.createdAtLt != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lt", r.createdAtLt, "")
+	}
+	if r.createdAtLte != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.lte", r.createdAtLte, "")
+	}
+	if r.createdAtEq != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.eq", r.createdAtEq, "")
+	}
+	if r.createdAtGte != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gte", r.createdAtGte, "")
+	}
+	if r.createdAtGt != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "created_at.gt", r.createdAtGt, "")
+	}
+	if r.limit != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+	}
+	if r.order != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "")
+	}
+	if r.orderBy != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "")
+	}
+	if r.pageCursor != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiPutCryptoDestinationAddressRequest struct {
+	ctx context.Context
+	ApiService *CryptoWithdrawalsAPIService
+	putCryptoDestinationAddressRequest *PutCryptoDestinationAddressRequest
+}
+
+func (r ApiPutCryptoDestinationAddressRequest) PutCryptoDestinationAddressRequest(putCryptoDestinationAddressRequest PutCryptoDestinationAddressRequest) ApiPutCryptoDestinationAddressRequest {
+	r.putCryptoDestinationAddressRequest = &putCryptoDestinationAddressRequest
+	return r
+}
+
+func (r ApiPutCryptoDestinationAddressRequest) Execute() (*PutCryptoDestinationAddressResponse, *http.Response, error) {
+	return r.ApiService.PutCryptoDestinationAddressExecute(r)
+}
+
+/*
+PutCryptoDestinationAddress Put Crypto Destination Addresses
+
+Updates a specified crypto destination address. If the address does not exist, it will be created
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiPutCryptoDestinationAddressRequest
+*/
+func (a *CryptoWithdrawalsAPIService) PutCryptoDestinationAddress(ctx context.Context) ApiPutCryptoDestinationAddressRequest {
+	return ApiPutCryptoDestinationAddressRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return PutCryptoDestinationAddressResponse
+func (a *CryptoWithdrawalsAPIService) PutCryptoDestinationAddressExecute(r ApiPutCryptoDestinationAddressRequest) (*PutCryptoDestinationAddressResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPut
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *PutCryptoDestinationAddressResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CryptoWithdrawalsAPIService.PutCryptoDestinationAddress")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/transfer/crypto-destination-address"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.putCryptoDestinationAddressRequest == nil {
+		return localVarReturnValue, nil, reportError("putCryptoDestinationAddressRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.putCryptoDestinationAddressRequest
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

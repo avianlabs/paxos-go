@@ -12,6 +12,7 @@ package paxos
 
 import (
 	"encoding/json"
+	"time"
 	"fmt"
 )
 
@@ -40,6 +41,8 @@ type DepositAddress struct {
 	ConversionTargetAsset DepositAddressConversionTargetAsset `json:"conversion_target_asset"`
 	// List of networks compatible with the created address. Any of these networks can be used to deposit to the address.
 	CompatibleCryptoNetworks []CryptoNetwork `json:"compatible_crypto_networks,omitempty"`
+	// The time at which this address was created.
+	CreatedAt time.Time `json:"created_at"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -49,7 +52,7 @@ type _DepositAddress DepositAddress
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDepositAddress(id string, profileId string, customerId string, cryptoNetwork CryptoNetwork, address string, conversionTargetAsset DepositAddressConversionTargetAsset) *DepositAddress {
+func NewDepositAddress(id string, profileId string, customerId string, cryptoNetwork CryptoNetwork, address string, conversionTargetAsset DepositAddressConversionTargetAsset, createdAt time.Time) *DepositAddress {
 	this := DepositAddress{}
 	this.Id = id
 	this.ProfileId = profileId
@@ -57,6 +60,7 @@ func NewDepositAddress(id string, profileId string, customerId string, cryptoNet
 	this.CryptoNetwork = cryptoNetwork
 	this.Address = address
 	this.ConversionTargetAsset = conversionTargetAsset
+	this.CreatedAt = createdAt
 	return &this
 }
 
@@ -372,6 +376,30 @@ func (o *DepositAddress) SetCompatibleCryptoNetworks(v []CryptoNetwork) {
 	o.CompatibleCryptoNetworks = v
 }
 
+// GetCreatedAt returns the CreatedAt field value
+func (o *DepositAddress) GetCreatedAt() time.Time {
+	if o == nil {
+		var ret time.Time
+		return ret
+	}
+
+	return o.CreatedAt
+}
+
+// GetCreatedAtOk returns a tuple with the CreatedAt field value
+// and a boolean to check if the value has been set.
+func (o *DepositAddress) GetCreatedAtOk() (*time.Time, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.CreatedAt, true
+}
+
+// SetCreatedAt sets field value
+func (o *DepositAddress) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
 func (o DepositAddress) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -403,6 +431,7 @@ func (o DepositAddress) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.CompatibleCryptoNetworks) {
 		toSerialize["compatible_crypto_networks"] = o.CompatibleCryptoNetworks
 	}
+	toSerialize["created_at"] = o.CreatedAt
 
 	for key, value := range o.AdditionalProperties {
 		toSerialize[key] = value
@@ -422,6 +451,7 @@ func (o *DepositAddress) UnmarshalJSON(data []byte) (err error) {
 		"crypto_network",
 		"address",
 		"conversion_target_asset",
+		"created_at",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -462,6 +492,7 @@ func (o *DepositAddress) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "account_id")
 		delete(additionalProperties, "conversion_target_asset")
 		delete(additionalProperties, "compatible_crypto_networks")
+		delete(additionalProperties, "created_at")
 		o.AdditionalProperties = additionalProperties
 	}
 

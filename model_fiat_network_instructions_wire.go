@@ -23,8 +23,8 @@ type FiatNetworkInstructionsWire struct {
 	// The FiatAccount owner's bank account number.
 	AccountNumber string `json:"account_number"`
 	FiatAccountOwnerAddress MailingAddress `json:"fiat_account_owner_address"`
-	RoutingDetails WireRoutingDetails `json:"routing_details"`
-	IntermediaryRoutingDetails *WireRoutingDetails `json:"intermediary_routing_details,omitempty"`
+	RoutingDetails FiatNetworkInstructionsWireRoutingDetails `json:"routing_details"`
+	IntermediaryRoutingDetails *FiatNetworkInstructionsWireRoutingDetails `json:"intermediary_routing_details,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -34,7 +34,7 @@ type _FiatNetworkInstructionsWire FiatNetworkInstructionsWire
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewFiatNetworkInstructionsWire(accountNumber string, fiatAccountOwnerAddress MailingAddress, routingDetails WireRoutingDetails) *FiatNetworkInstructionsWire {
+func NewFiatNetworkInstructionsWire(accountNumber string, fiatAccountOwnerAddress MailingAddress, routingDetails FiatNetworkInstructionsWireRoutingDetails) *FiatNetworkInstructionsWire {
 	this := FiatNetworkInstructionsWire{}
 	this.AccountNumber = accountNumber
 	this.FiatAccountOwnerAddress = fiatAccountOwnerAddress
@@ -99,9 +99,9 @@ func (o *FiatNetworkInstructionsWire) SetFiatAccountOwnerAddress(v MailingAddres
 }
 
 // GetRoutingDetails returns the RoutingDetails field value
-func (o *FiatNetworkInstructionsWire) GetRoutingDetails() WireRoutingDetails {
+func (o *FiatNetworkInstructionsWire) GetRoutingDetails() FiatNetworkInstructionsWireRoutingDetails {
 	if o == nil {
-		var ret WireRoutingDetails
+		var ret FiatNetworkInstructionsWireRoutingDetails
 		return ret
 	}
 
@@ -110,7 +110,7 @@ func (o *FiatNetworkInstructionsWire) GetRoutingDetails() WireRoutingDetails {
 
 // GetRoutingDetailsOk returns a tuple with the RoutingDetails field value
 // and a boolean to check if the value has been set.
-func (o *FiatNetworkInstructionsWire) GetRoutingDetailsOk() (*WireRoutingDetails, bool) {
+func (o *FiatNetworkInstructionsWire) GetRoutingDetailsOk() (*FiatNetworkInstructionsWireRoutingDetails, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -118,14 +118,14 @@ func (o *FiatNetworkInstructionsWire) GetRoutingDetailsOk() (*WireRoutingDetails
 }
 
 // SetRoutingDetails sets field value
-func (o *FiatNetworkInstructionsWire) SetRoutingDetails(v WireRoutingDetails) {
+func (o *FiatNetworkInstructionsWire) SetRoutingDetails(v FiatNetworkInstructionsWireRoutingDetails) {
 	o.RoutingDetails = v
 }
 
 // GetIntermediaryRoutingDetails returns the IntermediaryRoutingDetails field value if set, zero value otherwise.
-func (o *FiatNetworkInstructionsWire) GetIntermediaryRoutingDetails() WireRoutingDetails {
+func (o *FiatNetworkInstructionsWire) GetIntermediaryRoutingDetails() FiatNetworkInstructionsWireRoutingDetails {
 	if o == nil || IsNil(o.IntermediaryRoutingDetails) {
-		var ret WireRoutingDetails
+		var ret FiatNetworkInstructionsWireRoutingDetails
 		return ret
 	}
 	return *o.IntermediaryRoutingDetails
@@ -133,7 +133,7 @@ func (o *FiatNetworkInstructionsWire) GetIntermediaryRoutingDetails() WireRoutin
 
 // GetIntermediaryRoutingDetailsOk returns a tuple with the IntermediaryRoutingDetails field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *FiatNetworkInstructionsWire) GetIntermediaryRoutingDetailsOk() (*WireRoutingDetails, bool) {
+func (o *FiatNetworkInstructionsWire) GetIntermediaryRoutingDetailsOk() (*FiatNetworkInstructionsWireRoutingDetails, bool) {
 	if o == nil || IsNil(o.IntermediaryRoutingDetails) {
 		return nil, false
 	}
@@ -149,8 +149,8 @@ func (o *FiatNetworkInstructionsWire) HasIntermediaryRoutingDetails() bool {
 	return false
 }
 
-// SetIntermediaryRoutingDetails gets a reference to the given WireRoutingDetails and assigns it to the IntermediaryRoutingDetails field.
-func (o *FiatNetworkInstructionsWire) SetIntermediaryRoutingDetails(v WireRoutingDetails) {
+// SetIntermediaryRoutingDetails gets a reference to the given FiatNetworkInstructionsWireRoutingDetails and assigns it to the IntermediaryRoutingDetails field.
+func (o *FiatNetworkInstructionsWire) SetIntermediaryRoutingDetails(v FiatNetworkInstructionsWireRoutingDetails) {
 	o.IntermediaryRoutingDetails = &v
 }
 

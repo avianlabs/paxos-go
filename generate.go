@@ -1,7 +1,18 @@
 package paxos
 
+// Check for required tools
+//go:generate sh -c "command -v curl >/dev/null 2>&1 || { echo 'Error: curl is required but not installed' >&2; exit 1; }"
+//go:generate sh -c "command -v jq >/dev/null 2>&1 || { echo 'Error: jq is required but not installed' >&2; exit 1; }"
+//go:generate sh -c "command -v openapi-generator >/dev/null 2>&1 || { echo 'Error: openapi-generator is required but not installed' >&2; exit 1; }"
+
 // Download the latest OpenAPI spec from the Paxos API
-//go:generate curl -s https://developer.paxos.com/docs/paxos-v2.openapi.json -o paxos-v2.openapi.json
+//go:generate sh -c "curl -s https://developer.paxos.com/docs/paxos-v2.openapi.json > paxos-v2.openapi.json.tmp"
+
+// Patch the spec to add the XLAYER enum value to CryptoNetwork
+//go:generate sh -c "jq '.components.schemas.CryptoNetwork.enum += [\"XLAYER\"]' paxos-v2.openapi.json.tmp > paxos-v2.openapi.json"
+
+// Clean up temporary file
+//go:generate rm -f paxos-v2.openapi.json.tmp
 
 // Clean up old files
 //go:generate rm -rf test/ api_*.go model_*.go .openapi-generator/FILES

@@ -23,6 +23,7 @@ type FiatNetworkInstructions struct {
 	Cbit *FiatNetworkInstructionsCbit `json:"cbit,omitempty"`
 	DbsAct *FiatNetworkInstructionsDbsAct `json:"dbs_act,omitempty"`
 	Cubix *FiatNetworkInstructionsCubix `json:"cubix,omitempty"`
+	Scb *FiatNetworkInstructionsScb `json:"scb,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -173,6 +174,38 @@ func (o *FiatNetworkInstructions) SetCubix(v FiatNetworkInstructionsCubix) {
 	o.Cubix = &v
 }
 
+// GetScb returns the Scb field value if set, zero value otherwise.
+func (o *FiatNetworkInstructions) GetScb() FiatNetworkInstructionsScb {
+	if o == nil || IsNil(o.Scb) {
+		var ret FiatNetworkInstructionsScb
+		return ret
+	}
+	return *o.Scb
+}
+
+// GetScbOk returns a tuple with the Scb field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *FiatNetworkInstructions) GetScbOk() (*FiatNetworkInstructionsScb, bool) {
+	if o == nil || IsNil(o.Scb) {
+		return nil, false
+	}
+	return o.Scb, true
+}
+
+// HasScb returns a boolean if a field has been set.
+func (o *FiatNetworkInstructions) HasScb() bool {
+	if o != nil && !IsNil(o.Scb) {
+		return true
+	}
+
+	return false
+}
+
+// SetScb gets a reference to the given FiatNetworkInstructionsScb and assigns it to the Scb field.
+func (o *FiatNetworkInstructions) SetScb(v FiatNetworkInstructionsScb) {
+	o.Scb = &v
+}
+
 func (o FiatNetworkInstructions) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -194,6 +227,9 @@ func (o FiatNetworkInstructions) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Cubix) {
 		toSerialize["cubix"] = o.Cubix
+	}
+	if !IsNil(o.Scb) {
+		toSerialize["scb"] = o.Scb
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -221,6 +257,7 @@ func (o *FiatNetworkInstructions) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "cbit")
 		delete(additionalProperties, "dbs_act")
 		delete(additionalProperties, "cubix")
+		delete(additionalProperties, "scb")
 		o.AdditionalProperties = additionalProperties
 	}
 

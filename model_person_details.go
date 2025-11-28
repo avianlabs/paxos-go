@@ -31,6 +31,7 @@ type PersonDetails struct {
 	Email *string `json:"email,omitempty"`
 	// Allowed in create and update. Must be an ISO 3166-1 alpha 3 code.
 	Nationality *string `json:"nationality,omitempty" validate:"regexp=^[A-Z]{3}$"`
+	// Allowed in create and update. The id used by the external verifier.
 	VerifierId *string `json:"verifier_id,omitempty"`
 	VerifierType *IdentityprotoVerifierType `json:"verifier_type,omitempty"`
 	IdVerificationUrl *string `json:"id_verification_url,omitempty"`
@@ -47,10 +48,10 @@ type PersonDetails struct {
 	MiddleName *string `json:"middle_name,omitempty"`
 	// Allowed in create and update.
 	CountryOfBirth *string `json:"country_of_birth,omitempty"`
-	// Unique identifier for the underlying individual's ID verification record.
+	// Unique identifier for the underlying person's ID verification record.
 	PassthroughVerificationId *string `json:"passthrough_verification_id,omitempty"`
 	PassthroughVerificationStatus *IdentityStatus `json:"passthrough_verification_status,omitempty"`
-	// List of verification fields used by the external verifier to validate the individual's identity.
+	// List of verification fields used by the external verifier to validate the person's identity.
 	PassthroughVerificationFields []PassthroughVerificationField `json:"passthrough_verification_fields,omitempty"`
 	AdditionalProperties map[string]interface{}
 }

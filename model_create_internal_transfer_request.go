@@ -30,8 +30,18 @@ type CreateInternalTransferRequest struct {
 	Amount string `json:"amount" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	// The asset to transfer, e.g. \"USD\", \"BTC\", \"ETH\".
 	Asset string `json:"asset"`
-	// Optional client-specified metadata. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters.
+	// Optional client-specified metadata for the sender side of the transaction. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters.
 	Metadata *map[string]string `json:"metadata,omitempty"`
+	// The Paxos Identity (`identity_id`) of the sending user.
+	FromIdentityId *string `json:"from_identity_id,omitempty"`
+	// The Paxos Account (`account_id`) of the sending user. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users.
+	FromAccountId *string `json:"from_account_id,omitempty"`
+	// The Paxos Identity (`identity_id`) of the destination user.
+	ToIdentityId *string `json:"to_identity_id,omitempty"`
+	// The Paxos Account (`account_id`) of the destination user. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users.
+	ToAccountId *string `json:"to_account_id,omitempty"`
+	// Optional client-specified metadata for the recipient side of the transaction. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters.
+	RecipientMetadata *map[string]string `json:"recipient_metadata,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -218,6 +228,166 @@ func (o *CreateInternalTransferRequest) SetMetadata(v map[string]string) {
 	o.Metadata = &v
 }
 
+// GetFromIdentityId returns the FromIdentityId field value if set, zero value otherwise.
+func (o *CreateInternalTransferRequest) GetFromIdentityId() string {
+	if o == nil || IsNil(o.FromIdentityId) {
+		var ret string
+		return ret
+	}
+	return *o.FromIdentityId
+}
+
+// GetFromIdentityIdOk returns a tuple with the FromIdentityId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateInternalTransferRequest) GetFromIdentityIdOk() (*string, bool) {
+	if o == nil || IsNil(o.FromIdentityId) {
+		return nil, false
+	}
+	return o.FromIdentityId, true
+}
+
+// HasFromIdentityId returns a boolean if a field has been set.
+func (o *CreateInternalTransferRequest) HasFromIdentityId() bool {
+	if o != nil && !IsNil(o.FromIdentityId) {
+		return true
+	}
+
+	return false
+}
+
+// SetFromIdentityId gets a reference to the given string and assigns it to the FromIdentityId field.
+func (o *CreateInternalTransferRequest) SetFromIdentityId(v string) {
+	o.FromIdentityId = &v
+}
+
+// GetFromAccountId returns the FromAccountId field value if set, zero value otherwise.
+func (o *CreateInternalTransferRequest) GetFromAccountId() string {
+	if o == nil || IsNil(o.FromAccountId) {
+		var ret string
+		return ret
+	}
+	return *o.FromAccountId
+}
+
+// GetFromAccountIdOk returns a tuple with the FromAccountId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateInternalTransferRequest) GetFromAccountIdOk() (*string, bool) {
+	if o == nil || IsNil(o.FromAccountId) {
+		return nil, false
+	}
+	return o.FromAccountId, true
+}
+
+// HasFromAccountId returns a boolean if a field has been set.
+func (o *CreateInternalTransferRequest) HasFromAccountId() bool {
+	if o != nil && !IsNil(o.FromAccountId) {
+		return true
+	}
+
+	return false
+}
+
+// SetFromAccountId gets a reference to the given string and assigns it to the FromAccountId field.
+func (o *CreateInternalTransferRequest) SetFromAccountId(v string) {
+	o.FromAccountId = &v
+}
+
+// GetToIdentityId returns the ToIdentityId field value if set, zero value otherwise.
+func (o *CreateInternalTransferRequest) GetToIdentityId() string {
+	if o == nil || IsNil(o.ToIdentityId) {
+		var ret string
+		return ret
+	}
+	return *o.ToIdentityId
+}
+
+// GetToIdentityIdOk returns a tuple with the ToIdentityId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateInternalTransferRequest) GetToIdentityIdOk() (*string, bool) {
+	if o == nil || IsNil(o.ToIdentityId) {
+		return nil, false
+	}
+	return o.ToIdentityId, true
+}
+
+// HasToIdentityId returns a boolean if a field has been set.
+func (o *CreateInternalTransferRequest) HasToIdentityId() bool {
+	if o != nil && !IsNil(o.ToIdentityId) {
+		return true
+	}
+
+	return false
+}
+
+// SetToIdentityId gets a reference to the given string and assigns it to the ToIdentityId field.
+func (o *CreateInternalTransferRequest) SetToIdentityId(v string) {
+	o.ToIdentityId = &v
+}
+
+// GetToAccountId returns the ToAccountId field value if set, zero value otherwise.
+func (o *CreateInternalTransferRequest) GetToAccountId() string {
+	if o == nil || IsNil(o.ToAccountId) {
+		var ret string
+		return ret
+	}
+	return *o.ToAccountId
+}
+
+// GetToAccountIdOk returns a tuple with the ToAccountId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateInternalTransferRequest) GetToAccountIdOk() (*string, bool) {
+	if o == nil || IsNil(o.ToAccountId) {
+		return nil, false
+	}
+	return o.ToAccountId, true
+}
+
+// HasToAccountId returns a boolean if a field has been set.
+func (o *CreateInternalTransferRequest) HasToAccountId() bool {
+	if o != nil && !IsNil(o.ToAccountId) {
+		return true
+	}
+
+	return false
+}
+
+// SetToAccountId gets a reference to the given string and assigns it to the ToAccountId field.
+func (o *CreateInternalTransferRequest) SetToAccountId(v string) {
+	o.ToAccountId = &v
+}
+
+// GetRecipientMetadata returns the RecipientMetadata field value if set, zero value otherwise.
+func (o *CreateInternalTransferRequest) GetRecipientMetadata() map[string]string {
+	if o == nil || IsNil(o.RecipientMetadata) {
+		var ret map[string]string
+		return ret
+	}
+	return *o.RecipientMetadata
+}
+
+// GetRecipientMetadataOk returns a tuple with the RecipientMetadata field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateInternalTransferRequest) GetRecipientMetadataOk() (*map[string]string, bool) {
+	if o == nil || IsNil(o.RecipientMetadata) {
+		return nil, false
+	}
+	return o.RecipientMetadata, true
+}
+
+// HasRecipientMetadata returns a boolean if a field has been set.
+func (o *CreateInternalTransferRequest) HasRecipientMetadata() bool {
+	if o != nil && !IsNil(o.RecipientMetadata) {
+		return true
+	}
+
+	return false
+}
+
+// SetRecipientMetadata gets a reference to the given map[string]string and assigns it to the RecipientMetadata field.
+func (o *CreateInternalTransferRequest) SetRecipientMetadata(v map[string]string) {
+	o.RecipientMetadata = &v
+}
+
 func (o CreateInternalTransferRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -237,6 +407,21 @@ func (o CreateInternalTransferRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize["asset"] = o.Asset
 	if !IsNil(o.Metadata) {
 		toSerialize["metadata"] = o.Metadata
+	}
+	if !IsNil(o.FromIdentityId) {
+		toSerialize["from_identity_id"] = o.FromIdentityId
+	}
+	if !IsNil(o.FromAccountId) {
+		toSerialize["from_account_id"] = o.FromAccountId
+	}
+	if !IsNil(o.ToIdentityId) {
+		toSerialize["to_identity_id"] = o.ToIdentityId
+	}
+	if !IsNil(o.ToAccountId) {
+		toSerialize["to_account_id"] = o.ToAccountId
+	}
+	if !IsNil(o.RecipientMetadata) {
+		toSerialize["recipient_metadata"] = o.RecipientMetadata
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -290,6 +475,11 @@ func (o *CreateInternalTransferRequest) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "amount")
 		delete(additionalProperties, "asset")
 		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "from_identity_id")
+		delete(additionalProperties, "from_account_id")
+		delete(additionalProperties, "to_identity_id")
+		delete(additionalProperties, "to_account_id")
+		delete(additionalProperties, "recipient_metadata")
 		o.AdditionalProperties = additionalProperties
 	}
 

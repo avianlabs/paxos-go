@@ -427,6 +427,17 @@ func (a *FiatTransfersAPIService) CreateFiatWithdrawalExecute(r ApiCreateFiatWit
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 409 {
+			var v Problem
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -572,6 +583,13 @@ type ApiGetFiatAccountRequest struct {
 	ctx context.Context
 	ApiService *FiatTransfersAPIService
 	id string
+	includeDeleted *bool
+}
+
+// Used to include deleted accounts in the response.
+func (r ApiGetFiatAccountRequest) IncludeDeleted(includeDeleted bool) ApiGetFiatAccountRequest {
+	r.includeDeleted = &includeDeleted
+	return r
 }
 
 func (r ApiGetFiatAccountRequest) Execute() (*FiatAccount, *http.Response, error) {
@@ -620,6 +638,9 @@ func (a *FiatTransfersAPIService) GetFiatAccountExecute(r ApiGetFiatAccountReque
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if r.includeDeleted != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_deleted", r.includeDeleted, "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -813,6 +834,7 @@ type ApiListFiatAccountsRequest struct {
 	order *string
 	orderBy *string
 	pageCursor *string
+	includeDeleted *bool
 }
 
 // Optionally filter by the UUIDs of the accounts. Limit 100.
@@ -878,6 +900,12 @@ func (r ApiListFiatAccountsRequest) OrderBy(orderBy string) ApiListFiatAccountsR
 // Optional: Cursor for getting the next page of results.
 func (r ApiListFiatAccountsRequest) PageCursor(pageCursor string) ApiListFiatAccountsRequest {
 	r.pageCursor = &pageCursor
+	return r
+}
+
+// Used to include deleted accounts in the response.
+func (r ApiListFiatAccountsRequest) IncludeDeleted(includeDeleted bool) ApiListFiatAccountsRequest {
+	r.includeDeleted = &includeDeleted
 	return r
 }
 
@@ -979,6 +1007,9 @@ func (a *FiatTransfersAPIService) ListFiatAccountsExecute(r ApiListFiatAccountsR
 	}
 	if r.pageCursor != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
+	}
+	if r.includeDeleted != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_deleted", r.includeDeleted, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

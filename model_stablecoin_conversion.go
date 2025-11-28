@@ -20,19 +20,19 @@ var _ MappedNullable = &StablecoinConversion{}
 
 // StablecoinConversion struct for StablecoinConversion
 type StablecoinConversion struct {
-	// System provided UUID for the conversion is provided in the [Create Stablecoin Conversion](#operation/CreateStablecoinConversion) response.  Required parameter for the <a href=\"#operation/GetStablecoinConversion\">Get Stablecoin Conversion</a> request.
+	// System provided UUID for the conversion is provided in the [Create Stablecoin Conversion](#operation/CreateStablecoinConversion) response.  Required parameter for the [Get Stablecoin Conversion](#operation/GetStablecoinConversion) request.
 	Id *string `json:"id,omitempty"`
-	// The Profile associated with a conversion. Required in the <a href=\"#operation/CreateStablecoinConversion\">Create Stablecoin Conversion</a> request.
+	// The Profile associated with a conversion. Required in the [Create Stablecoin Conversion](#operation/CreateStablecoinConversion) request.
 	ProfileId *string `json:"profile_id,omitempty"`
-	// Asset amount to convert. <a href=\"https://docs.paxos.com/developer/convert#assets\">Details</a>.
+	// Asset amount to convert. [Details](https://docs.paxos.com/developer/convert#assets).
 	Amount *string `json:"amount,omitempty"`
-	// The asset to convert from. <a href=\"https://docs.paxos.com/developer/convert#assets\">Details</a>.
+	// The asset to convert from. [Details](https://docs.paxos.com/developer/convert#assets).
 	SourceAsset *string `json:"source_asset,omitempty"`
-	// The asset to convert to. <a href=\"https://docs.paxos.com/developer/convert#assets\">Details</a>.
+	// The asset to convert to. [Details](https://docs.paxos.com/developer/convert#assets).
 	TargetAsset *string `json:"target_asset,omitempty"`
-	// The current status of the conversion. <a href=\"https://docs.paxos.com/developer/convert#stablecoin-conversion-statuses\">Details</a>.
+	// The current status of the conversion. [Details](https://docs.paxos.com/developer/convert#stablecoin-conversion-statuses).
 	Status *string `json:"status,omitempty"`
-	// Client provided, unique Reference ID included the <a href=\"#operation/CreateStablecoinConversion\">Create Stablecoin Conversion</a> request.
+	// Client provided, unique Reference ID included the [Create Stablecoin Conversion](#operation/CreateStablecoinConversion) request.
 	RefId *string `json:"ref_id,omitempty"`
 	// The Identity ID associated with the user requesting the conversion. Required only for customers with [3rd-Party integrations](/crypto-brokerage/ledger-type#fiat-and-crypto-subledger).
 	IdentityId *string `json:"identity_id,omitempty"`
@@ -42,9 +42,9 @@ type StablecoinConversion struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	// The time at which the conversion was last updated. RFC3339 format, like `2006-01-02T15:04:05Z`.
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
-	// The time at which the conversion was settled. <a href=\"https://docs.paxos.com/developer/convert#stablecoin-conversion-statuses\">Details</a>. RFC3339 format, like `2006-01-02T15:04:05Z`.
+	// The time at which the conversion was settled. [Details](https://docs.paxos.com/developer/convert#stablecoin-conversion-statuses). RFC3339 format, like `2006-01-02T15:04:05Z`.
 	SettledAt *time.Time `json:"settled_at,omitempty"`
-	// The time at which the conversion has been cancelled. <a href=\"https://docs.paxos.com/developer/convert#stablecoin-conversion-statuses\">Details</a>. RFC3339 format, like `2006-01-02T15:04:05Z`.
+	// The time at which the conversion has been cancelled. [Details](https://docs.paxos.com/developer/convert#stablecoin-conversion-statuses). RFC3339 format, like `2006-01-02T15:04:05Z`.
 	CancelledAt *time.Time `json:"cancelled_at,omitempty"`
 	// Optional client-specified stored metadata.
 	Metadata *map[string]string `json:"metadata,omitempty"`

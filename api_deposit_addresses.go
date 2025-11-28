@@ -44,6 +44,17 @@ CreateDepositAddress Create Deposit Address
 
 Create a deposit address on a blockchain network for depositing to a profile.
 
+**Important for Stellar Network (PYUSD):**
+
+When creating a deposit address for PYUSD on the Stellar network:
+
+- Paxos automatically handles all necessary setup including trustline establishment
+- The deposit address is immediately ready to receive PYUSD tokens
+- No additional configuration is required by the user
+- The PYUSD issuer address on Stellar mainnet is: `GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5`
+- The PYUSD asset code is: `PYUSD`
+
+
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiCreateDepositAddressRequest
 */

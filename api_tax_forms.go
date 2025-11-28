@@ -177,13 +177,15 @@ func (a *TaxFormsAPIService) ListTaxFormRevisionsExecute(r ApiListTaxFormRevisio
 type ApiListTaxFormsRequest struct {
 	ctx context.Context
 	ApiService *TaxFormsAPIService
-	taxYear *string
 	accountIds *[]string
+	taxYear *string
 	formTypes *[]string
-	usersLimit *int32
-	orderBy *string
-	order *string
-	pageCursor *string
+}
+
+// Required. A list of Account IDs. Maximum 50.
+func (r ApiListTaxFormsRequest) AccountIds(accountIds []string) ApiListTaxFormsRequest {
+	r.accountIds = &accountIds
+	return r
 }
 
 // Required. Tax year
@@ -192,39 +194,9 @@ func (r ApiListTaxFormsRequest) TaxYear(taxYear string) ApiListTaxFormsRequest {
 	return r
 }
 
-// Optional. A list of Account IDs. Maximum 50.
-func (r ApiListTaxFormsRequest) AccountIds(accountIds []string) ApiListTaxFormsRequest {
-	r.accountIds = &accountIds
-	return r
-}
-
 // Form types
 func (r ApiListTaxFormsRequest) FormTypes(formTypes []string) ApiListTaxFormsRequest {
 	r.formTypes = &formTypes
-	return r
-}
-
-// Number of results to return. Defaults to 50.
-func (r ApiListTaxFormsRequest) UsersLimit(usersLimit int32) ApiListTaxFormsRequest {
-	r.usersLimit = &usersLimit
-	return r
-}
-
-// The specific method by which the returned results will be ordered. Defaults to ID.
-func (r ApiListTaxFormsRequest) OrderBy(orderBy string) ApiListTaxFormsRequest {
-	r.orderBy = &orderBy
-	return r
-}
-
-// Return items in ascending (ASC) or descending (DESC) order. Defaults to ASC.
-func (r ApiListTaxFormsRequest) Order(order string) ApiListTaxFormsRequest {
-	r.order = &order
-	return r
-}
-
-// Cursor token for fetching the next page.
-func (r ApiListTaxFormsRequest) PageCursor(pageCursor string) ApiListTaxFormsRequest {
-	r.pageCursor = &pageCursor
 	return r
 }
 
@@ -270,11 +242,14 @@ func (a *TaxFormsAPIService) ListTaxFormsExecute(r ApiListTaxFormsRequest) (*Lis
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.accountIds == nil {
+		return localVarReturnValue, nil, reportError("accountIds is required and must be specified")
+	}
 	if r.taxYear == nil {
 		return localVarReturnValue, nil, reportError("taxYear is required and must be specified")
 	}
 
-	if r.accountIds != nil {
+	{
 		t := *r.accountIds
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
@@ -296,18 +271,6 @@ func (a *TaxFormsAPIService) ListTaxFormsExecute(r ApiListTaxFormsRequest) (*Lis
 		} else {
 			parameterAddToHeaderOrQuery(localVarQueryParams, "form_types", t, "multi")
 		}
-	}
-	if r.usersLimit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "users_limit", r.usersLimit, "")
-	}
-	if r.orderBy != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order_by", r.orderBy, "")
-	}
-	if r.order != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "")
-	}
-	if r.pageCursor != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "page_cursor", r.pageCursor, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
