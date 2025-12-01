@@ -32,6 +32,9 @@ const (
 	PassthroughVerifierType_ID3_AUTHENTICATE PassthroughVerifierType = "ID3_AUTHENTICATE"
 	PassthroughVerifierType_FIS PassthroughVerifierType = "FIS"
 	PassthroughVerifierType_PROVE PassthroughVerifierType = "PROVE"
+	PassthroughVerifierType_PERSONA PassthroughVerifierType = "PERSONA"
+	PassthroughVerifierType_PLAID PassthroughVerifierType = "PLAID"
+	PassthroughVerifierType_DOTFILE PassthroughVerifierType = "DOTFILE"
 )
 
 // All allowed values of PassthroughVerifierType enum
@@ -48,6 +51,9 @@ var AllowedPassthroughVerifierTypeEnumValues = []PassthroughVerifierType{
 	"ID3_AUTHENTICATE",
 	"FIS",
 	"PROVE",
+	"PERSONA",
+	"PLAID",
+	"DOTFILE",
 }
 
 func (v *PassthroughVerifierType) UnmarshalJSON(src []byte) error {

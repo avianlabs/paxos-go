@@ -596,6 +596,7 @@ type ApiListProfilesRequest struct {
 	orderBy *string
 	pageCursor *string
 	nickname *string
+	ids *[]string
 }
 
 // Include timestamps strictly less than lt. RFC3339 format, like &#x60;2006-01-02T15:04:05Z&#x60;.
@@ -655,6 +656,12 @@ func (r ApiListProfilesRequest) PageCursor(pageCursor string) ApiListProfilesReq
 // Optionally filter by Profile display name. Retrieves nickname(s) based on the beginning characters of the given display name (prefix matching). Case insensitive. WIldcards and regular expressions not supported.
 func (r ApiListProfilesRequest) Nickname(nickname string) ApiListProfilesRequest {
 	r.nickname = &nickname
+	return r
+}
+
+// Optionally filter by the UUIDs of the profiles. Limit 100.
+func (r ApiListProfilesRequest) Ids(ids []string) ApiListProfilesRequest {
+	r.ids = &ids
 	return r
 }
 
@@ -730,6 +737,17 @@ func (a *ProfilesAPIService) ListProfilesExecute(r ApiListProfilesRequest) (*Lis
 	}
 	if r.nickname != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "nickname", r.nickname, "")
+	}
+	if r.ids != nil {
+		t := *r.ids
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "ids", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "ids", t, "multi")
+		}
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

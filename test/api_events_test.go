@@ -1,7 +1,7 @@
 /*
 Paxos API
 
-Testing IdentityCredentialsAPIService
+Testing EventsAPIService
 
 */
 
@@ -17,18 +17,18 @@ import (
 	openapiclient "github.com/avianlabs/paxos-go"
 )
 
-func Test_paxos_IdentityCredentialsAPIService(t *testing.T) {
+func Test_paxos_EventsAPIService(t *testing.T) {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
 
-	t.Run("Test IdentityCredentialsAPIService RetryIdVerification", func(t *testing.T) {
+	t.Run("Test EventsAPIService GetEvent", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
 
 		var id string
 
-		resp, httpRes, err := apiClient.IdentityCredentialsAPI.RetryIdVerification(context.Background(), id).Execute()
+		resp, httpRes, err := apiClient.EventsAPI.GetEvent(context.Background(), id).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
@@ -36,11 +36,11 @@ func Test_paxos_IdentityCredentialsAPIService(t *testing.T) {
 
 	})
 
-	t.Run("Test IdentityCredentialsAPIService SetVerifierCredentials", func(t *testing.T) {
+	t.Run("Test EventsAPIService ListEvents", func(t *testing.T) {
 
 		t.Skip("skip test")  // remove to run test
 
-		resp, httpRes, err := apiClient.IdentityCredentialsAPI.SetVerifierCredentials(context.Background()).Execute()
+		resp, httpRes, err := apiClient.EventsAPI.ListEvents(context.Background()).Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)

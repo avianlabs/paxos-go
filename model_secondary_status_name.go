@@ -15,19 +15,23 @@ import (
 	"fmt"
 )
 
-// SecondaryStatusName Identifier for secondary status.   - TRAVEL_RULE_INFO_REQUESTED: Travel rule information is required to continue processing the transfer.  - TRAVEL_RULE_REJECTED: Transfer has been terminally rejected due to failing travel rule checks.
+// SecondaryStatusName Identifier for secondary status.   - TRAVEL_RULE_INFO_REQUESTED: Travel rule information is required to continue processing the transfer.  - TRAVEL_RULE_REJECTED: Transfer has been terminally rejected due to failing travel rule checks.  - CUSTOMER_REJECTED: Transfer was rejected by a customer.  - PENDING_CUSTOMER_APPROVAL: Transfer is pending customer approval.
 type SecondaryStatusName string
 
 // List of SecondaryStatusName
 const (
 	SecondaryStatusName_TRAVEL_RULE_INFO_REQUESTED SecondaryStatusName = "TRAVEL_RULE_INFO_REQUESTED"
 	SecondaryStatusName_TRAVEL_RULE_REJECTED SecondaryStatusName = "TRAVEL_RULE_REJECTED"
+	SecondaryStatusName_CUSTOMER_REJECTED SecondaryStatusName = "CUSTOMER_REJECTED"
+	SecondaryStatusName_PENDING_CUSTOMER_APPROVAL SecondaryStatusName = "PENDING_CUSTOMER_APPROVAL"
 )
 
 // All allowed values of SecondaryStatusName enum
 var AllowedSecondaryStatusNameEnumValues = []SecondaryStatusName{
 	"TRAVEL_RULE_INFO_REQUESTED",
 	"TRAVEL_RULE_REJECTED",
+	"CUSTOMER_REJECTED",
+	"PENDING_CUSTOMER_APPROVAL",
 }
 
 func (v *SecondaryStatusName) UnmarshalJSON(src []byte) error {

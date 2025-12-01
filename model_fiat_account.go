@@ -13,6 +13,7 @@ package paxos
 import (
 	"encoding/json"
 	"time"
+	"fmt"
 )
 
 // checks if the FiatAccount type satisfies the MappedNullable interface at compile time
@@ -21,7 +22,7 @@ var _ MappedNullable = &FiatAccount{}
 // FiatAccount struct for FiatAccount
 type FiatAccount struct {
 	// The Paxos FiatAccount ID (UUID).
-	Id *string `json:"id,omitempty"`
+	Id string `json:"id"`
 	// The optional client-specified ID (for idempotence).
 	RefId *string `json:"ref_id,omitempty"`
 	// The Paxos Identity (`identity_id`) of the user's FiatAccount.
@@ -29,12 +30,12 @@ type FiatAccount struct {
 	// The Paxos Account (`account_id`) of the user's FiatAccount. Required only for customers with [3rd-Party integrations](https://docs.paxos.com/crypto-brokerage/ledger-type#fiat-and-crypto-subledger) initiating transfers on behalf of their end users.
 	AccountId *string `json:"account_id,omitempty"`
 	FiatAccountOwner *FiatAccountOwner `json:"fiat_account_owner,omitempty"`
-	FiatNetworkInstructions *FiatNetworkInstructions `json:"fiat_network_instructions,omitempty"`
-	Status *FiatAccountStatus `json:"status,omitempty"`
+	FiatNetworkInstructions FiatNetworkInstructions `json:"fiat_network_instructions"`
+	Status FiatAccountStatus `json:"status"`
 	// Optional client-specified metadata. Up to 6 key/value pairs may be returned. Each key and value must be less than or equal to 100 characters.
 	Metadata *map[string]string `json:"metadata,omitempty"`
 	// The time at which this FiatAccount was created.
-	CreatedAt *time.Time `json:"created_at,omitempty"`
+	CreatedAt time.Time `json:"created_at"`
 	// The time at which this FiatAccount record was most recently updated.
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -46,8 +47,12 @@ type _FiatAccount FiatAccount
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewFiatAccount() *FiatAccount {
+func NewFiatAccount(id string, fiatNetworkInstructions FiatNetworkInstructions, status FiatAccountStatus, createdAt time.Time) *FiatAccount {
 	this := FiatAccount{}
+	this.Id = id
+	this.FiatNetworkInstructions = fiatNetworkInstructions
+	this.Status = status
+	this.CreatedAt = createdAt
 	return &this
 }
 
@@ -59,36 +64,28 @@ func NewFiatAccountWithDefaults() *FiatAccount {
 	return &this
 }
 
-// GetId returns the Id field value if set, zero value otherwise.
+// GetId returns the Id field value
 func (o *FiatAccount) GetId() string {
-	if o == nil || IsNil(o.Id) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Id
+
+	return o.Id
 }
 
-// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
 func (o *FiatAccount) GetIdOk() (*string, bool) {
-	if o == nil || IsNil(o.Id) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Id, true
+	return &o.Id, true
 }
 
-// HasId returns a boolean if a field has been set.
-func (o *FiatAccount) HasId() bool {
-	if o != nil && !IsNil(o.Id) {
-		return true
-	}
-
-	return false
-}
-
-// SetId gets a reference to the given string and assigns it to the Id field.
+// SetId sets field value
 func (o *FiatAccount) SetId(v string) {
-	o.Id = &v
+	o.Id = v
 }
 
 // GetRefId returns the RefId field value if set, zero value otherwise.
@@ -219,68 +216,52 @@ func (o *FiatAccount) SetFiatAccountOwner(v FiatAccountOwner) {
 	o.FiatAccountOwner = &v
 }
 
-// GetFiatNetworkInstructions returns the FiatNetworkInstructions field value if set, zero value otherwise.
+// GetFiatNetworkInstructions returns the FiatNetworkInstructions field value
 func (o *FiatAccount) GetFiatNetworkInstructions() FiatNetworkInstructions {
-	if o == nil || IsNil(o.FiatNetworkInstructions) {
+	if o == nil {
 		var ret FiatNetworkInstructions
 		return ret
 	}
-	return *o.FiatNetworkInstructions
+
+	return o.FiatNetworkInstructions
 }
 
-// GetFiatNetworkInstructionsOk returns a tuple with the FiatNetworkInstructions field value if set, nil otherwise
+// GetFiatNetworkInstructionsOk returns a tuple with the FiatNetworkInstructions field value
 // and a boolean to check if the value has been set.
 func (o *FiatAccount) GetFiatNetworkInstructionsOk() (*FiatNetworkInstructions, bool) {
-	if o == nil || IsNil(o.FiatNetworkInstructions) {
+	if o == nil {
 		return nil, false
 	}
-	return o.FiatNetworkInstructions, true
+	return &o.FiatNetworkInstructions, true
 }
 
-// HasFiatNetworkInstructions returns a boolean if a field has been set.
-func (o *FiatAccount) HasFiatNetworkInstructions() bool {
-	if o != nil && !IsNil(o.FiatNetworkInstructions) {
-		return true
-	}
-
-	return false
-}
-
-// SetFiatNetworkInstructions gets a reference to the given FiatNetworkInstructions and assigns it to the FiatNetworkInstructions field.
+// SetFiatNetworkInstructions sets field value
 func (o *FiatAccount) SetFiatNetworkInstructions(v FiatNetworkInstructions) {
-	o.FiatNetworkInstructions = &v
+	o.FiatNetworkInstructions = v
 }
 
-// GetStatus returns the Status field value if set, zero value otherwise.
+// GetStatus returns the Status field value
 func (o *FiatAccount) GetStatus() FiatAccountStatus {
-	if o == nil || IsNil(o.Status) {
+	if o == nil {
 		var ret FiatAccountStatus
 		return ret
 	}
-	return *o.Status
+
+	return o.Status
 }
 
-// GetStatusOk returns a tuple with the Status field value if set, nil otherwise
+// GetStatusOk returns a tuple with the Status field value
 // and a boolean to check if the value has been set.
 func (o *FiatAccount) GetStatusOk() (*FiatAccountStatus, bool) {
-	if o == nil || IsNil(o.Status) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Status, true
+	return &o.Status, true
 }
 
-// HasStatus returns a boolean if a field has been set.
-func (o *FiatAccount) HasStatus() bool {
-	if o != nil && !IsNil(o.Status) {
-		return true
-	}
-
-	return false
-}
-
-// SetStatus gets a reference to the given FiatAccountStatus and assigns it to the Status field.
+// SetStatus sets field value
 func (o *FiatAccount) SetStatus(v FiatAccountStatus) {
-	o.Status = &v
+	o.Status = v
 }
 
 // GetMetadata returns the Metadata field value if set, zero value otherwise.
@@ -315,36 +296,28 @@ func (o *FiatAccount) SetMetadata(v map[string]string) {
 	o.Metadata = &v
 }
 
-// GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
+// GetCreatedAt returns the CreatedAt field value
 func (o *FiatAccount) GetCreatedAt() time.Time {
-	if o == nil || IsNil(o.CreatedAt) {
+	if o == nil {
 		var ret time.Time
 		return ret
 	}
-	return *o.CreatedAt
+
+	return o.CreatedAt
 }
 
-// GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
+// GetCreatedAtOk returns a tuple with the CreatedAt field value
 // and a boolean to check if the value has been set.
 func (o *FiatAccount) GetCreatedAtOk() (*time.Time, bool) {
-	if o == nil || IsNil(o.CreatedAt) {
+	if o == nil {
 		return nil, false
 	}
-	return o.CreatedAt, true
+	return &o.CreatedAt, true
 }
 
-// HasCreatedAt returns a boolean if a field has been set.
-func (o *FiatAccount) HasCreatedAt() bool {
-	if o != nil && !IsNil(o.CreatedAt) {
-		return true
-	}
-
-	return false
-}
-
-// SetCreatedAt gets a reference to the given time.Time and assigns it to the CreatedAt field.
+// SetCreatedAt sets field value
 func (o *FiatAccount) SetCreatedAt(v time.Time) {
-	o.CreatedAt = &v
+	o.CreatedAt = v
 }
 
 // GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
@@ -389,9 +362,7 @@ func (o FiatAccount) MarshalJSON() ([]byte, error) {
 
 func (o FiatAccount) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.Id) {
-		toSerialize["id"] = o.Id
-	}
+	toSerialize["id"] = o.Id
 	if !IsNil(o.RefId) {
 		toSerialize["ref_id"] = o.RefId
 	}
@@ -404,18 +375,12 @@ func (o FiatAccount) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.FiatAccountOwner) {
 		toSerialize["fiat_account_owner"] = o.FiatAccountOwner
 	}
-	if !IsNil(o.FiatNetworkInstructions) {
-		toSerialize["fiat_network_instructions"] = o.FiatNetworkInstructions
-	}
-	if !IsNil(o.Status) {
-		toSerialize["status"] = o.Status
-	}
+	toSerialize["fiat_network_instructions"] = o.FiatNetworkInstructions
+	toSerialize["status"] = o.Status
 	if !IsNil(o.Metadata) {
 		toSerialize["metadata"] = o.Metadata
 	}
-	if !IsNil(o.CreatedAt) {
-		toSerialize["created_at"] = o.CreatedAt
-	}
+	toSerialize["created_at"] = o.CreatedAt
 	if !IsNil(o.UpdatedAt) {
 		toSerialize["updated_at"] = o.UpdatedAt
 	}
@@ -428,6 +393,30 @@ func (o FiatAccount) ToMap() (map[string]interface{}, error) {
 }
 
 func (o *FiatAccount) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"id",
+		"fiat_network_instructions",
+		"status",
+		"created_at",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
 	varFiatAccount := _FiatAccount{}
 
 	err = json.Unmarshal(data, &varFiatAccount)

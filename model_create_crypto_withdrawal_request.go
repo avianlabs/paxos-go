@@ -44,6 +44,8 @@ type CreateCryptoWithdrawalRequest struct {
 	// Total amount to withdraw, including fees. Specify exactly one of `amount` or `total`, otherwise an error is returned.
 	Total *string `json:"total,omitempty" validate:"regexp=^[0-9]*\\\\.?[0-9]+$"`
 	Beneficiary *Beneficiary `json:"beneficiary,omitempty"`
+	// Optional additional memo to be included with the withdrawal as an identifier.
+	Memo *string `json:"memo,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -454,6 +456,38 @@ func (o *CreateCryptoWithdrawalRequest) SetBeneficiary(v Beneficiary) {
 	o.Beneficiary = &v
 }
 
+// GetMemo returns the Memo field value if set, zero value otherwise.
+func (o *CreateCryptoWithdrawalRequest) GetMemo() string {
+	if o == nil || IsNil(o.Memo) {
+		var ret string
+		return ret
+	}
+	return *o.Memo
+}
+
+// GetMemoOk returns a tuple with the Memo field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateCryptoWithdrawalRequest) GetMemoOk() (*string, bool) {
+	if o == nil || IsNil(o.Memo) {
+		return nil, false
+	}
+	return o.Memo, true
+}
+
+// HasMemo returns a boolean if a field has been set.
+func (o *CreateCryptoWithdrawalRequest) HasMemo() bool {
+	if o != nil && !IsNil(o.Memo) {
+		return true
+	}
+
+	return false
+}
+
+// SetMemo gets a reference to the given string and assigns it to the Memo field.
+func (o *CreateCryptoWithdrawalRequest) SetMemo(v string) {
+	o.Memo = &v
+}
+
 func (o CreateCryptoWithdrawalRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -494,6 +528,9 @@ func (o CreateCryptoWithdrawalRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Beneficiary) {
 		toSerialize["beneficiary"] = o.Beneficiary
+	}
+	if !IsNil(o.Memo) {
+		toSerialize["memo"] = o.Memo
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -554,6 +591,7 @@ func (o *CreateCryptoWithdrawalRequest) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "amount")
 		delete(additionalProperties, "total")
 		delete(additionalProperties, "beneficiary")
+		delete(additionalProperties, "memo")
 		o.AdditionalProperties = additionalProperties
 	}
 

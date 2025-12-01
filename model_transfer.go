@@ -44,6 +44,9 @@ type Transfer struct {
 	Direction TransferDirection `json:"direction"`
 	Type TransferType `json:"type"`
 	Status TransferStatus `json:"status"`
+	SecondaryStatus *SecondaryStatus `json:"secondary_status,omitempty"`
+	// Example: {   \"max_rent_exceeded\": {     \"message\": \"Transfer cancelled due to suspected system abuse\",     \"destination_address\": \"7Vbsn3YqXb7kDFvEHCWZRh5osSQXzjYkeFnRhh2Mz5vT\"   } }  Supported error types: - \"max_rent_exceeded\": Transfer cancelled due to suspected system abuse
+	StatusDetails map[string]map[string]interface{} `json:"status_details,omitempty"`
 	// The time at which this transfer record was created.
 	CreatedAt time.Time `json:"created_at"`
 	// The time at which this transfer record was most recently updated.
@@ -64,9 +67,10 @@ type Transfer struct {
 	GroupId *string `json:"group_id,omitempty"`
 	// For fiat withdrawals, the Paxos ID of the owner's fiat account (UUID).
 	FiatAccountId *string `json:"fiat_account_id,omitempty"`
-	SecondaryStatus *SecondaryStatus `json:"secondary_status,omitempty"`
 	// For crypto withdrawals and deposits, the USD value of the combined amount and fee at the time of the transfer.
 	NotionalValue *string `json:"notional_value,omitempty"`
+	// An optional memo to be included with the transfer as an identifier.
+	Memo *string `json:"memo,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
 
@@ -437,6 +441,70 @@ func (o *Transfer) SetStatus(v TransferStatus) {
 	o.Status = v
 }
 
+// GetSecondaryStatus returns the SecondaryStatus field value if set, zero value otherwise.
+func (o *Transfer) GetSecondaryStatus() SecondaryStatus {
+	if o == nil || IsNil(o.SecondaryStatus) {
+		var ret SecondaryStatus
+		return ret
+	}
+	return *o.SecondaryStatus
+}
+
+// GetSecondaryStatusOk returns a tuple with the SecondaryStatus field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Transfer) GetSecondaryStatusOk() (*SecondaryStatus, bool) {
+	if o == nil || IsNil(o.SecondaryStatus) {
+		return nil, false
+	}
+	return o.SecondaryStatus, true
+}
+
+// HasSecondaryStatus returns a boolean if a field has been set.
+func (o *Transfer) HasSecondaryStatus() bool {
+	if o != nil && !IsNil(o.SecondaryStatus) {
+		return true
+	}
+
+	return false
+}
+
+// SetSecondaryStatus gets a reference to the given SecondaryStatus and assigns it to the SecondaryStatus field.
+func (o *Transfer) SetSecondaryStatus(v SecondaryStatus) {
+	o.SecondaryStatus = &v
+}
+
+// GetStatusDetails returns the StatusDetails field value if set, zero value otherwise.
+func (o *Transfer) GetStatusDetails() map[string]map[string]interface{} {
+	if o == nil || IsNil(o.StatusDetails) {
+		var ret map[string]map[string]interface{}
+		return ret
+	}
+	return o.StatusDetails
+}
+
+// GetStatusDetailsOk returns a tuple with the StatusDetails field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Transfer) GetStatusDetailsOk() (map[string]map[string]interface{}, bool) {
+	if o == nil || IsNil(o.StatusDetails) {
+		return map[string]map[string]interface{}{}, false
+	}
+	return o.StatusDetails, true
+}
+
+// HasStatusDetails returns a boolean if a field has been set.
+func (o *Transfer) HasStatusDetails() bool {
+	if o != nil && !IsNil(o.StatusDetails) {
+		return true
+	}
+
+	return false
+}
+
+// SetStatusDetails gets a reference to the given map[string]map[string]interface{} and assigns it to the StatusDetails field.
+func (o *Transfer) SetStatusDetails(v map[string]map[string]interface{}) {
+	o.StatusDetails = v
+}
+
 // GetCreatedAt returns the CreatedAt field value
 func (o *Transfer) GetCreatedAt() time.Time {
 	if o == nil {
@@ -773,38 +841,6 @@ func (o *Transfer) SetFiatAccountId(v string) {
 	o.FiatAccountId = &v
 }
 
-// GetSecondaryStatus returns the SecondaryStatus field value if set, zero value otherwise.
-func (o *Transfer) GetSecondaryStatus() SecondaryStatus {
-	if o == nil || IsNil(o.SecondaryStatus) {
-		var ret SecondaryStatus
-		return ret
-	}
-	return *o.SecondaryStatus
-}
-
-// GetSecondaryStatusOk returns a tuple with the SecondaryStatus field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Transfer) GetSecondaryStatusOk() (*SecondaryStatus, bool) {
-	if o == nil || IsNil(o.SecondaryStatus) {
-		return nil, false
-	}
-	return o.SecondaryStatus, true
-}
-
-// HasSecondaryStatus returns a boolean if a field has been set.
-func (o *Transfer) HasSecondaryStatus() bool {
-	if o != nil && !IsNil(o.SecondaryStatus) {
-		return true
-	}
-
-	return false
-}
-
-// SetSecondaryStatus gets a reference to the given SecondaryStatus and assigns it to the SecondaryStatus field.
-func (o *Transfer) SetSecondaryStatus(v SecondaryStatus) {
-	o.SecondaryStatus = &v
-}
-
 // GetNotionalValue returns the NotionalValue field value if set, zero value otherwise.
 func (o *Transfer) GetNotionalValue() string {
 	if o == nil || IsNil(o.NotionalValue) {
@@ -837,6 +873,38 @@ func (o *Transfer) SetNotionalValue(v string) {
 	o.NotionalValue = &v
 }
 
+// GetMemo returns the Memo field value if set, zero value otherwise.
+func (o *Transfer) GetMemo() string {
+	if o == nil || IsNil(o.Memo) {
+		var ret string
+		return ret
+	}
+	return *o.Memo
+}
+
+// GetMemoOk returns a tuple with the Memo field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Transfer) GetMemoOk() (*string, bool) {
+	if o == nil || IsNil(o.Memo) {
+		return nil, false
+	}
+	return o.Memo, true
+}
+
+// HasMemo returns a boolean if a field has been set.
+func (o *Transfer) HasMemo() bool {
+	if o != nil && !IsNil(o.Memo) {
+		return true
+	}
+
+	return false
+}
+
+// SetMemo gets a reference to the given string and assigns it to the Memo field.
+func (o *Transfer) SetMemo(v string) {
+	o.Memo = &v
+}
+
 func (o Transfer) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -866,6 +934,12 @@ func (o Transfer) ToMap() (map[string]interface{}, error) {
 	toSerialize["direction"] = o.Direction
 	toSerialize["type"] = o.Type
 	toSerialize["status"] = o.Status
+	if !IsNil(o.SecondaryStatus) {
+		toSerialize["secondary_status"] = o.SecondaryStatus
+	}
+	if !IsNil(o.StatusDetails) {
+		toSerialize["status_details"] = o.StatusDetails
+	}
 	toSerialize["created_at"] = o.CreatedAt
 	toSerialize["updated_at"] = o.UpdatedAt
 	if !IsNil(o.Metadata) {
@@ -895,11 +969,11 @@ func (o Transfer) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.FiatAccountId) {
 		toSerialize["fiat_account_id"] = o.FiatAccountId
 	}
-	if !IsNil(o.SecondaryStatus) {
-		toSerialize["secondary_status"] = o.SecondaryStatus
-	}
 	if !IsNil(o.NotionalValue) {
 		toSerialize["notional_value"] = o.NotionalValue
+	}
+	if !IsNil(o.Memo) {
+		toSerialize["memo"] = o.Memo
 	}
 
 	for key, value := range o.AdditionalProperties {
@@ -968,6 +1042,8 @@ func (o *Transfer) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "direction")
 		delete(additionalProperties, "type")
 		delete(additionalProperties, "status")
+		delete(additionalProperties, "secondary_status")
+		delete(additionalProperties, "status_details")
 		delete(additionalProperties, "created_at")
 		delete(additionalProperties, "updated_at")
 		delete(additionalProperties, "metadata")
@@ -979,8 +1055,8 @@ func (o *Transfer) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "auto_conversion")
 		delete(additionalProperties, "group_id")
 		delete(additionalProperties, "fiat_account_id")
-		delete(additionalProperties, "secondary_status")
 		delete(additionalProperties, "notional_value")
+		delete(additionalProperties, "memo")
 		o.AdditionalProperties = additionalProperties
 	}
 

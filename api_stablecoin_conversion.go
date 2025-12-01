@@ -437,13 +437,13 @@ type ApiListStablecoinConversionsRequest struct {
 	limit *int32
 }
 
-// The &lt;a href&#x3D;\&quot;#tag/Profiles\&quot;&gt;Profile&lt;/a&gt; associated with a conversion. Required in the &lt;a href&#x3D;\&quot;#operation/CreateStablecoinConversion\&quot;&gt;Create Stablecoin Conversion&lt;/a&gt; request.
+// The [Profile](#tag/Profiles) associated with a conversion. Required in the [Create Stablecoin Conversion](#operation/CreateStablecoinConversion) request.
 func (r ApiListStablecoinConversionsRequest) ProfileId(profileId string) ApiListStablecoinConversionsRequest {
 	r.profileId = &profileId
 	return r
 }
 
-// Client provided, unique Reference ID included the &lt;a href&#x3D;\&quot;#operation/CreateStablecoinConversion\&quot;&gt;Create Stablecoin Conversion&lt;/a&gt; request.
+// Client provided, unique Reference ID included the [Create Stablecoin Conversion](#operation/CreateStablecoinConversion) request.
 func (r ApiListStablecoinConversionsRequest) RefId(refId string) ApiListStablecoinConversionsRequest {
 	r.refId = &refId
 	return r

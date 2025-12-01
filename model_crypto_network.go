@@ -28,6 +28,8 @@ const (
 	CryptoNetwork_POLYGON_POS CryptoNetwork = "POLYGON_POS"
 	CryptoNetwork_BASE CryptoNetwork = "BASE"
 	CryptoNetwork_ARBITRUM_ONE CryptoNetwork = "ARBITRUM_ONE"
+	CryptoNetwork_INK CryptoNetwork = "INK"
+	CryptoNetwork_XLAYER CryptoNetwork = "XLAYER"
 )
 
 // All allowed values of CryptoNetwork enum
@@ -40,6 +42,8 @@ var AllowedCryptoNetworkEnumValues = []CryptoNetwork{
 	"POLYGON_POS",
 	"BASE",
 	"ARBITRUM_ONE",
+	"INK",
+	"XLAYER",
 }
 
 func (v *CryptoNetwork) UnmarshalJSON(src []byte) error {

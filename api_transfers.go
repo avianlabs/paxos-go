@@ -292,7 +292,7 @@ func (r ApiListTransfersRequest) CryptoTxHashes(cryptoTxHashes []string) ApiList
 	return r
 }
 
-// Optionally filter by secondary status.   - TRAVEL_RULE_INFO_REQUESTED: Travel rule information is required to continue processing the transfer.  - TRAVEL_RULE_REJECTED: Transfer has been terminally rejected due to failing travel rule checks.
+// Optionally filter by secondary status.   - TRAVEL_RULE_INFO_REQUESTED: Travel rule information is required to continue processing the transfer.  - TRAVEL_RULE_REJECTED: Transfer has been terminally rejected due to failing travel rule checks.  - CUSTOMER_REJECTED: Transfer was rejected by a customer.  - PENDING_CUSTOMER_APPROVAL: Transfer is pending customer approval.
 func (r ApiListTransfersRequest) SecondaryStatuses(secondaryStatuses []string) ApiListTransfersRequest {
 	r.secondaryStatuses = &secondaryStatuses
 	return r

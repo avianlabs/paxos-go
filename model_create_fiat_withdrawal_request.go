@@ -36,7 +36,7 @@ type CreateFiatWithdrawalRequest struct {
 	AccountId *string `json:"account_id,omitempty"`
 	// Optional client-specified metadata. Up to 6 key/value pairs may be provided. Each key and value must be less than or equal to 100 characters.
 	Metadata *map[string]string `json:"metadata,omitempty"`
-	// Optional additional memo to be set on the outgoing wire. Only used for wire withdrawals.
+	// Optional additional memo to be set on the outgoing withdrawal. For wire withdrawals the character limit is 100. For CUBIX intrabank withdrawals, the character limit is 40. For DBS intrabank withdrawals, the character limit is 100. For SCB intrabank withdrawals, the character limit is 140.
 	Memo *string `json:"memo,omitempty" validate:"regexp=^[0-9A-Za-z \\/?:().,&'+-]*$"`
 	// Total to withdraw, including fees. Specify exactly one of `amount` or `total`. When `total` is specified, Paxos initiates the withdrawal for `total` minus the fee.
 	Total *string `json:"total,omitempty"`
